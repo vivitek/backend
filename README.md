@@ -1,5 +1,8 @@
 # Web server
 
+[![Build Status](https://travis-ci.com/vivitek/backend.svg?branch=master)](https://travis-ci.com/vivitek/backend)
+
+
 ## the all-knowing service for configurating your router
 
 ---
