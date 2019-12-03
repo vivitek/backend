@@ -27,7 +27,7 @@ describe("User model test", () => {
 		expect(savedUser.email).toBe("mgassend@gmail.com");
 		return done()
 	})
-	it("create & not create an user", async done => {
+	it("create invalid user", async done => {
 		const userWithoutRequiredField = new UserModel({ email: 'TekLoon' });
 		let err;
         try {
