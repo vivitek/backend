@@ -1,14 +1,12 @@
 const MongoMemoryServer = require("mongodb-memory-server").MongoMemoryServer
 const mongoose = require('mongoose');
 const UserModel = require('../models/User');
+const routerModel = require("../models/Router")
 
 const mongod = new MongoMemoryServer();
 describe("User model test", () => {
 	beforeAll(async () => {
 		const uri = await mongod.getConnectionString();
-		const port = await mongod.getPort();
-		const dbPath = await mongod.getDbPath();
-		const dbName = await mongod.getDbName();
 		await mongoose.connect(`${uri}`, { useNewUrlParser: true, useCreateIndex: true }, (err) => {
 			if (err) {
 				console.error(err);
@@ -39,6 +37,24 @@ describe("User model test", () => {
             err = error
 		}
 		expect(err).toBeInstanceOf(mongoose.Error.ValidationError)
+		done()
+	})
+	it("create user and add router to it", async done => {
+		const validUser = new UserModel({
+			email: "mgassend@hotmail.com",
+			password: "asdasdadda",
+			firstName: "matteo",
+			lastName: "gassend",
+			telephoneNumber: "0781916684"
+		})
+		let savedUser = await validUser.save();
+		expect(savedUser._id).toBeDefined();
+		const validRouter = await new routerModel({name:"test", url:"https://"}).save()
+		savedUser.routers.push(validRouter)
+		savedUser = await savedUser.save()
+		expect(savedUser.routers[0].name).toBe("test")
+		savedUser = await UserModel.findOne({email:"mgassend@hotmail.com"}).populate("routers")
+		expect(savedUser.routers[0].name).toBe("test")
 		done()
 	})
 	afterAll(async () => {
