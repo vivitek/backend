@@ -8,7 +8,7 @@
 ---
 
 ## Functionalities
- - Users can register their account
+ - Users can register
  - Users can add routers to their account
  - Users can view connected devices
  - Users can create configurations for services
