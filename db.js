@@ -4,12 +4,4 @@ mongoose.connect("mongodb://matteo:matteo99@ds317808.mlab.com:17808/vivi", {useU
 
 var db = mongoose.connection
 
-db.on("error", () => {
-	console.error.bind(console, '[-] connection error: ')
-})
-
-db.once("open", () => {
-	console.log("[+] Connection to database established")
-})
-
 module.exports = db
