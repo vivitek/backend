@@ -43,7 +43,7 @@
 - - first name
 - - last name
 - - telephone number
-- - [routers]
+- - [router]
 
 - Router
 - - name
