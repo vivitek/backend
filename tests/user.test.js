@@ -25,7 +25,7 @@ describe("User model test", () => {
 		const savedUser = await validUser.save();
 		expect(savedUser._id).toBeDefined();
 		expect(savedUser.email).toBe("mgassend@gmail.com");
-		done()
+		return done()
 	})
 	it("create & not create an user", async done => {
 		const userWithoutRequiredField = new UserModel({ email: 'TekLoon' });
@@ -37,7 +37,7 @@ describe("User model test", () => {
             err = error
 		}
 		expect(err).toBeInstanceOf(mongoose.Error.ValidationError)
-		done()
+		return done()
 	})
 	it("create user and add router to it", async done => {
 		const validUser = new UserModel({
@@ -55,7 +55,7 @@ describe("User model test", () => {
 		expect(savedUser.routers[0].name).toBe("test")
 		savedUser = await UserModel.findOne({email:"mgassend@hotmail.com"}).populate("routers")
 		expect(savedUser.routers[0].name).toBe("test")
-		done()
+		return done()
 	})
 	afterAll(async () => {
 		await mongod.stop()

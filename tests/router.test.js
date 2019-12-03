@@ -21,7 +21,7 @@ describe("Router model test", () => {
 		const savedRouter = await validRouter.save();
 		expect(savedRouter._id).toBeDefined();
 		expect(savedRouter.name).toBe("test router");
-		done()
+		return done()
 	})
 	it("create & not create an user", async done => {
 		const routerWithoutRequiredFields = new routerModel({ name: 'TekLoon' });
@@ -33,7 +33,7 @@ describe("Router model test", () => {
             err = error
 		}
 		expect(err).toBeInstanceOf(mongoose.Error.ValidationError)
-		done()
+		return done()
 	})
 	afterAll(async () => {
 		await mongod.stop()
