@@ -2,10 +2,9 @@ const MongoMemoryServer = require("mongodb-memory-server").MongoMemoryServer
 const mongoose = require('mongoose');
 const UserModel = require('../models/User');
 
+const mongod = new MongoMemoryServer();
 describe("User model test", () => {
 	beforeAll(async () => {
-		const mongod = new MongoMemoryServer();
-
 		const uri = await mongod.getConnectionString();
 		const port = await mongod.getPort();
 		const dbPath = await mongod.getDbPath();
@@ -41,5 +40,8 @@ describe("User model test", () => {
 		}
 		expect(err).toBeInstanceOf(mongoose.Error.ValidationError)
 		done()
+	})
+	afterAll(async () => {
+		await mongod.stop()
 	})
 })
