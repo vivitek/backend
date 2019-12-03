@@ -26,3 +26,35 @@
 - [ ] Configurations creation
 - - [ ] determine which services are allowed to pass through
 - - [ ] determine how much bandwith to allocate to each service
+
+---
+
+## Architecture
+
+- Adopted structure is to be monolithic (classic monorepo), waiting for a refactoring to switch over to microservices
+
+---
+
+## Data Models
+
+- User
+- - email
+- - password
+- - first name
+- - last name
+- - telephone number
+- - [routers]
+
+- Router
+- - name
+- - url (from balena.io)
+- - config
+
+- Config
+- - name
+- - [service]
+
+- Service
+- - displayName
+- - name
+- - bandwidth
