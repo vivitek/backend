@@ -1,0 +1,22 @@
+{
+  "name": "backend-vivitek",
+  "version": "1.0.0",
+  "description": "## the all-knowing service for configurating your router",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vivitek/backend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vivitek/backend/issues"
+  },
+  "homepage": "https://github.com/vivitek/backend#readme",
+  "devDependencies": {
+    "jest": "^24.9.0"
+  }
+}

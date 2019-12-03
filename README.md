@@ -35,6 +35,12 @@
 
 ---
 
+## Authentication
+
+- Local (passport)
+
+---
+
 ## Data Models
 
 - User
