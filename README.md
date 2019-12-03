@@ -40,9 +40,9 @@
 - User
 - - email
 - - password
-- - first name
-- - last name
-- - telephone number
+- - firsName
+- - lasName
+- - telephoneNumber
 - - [router]
 
 - Router
