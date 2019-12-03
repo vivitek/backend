@@ -4,7 +4,8 @@
   "description": "## the all-knowing service for configurating your router",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "coveralls": "jest --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
   },
   "repository": {
     "type": "git",
@@ -17,6 +18,7 @@
   },
   "homepage": "https://github.com/vivitek/backend#readme",
   "devDependencies": {
+    "coveralls": "^3.0.9",
     "jest": "^24.9.0"
   }
 }
