@@ -17,7 +17,7 @@ describe("User model test", () => {
 			}
 		});
 	})
-	it("create & save a user", async () => {
+	it("create & save a user", async done => {
 		const validUser = new UserModel({
 			email: "mgassend@gmail.com",
 			password: "asdasdadda",
@@ -27,9 +27,10 @@ describe("User model test", () => {
 		})
 		const savedUser = await validUser.save();
 		expect(savedUser._id).toBeDefined();
-		return expect(savedUser.email).toBe("mgassend@gmail.com");
+		expect(savedUser.email).toBe("mgassend@gmail.com");
+		done()
 	})
-	it("create & not create an user", async () => {
+	it("create & not create an user", async done => {
 		const userWithoutRequiredField = new UserModel({ email: 'TekLoon' });
 		let err;
         try {
@@ -38,7 +39,7 @@ describe("User model test", () => {
         } catch (error) {
             err = error
 		}
-		return expect(err).toBeInstanceOf(mongoose.Error.ValidationError)
-
+		expect(err).toBeInstanceOf(mongoose.Error.ValidationError)
+		done()
 	})
 })
