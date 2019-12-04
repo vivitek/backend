@@ -13,7 +13,7 @@ describe("Service routes testing", () => {
 				console.error(err);
 				process.exit(1);
 			}
-		});
+        });
 	})
     it("get all configs", async () => {
         const res = await request(app).get("/config")

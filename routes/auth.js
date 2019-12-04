@@ -3,6 +3,7 @@ const userModel = require("../models/User")
 const bcrypt = require("bcrypt")
 const jwt  = require('jsonwebtoken');
 
+
 router.post("/register", async(req, res) => {
 	let {email, password, firstName, lastName, telephoneNumber} = req.body
 	let user = await userModel.findOne({email})
