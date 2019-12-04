@@ -4,7 +4,7 @@
   "description": "## the all-knowing service for configurating your router",
   "main": "index.js",
   "scripts": {
-    "test": "jest --forceExit --detectOpenHandles --maxWorkers=10"
+    "test": "DEBUG=true jest --forceExit --detectOpenHandles --maxWorkers=10"
   },
   "repository": {
     "type": "git",
