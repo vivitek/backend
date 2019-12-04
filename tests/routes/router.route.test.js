@@ -25,25 +25,25 @@ describe("Router routes testing", () => {
         expect(res.body.length).toBe(0)
         return done()
     })
-    // it("creates a new router", async done => {
-    //     const theService = await new serviceModel({
-    //         displayName: "testService",
-    //         name: "testName",
-    //         bandwidth: 200.0
-    //     }).save()
-    //     const theConfig = await new configModel({
-    //         name: "testConfig",
-    //         services: [theService]
-    //     }).save()
-    //     const res = await api.post("/router").send({
-    //         name: "testRouter",
-    //         url: "testURL",
-    //         config: theConfig
-    //     })
-    //     expect(res.status).toBe(201)
-    //     expect(res.body._id).toBeDefined()
-    //     return done()
-    // })
+    it("creates a new router", async done => {
+        const theService = await new serviceModel({
+            displayName: "testService",
+            name: "testName",
+            bandwidth: 200.0
+        }).save()
+        const theConfig = await new configModel({
+            name: "testConfig",
+            services: [theService]
+        }).save()
+        const res = await api.post("/router").send({
+            name: "testRouter",
+            url: "testURL",
+            config: theConfig
+        })
+        expect(res.status).toBe(201)
+        expect(res.body._id).toBeDefined()
+        return done()
+    })
     it("udates a router", async done => {
         const newRouter = await new routerModel({
             name: "testRouter",
