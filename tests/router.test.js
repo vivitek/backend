@@ -1,6 +1,7 @@
 const MongoMemoryServer = require("mongodb-memory-server").MongoMemoryServer
 const mongoose = require('mongoose');
 const routerModel = require('../models/Router');
+const configModel = require("../models/Config")
 
 const mongod = new MongoMemoryServer();
 describe("Router model test", () => {
@@ -13,7 +14,7 @@ describe("Router model test", () => {
 			}
 		});
 	})
-	it("create & save a user", async done => {
+	it("create & save a router", async done => {
 		const validRouter = new routerModel({
 			name: "test router",
 			url: "https://"
@@ -23,7 +24,7 @@ describe("Router model test", () => {
 		expect(savedRouter.name).toBe("test router");
 		return done()
 	})
-	it("create & not create an user", async done => {
+	it("create invalid router", async done => {
 		const routerWithoutRequiredFields = new routerModel({ name: 'TekLoon' });
 		let err;
         try {
@@ -33,6 +34,13 @@ describe("Router model test", () => {
             err = error
 		}
 		expect(err).toBeInstanceOf(mongoose.Error.ValidationError)
+		return done()
+	})
+	it("add a config to a router", async done => {
+		const config = await new configModel({name: "test"}).save()
+		const router = await new routerModel({name: "test 2", url:"asa", config}).save()
+		expect(router._id).toBeDefined()
+		expect(router.config.name).toBe("test")
 		return done()
 	})
 	afterAll(async () => {
