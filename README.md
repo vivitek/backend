@@ -1,7 +1,7 @@
 # Web server
 
 [![Build Status](https://travis-ci.com/vivitek/backend.svg?branch=master)](https://travis-ci.com/vivitek/backend)
-[![Coverage Status](https://coveralls.io/repos/github/vivitek/backend/badge.svg?branch=master)](https://coveralls.io/github/vivitek/backend?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/vivitek/backend/badge.svg)](https://coveralls.io/github/vivitek/backend)
 
 ## the all-knowing service for configurating your router
 
