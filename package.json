@@ -4,6 +4,7 @@
   "description": "## the all-knowing service for configurating your router",
   "main": "index.js",
   "scripts": {
+    "coveralls": "DEBUG=true jest --forceExit --detectOpenHandles --maxWorkers=10 --coverage && cat ./coverage/lcov.info | coveralls",
     "test": "DEBUG=true jest --forceExit --detectOpenHandles --maxWorkers=10"
   },
   "repository": {
