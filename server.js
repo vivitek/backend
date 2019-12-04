@@ -7,6 +7,7 @@ const bodyParser = require("body-parser")
 const serviceRouter = require("./routes/service")
 const authRouter = require("./routes/auth")
 const routerRouter = require("./routes/router")
+const configRouter = require("./routes/config")
 // imports db client
 const db = require("./db")
 
@@ -30,5 +31,5 @@ app.use(bodyParser.json());
 app.use("/service", serviceRouter)
 app.use("/auth", authRouter)
 app.use("/router", routerRouter)
-
+app.use("/config", configRouter)
 module.exports = app

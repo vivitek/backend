@@ -6,9 +6,7 @@ const mongod = new MongoMemoryServer();
 const request = require('supertest')
 
 describe("Service routes testing", () => {
-	let api
 	beforeAll(async () => {
-		api = request(app)
 		const uri = await mongod.getConnectionString();
 		await mongoose.connect(`${uri}`, { useNewUrlParser: true, useCreateIndex: true }, (err) => {
 			if (err) {
@@ -17,31 +15,31 @@ describe("Service routes testing", () => {
 			}
 		});
 	})
-	it("gets all services", async () => {
-		const res = await api.get("/service")
+	it("gets all services", async done => {
+		const res = await request(app).get("/service")
 		expect(res.status).toBe(200)
 		expect(res.body.length).toBe(0)
+		return done()
 	})
-	it("creates a service", async () => {
-		const res = await api.post("/service").send({
+	it("creates a service", async done => {
+		const res = await request(app).post("/service").send({
 			name:"test",
 			displayName:"testtest",
 			bandwidth:200.0
 		})
 		expect(res.status).toBe(201)
 		expect(res.body._id).toBeDefined()
+		return done()
 	})
-	it("updates a service", async () => {
+	it("updates a service", async done => {
 		const newService = await new serviceModel({name:"testing", displayName:"name", bandwidth:200.0}).save()
-		const res = await api.patch(`/service/${newService._id}`).send({
+		const res = await request(app).patch(`/service/${newService._id}`).send({
 			name:"tester",
 			displayName:"testername",
 			bandwidth:300.0
 		})
 		expect(res.status).toBe(200)
 		expect(res.body.name).toBe("tester")
-	})
-	afterAll(async () => {
-		await mongod.stop()
+		return done()
 	})
 })
