@@ -41,4 +41,7 @@ describe("Service routes testing", () => {
 		expect(res.status).toBe(200)
 		expect(res.body.name).toBe("tester")
 	})
+	afterAll(async () => {
+		await mongod.stop()
+	})
 })
