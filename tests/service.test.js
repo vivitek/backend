@@ -13,7 +13,7 @@ describe("Service model test", () => {
 			}
 		});
 	})
-	it("create & save a service", async done => {
+	it("create & save a service", async () => {
 		const validConfig = new serviceModel({
 			displayName:"test",
 			name: "test.exe",
@@ -22,9 +22,8 @@ describe("Service model test", () => {
 		const savedConfig = await validConfig.save();
 		expect(savedConfig._id).toBeDefined();
 		expect(savedConfig.name).toBe("test.exe");
-		return done()
 	})
-	it("create invalid service", async done => {
+	it("create invalid service", async () => {
 		const routerWithoutRequiredFields = new serviceModel({ name: 'TekLoon' });
 		let err;
         try {
@@ -34,7 +33,6 @@ describe("Service model test", () => {
             err = error
 		}
 		expect(err).toBeInstanceOf(mongoose.Error.ValidationError)
-		return done()
 	})
 	afterAll(async () => {
 		await mongod.stop()

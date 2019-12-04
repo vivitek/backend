@@ -16,7 +16,7 @@ describe("Auth routes testing", () => {
 			}
 		});
 	})
-	it("signs in a user", async done => {
+	it("signs in a user", async () => {
 		const res = await api.post("/auth/register").send({
 			email:"mgassend@gmail.com",
 			password:"123456",
@@ -26,9 +26,8 @@ describe("Auth routes testing", () => {
 		})
 		expect(res.status).toBe(201)
 		expect(res.body.token).toBeDefined()
-		return done()
 	})
-	it("user with same email", async done => {
+	it("user with same email", async () => {
 		const res = await api.post("/auth/register").send({
 			email:"mgassend@gmail.com",
 			password:"123456",
@@ -37,23 +36,20 @@ describe("Auth routes testing", () => {
 			telephoneNumber:"09123"
 		})
 		expect(res.status).toBe(401)
-		return done()
 	})
-	it("user login", async done => {
+	it("user login", async () => {
 		const res = await api.post("/auth/login").send({
 			email:"mgassend@gmail.com",
 			password:"123456"
 		})
 		expect(res.status).toBe(200)
 		expect(res.body.token).toBeDefined()
-		return done()
 	})
-	it("user wrong credentials login", async done => {
+	it("user wrong credentials login", async () => {
 		const res = await api.post("/auth/login").send({
 			email:"mgassend@gmail.com",
 			password:"123"
 		})
 		expect(res.status).toBe(401)
-		return done()
 	})
 })

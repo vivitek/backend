@@ -13,16 +13,15 @@ describe("Config model test", () => {
 			}
 		});
 	})
-	it("create & save a config", async done => {
+	it("create & save a config", async () => {
 		const validConfig = new configModel({
 			name: "test router",
 		});
 		const savedConfig = await validConfig.save();
 		expect(savedConfig._id).toBeDefined();
 		expect(savedConfig.name).toBe("test router");
-		return done()
 	})
-	it("create invalid config", async done => {
+	it("create invalid config", async () => {
 		const routerWithoutRequiredFields = new configModel({});
 		let err;
         try {
@@ -32,9 +31,8 @@ describe("Config model test", () => {
             err = error
 		}
 		expect(err).toBeInstanceOf(mongoose.Error.ValidationError)
-		return done()
 	})
-	it("create a config and add a service to it", async done => {
+	it("create a config and add a service to it", async () => {
 		const validConfig = new configModel({
 			name: "test router",
 		});
@@ -45,7 +43,6 @@ describe("Config model test", () => {
 		await savedConfig.save()
 		savedConfig = await configModel.findById(savedConfig._id).populate("services")
 		expect(savedConfig.services[0].name).toBe("test.exe")
-		return done()
 	})
 	afterAll(async () => {
 		await mongod.stop()

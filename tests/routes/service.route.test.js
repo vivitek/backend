@@ -17,13 +17,12 @@ describe("Service routes testing", () => {
 			}
 		});
 	})
-	it("gets all services", async done => {
+	it("gets all services", async () => {
 		const res = await api.get("/service")
 		expect(res.status).toBe(200)
 		expect(res.body.length).toBe(0)
-		return done()
 	})
-	it("creates a service", async done => {
+	it("creates a service", async () => {
 		const res = await api.post("/service").send({
 			name:"test",
 			displayName:"testtest",
@@ -31,9 +30,8 @@ describe("Service routes testing", () => {
 		})
 		expect(res.status).toBe(201)
 		expect(res.body._id).toBeDefined()
-		return done()
 	})
-	it("updates a service", async done => {
+	it("updates a service", async () => {
 		const newService = await new serviceModel({name:"testing", displayName:"name", bandwidth:200.0}).save()
 		const res = await api.patch(`/service/${newService._id}`).send({
 			name:"tester",
@@ -42,6 +40,5 @@ describe("Service routes testing", () => {
 		})
 		expect(res.status).toBe(200)
 		expect(res.body.name).toBe("tester")
-		return done()
 	})
 })
