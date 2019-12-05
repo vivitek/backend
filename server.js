@@ -24,7 +24,8 @@ db.once("open", () => {
 
 // configure initial app
 
-app.use(morgan("dev"))
+if (!process.env.DEBUG)
+	app.use(morgan("dev"))
 app.use(cors())
 app.use(bodyParser.json());
 app.use("/service", serviceRouter)
