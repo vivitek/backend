@@ -1,8 +1,8 @@
-const express = require("express")
+const app = require("express")()
 const cors = require("cors")
 const morgan = require("morgan")
 const bodyParser = require("body-parser")
-
+const socketEntry = require("./sockets/entrypoint")
 // routers for services
 const serviceRouter = require("./routes/service")
 const authRouter = require("./routes/auth")
@@ -23,7 +23,6 @@ db.once("open", () => {
 
 
 // configure initial app
-const app = express()
 
 app.use(morgan("dev"))
 app.use(cors())
@@ -36,4 +35,13 @@ app.use("/config", configRouter)
 app.get("/", (req, res) => {
 	res.send("🦔")
 })
-module.exports = app
+
+var http = require('http').createServer(app);
+var io = require('socket.io')(http);
+
+
+io.on("connection", (socket) => {
+	socketEntry(socket)
+})
+
+module.exports = http
