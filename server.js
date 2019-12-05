@@ -32,4 +32,8 @@ app.use("/service", serviceRouter)
 app.use("/auth", authRouter)
 app.use("/router", routerRouter)
 app.use("/config", configRouter)
+
+app.get("/", (req, res) => {
+	res.send("🦔")
+})
 module.exports = app
