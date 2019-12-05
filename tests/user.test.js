@@ -16,7 +16,7 @@ describe("User model test", () => {
 	})
 	it("create & save a user", async () => {
 		const validUser = new UserModel({
-			email: "mgassend@gmail.com",
+			email: "mgassend2@gmail.com",
 			password: "asdasdadda",
 			firstName: "matteo",
 			lastName: "gassend",
@@ -24,7 +24,7 @@ describe("User model test", () => {
 		})
 		const savedUser = await validUser.save();
 		expect(savedUser._id).toBeDefined();
-		expect(savedUser.email).toBe("mgassend@gmail.com");
+		expect(savedUser.email).toBe("mgassend2@gmail.com");
 	})
 	it("create invalid user", async () => {
 		const userWithoutRequiredField = new UserModel({ email: 'TekLoon' });
@@ -39,7 +39,7 @@ describe("User model test", () => {
 	})
 	it("create user and add router to it", async () => {
 		const validUser = new UserModel({
-			email: "mgassend@hotmail.com",
+			email: "mgassend2@hotmail.com",
 			password: "asdasdadda",
 			firstName: "matteo",
 			lastName: "gassend",
@@ -51,7 +51,7 @@ describe("User model test", () => {
 		savedUser.routers.push(validRouter)
 		savedUser = await savedUser.save()
 		expect(savedUser.routers[0].name).toBe("test")
-		savedUser = await UserModel.findOne({email:"mgassend@hotmail.com"}).populate("routers")
+		savedUser = await UserModel.findOne({email:"mgassend2@hotmail.com"}).populate("routers")
 		expect(savedUser.routers[0].name).toBe("test")
 	})
 	afterAll(async () => {
