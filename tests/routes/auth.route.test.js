@@ -18,7 +18,7 @@ describe("Auth routes testing", () => {
 	})
 	it("signs in a user", async () => {
 		const res = await api.post("/auth/register").send({
-			email:"mgassend@gmail.com",
+			email:"mgassend1@gmail.com",
 			password:"123456",
 			firstName:"matteo",
 			lastName:"ad",
@@ -29,7 +29,7 @@ describe("Auth routes testing", () => {
 	})
 	it("user with same email", async () => {
 		const res = await api.post("/auth/register").send({
-			email:"mgassend@gmail.com",
+			email:"mgassend1@gmail.com",
 			password:"123456",
 			firstName:"matteo",
 			lastName:"ad",
@@ -39,7 +39,7 @@ describe("Auth routes testing", () => {
 	})
 	it("user login", async () => {
 		const res = await api.post("/auth/login").send({
-			email:"mgassend@gmail.com",
+			email:"mgassend1@gmail.com",
 			password:"123456"
 		})
 		expect(res.status).toBe(200)
@@ -47,7 +47,7 @@ describe("Auth routes testing", () => {
 	})
 	it("user wrong credentials login", async () => {
 		const res = await api.post("/auth/login").send({
-			email:"mgassend@gmail.com",
+			email:"mgassend1@gmail.com",
 			password:"123"
 		})
 		expect(res.status).toBe(401)
