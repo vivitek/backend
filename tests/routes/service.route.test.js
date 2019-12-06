@@ -31,6 +31,13 @@ describe("Service routes testing", () => {
 		expect(res.body._id).toBeDefined()
 		return done()
 	})
+    it("get a specific service", async done => {
+		const newService = await new serviceModel({name:"testing name", displayName:"name", bandwidth:200.0}).save()
+        const res = await request(app).get(`/service/${newService._id}`)
+        expect(res.status).toBe(200)
+        expect(res.body.name).toBe("testing name")
+        return done()
+    })
 	it("updates a service", async done => {
 		const newService = await new serviceModel({name:"testing", displayName:"name", bandwidth:200.0}).save()
 		const res = await request(app).patch(`/service/${newService._id}`).send({
