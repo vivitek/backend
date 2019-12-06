@@ -59,6 +59,13 @@ describe("Auth routes testing", () => {
 		})
 		expect(res.status).toBe(401)
 	})
+    it("inexistant user credentials", async () => {
+        const res = await api.post('/auth/login').send({
+            email: "test.example@msn-live.com",
+            password: "azerty123"
+        })
+        expect(res.status).toBe(401)
+    })
 	afterAll(async () => {
 		await mongod.stop()
 	})
