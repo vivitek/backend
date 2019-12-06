@@ -44,14 +44,20 @@ describe("Router routes testing", () => {
         expect(res.body._id).toBeDefined()
         return done()
     })
+    it("get a specific router", async () => {
+        const testConfig = await new configModel({name: "test name", services: []}).save()
+        const newRouter = await new routerModel({name: "router name", url: "router url", config: testConfig}).save()
+        const res = await api.get(`/router/${newRouter._id}`)
+        expect(res.status).toBe(200)
+        expect(res.body.name).toBe("router name")
+    })
     it("updates a router", async done => {
-        const newRouter = await routerModel.create({
-            name: "testRouter",
-            url: "testURL"
-        })
+        const newRouter = await new routerModel({name: "testRouter", url: "testURL"}).save()
+        const newConfig = await new configModel({name: "name", services: []})
         const res = await api.patch(`/router/${newRouter._id}`).send({
             name: "aNewName",
-            url: "aNewURL"
+            url: "aNewURL",
+            config: newConfig
         })
         expect(res.status).toBe(200)
         expect(res.body.name).toBe("aNewName")
