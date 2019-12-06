@@ -29,6 +29,13 @@ describe("Service routes testing", () => {
         expect(res.statusCode).toBe(201)
         expect(res.body._id).toBeDefined()
     })
+    it("get a specific config", async () => {
+        const newConfig = await configModel({name: "test config", services: []}).save()
+        const res = await request(app).get(`/config/${newConfig._id}`)
+        expect(res.status).toBe(200)
+        expect(res.body.name).toBe("test config")
+
+    })
     it("update a config", async () => {
         const newConfig = await configModel({name: "super config", services: []}).save()
         const res = await request(app).patch(`/config/${newConfig._id}`).send({
