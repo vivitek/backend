@@ -1,6 +1,18 @@
 /**
+ *  @typedef {Object} DataRouter
+ *  @property {string} address - MAC address
+ *  @property {boolean} authorized - whether or not to authorize the address
+ */
+
+/**
+ * @typedef {Object} DataFirewall
+ * @property {string} service - name of the service
+ * @property {string} authorized - whether or not to authorize the service
+ */
+
+/**
  * send response to router telling him wheter or not to attribute him an ip address
- * @param {Object} data 
+ * @param {DataRouter} data 
  * @param {SocketIO.Server} io 
  * @param {String} id 
  */
@@ -10,7 +22,7 @@ const mobileClientAuthorization = (data, io, id) => {
 
 /**
  * 
- * @param {Object} data 
+ * @param {DataFirewall} data 
  * @param {SocketIO.Server} io 
  * @param {String} id 
  */
@@ -25,7 +37,6 @@ const mobileServiceAuthorization = (data, io, id) => {
  * @param {string} id
  */
 const entrypoint = (socket, io, id) => {
-	console.log(socket.rooms)
 	socket.on("client allow", (data) => {
 		console.log("[+]" + id + " received client allow request")
 		mobileClientAuthorization(data, io, id)

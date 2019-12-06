@@ -18,7 +18,7 @@ describe("Auth routes testing", () => {
 	})
 	it("signs in a user", async () => {
 		const res = await api.post("/auth/register").send({
-			email:"mgassend1@gmail.com",
+			email:"mgassend3@gmail.com",
 			password:"123456",
 			firstName:"matteo",
 			lastName:"ad",
