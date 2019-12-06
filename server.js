@@ -42,7 +42,7 @@ var io = require('socket.io')(http);
 
 
 io.on("connection", (socket) => {
-	socketEntry(socket)
+	socketEntry(socket, io)
 })
 
 module.exports = http
