@@ -44,11 +44,11 @@ describe("Router routes testing", () => {
         expect(res.body._id).toBeDefined()
         return done()
     })
-    it("udates a router", async done => {
-        const newRouter = await new routerModel({
+    it("updates a router", async done => {
+        const newRouter = await routerModel.create({
             name: "testRouter",
             url: "testURL"
-        }).save()
+        })
         const res = await api.patch(`/router/${newRouter._id}`).send({
             name: "aNewName",
             url: "aNewURL"
