@@ -1,6 +1,6 @@
 const socketType = require("../socketType")
 const mobileEntry = require("./mobile")
-
+const routerEntry = require("./router")
 /**
  * assigns a socket to a room and then handles it accordingly
  * @param {SocketIO.Socket} socket 
@@ -18,7 +18,7 @@ const entrySocket = (socket, io) => {
 					}
 					console.log(`[+] mobile connected for id ${id}`)
 					socket.emit("assigned", {room:`/${id}/mobile`})
-					mobileEntry(socket, io, id);
+					mobileEntry(socket, io, id)
 				})
 				break
 			case socketType.ROUTER:
@@ -28,6 +28,7 @@ const entrySocket = (socket, io) => {
 					}
 					console.log(`[+] router connected for id ${id}`)
 					socket.emit("assigned", {room:`/${id}/router`})
+					routerEntry(socket, io, id)
 				})
 				break
 			case socketType.FIREWALL:
