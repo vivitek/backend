@@ -28,7 +28,14 @@ describe("Auth routes testing", () => {
 		expect(res.body.token).toBeDefined()
 	})
 	it("user with same email", async () => {
-		const res = await api.post("/auth/register").send({
+		let res = await api.post("/auth/register").send({
+			email:"mgassend1@gmail.com",
+			password:"123456",
+			firstName:"matteo",
+			lastName:"ad",
+			telephoneNumber:"09123"
+		})
+		res = await api.post("/auth/register").send({
 			email:"mgassend1@gmail.com",
 			password:"123456",
 			firstName:"matteo",
