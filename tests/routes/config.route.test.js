@@ -23,7 +23,7 @@ describe("Service routes testing", () => {
     it("create a config", async () => {
         const res = await request(app).post("/config").send(
             {
-                name: "super config",
+                name: "super config2",
                 services: []
             })
         expect(res.statusCode).toBe(201)
