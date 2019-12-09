@@ -37,7 +37,7 @@ describe("Service routes testing", () => {
 
     })
     it("update a config", async () => {
-        const newConfig = await configModel({name: "super config", services: []}).save()
+        const newConfig = await configModel({name: "super config3555", services: []}).save()
         const res = await request(app).patch(`/config/${newConfig._id}`).send({
             name: "new super config",
             services: []

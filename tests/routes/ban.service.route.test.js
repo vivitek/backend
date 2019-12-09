@@ -23,7 +23,7 @@ describe("Ban routes testing", () => {
     it("create a ban", async () => {
         const res = await request(app).post("/ban").send(
             {
-                address: "super config",
+                address: "super config333",
                 banned: true
             })
         expect(res.statusCode).toBe(201)
