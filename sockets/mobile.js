@@ -1,13 +1,14 @@
+const banModel = require("../models/Ban")
 /**
  *  @typedef {Object} DataRouter
  *  @property {string} address - MAC address
- *  @property {boolean} authorized - whether or not to authorize the address
+ *  @property {boolean} banned - whether or not to authorize the address
  */
 
 /**
  * @typedef {Object} DataFirewall
  * @property {string} service - name of the service
- * @property {string} authorized - whether or not to authorize the service
+ * @property {string} banned - whether or not to authorize the service
  */
 
 /**
@@ -18,6 +19,7 @@
  */
 const mobileClientAuthorization = (data, io, id) => {
 	io.in(`/${id}/router`).emit("client authorization", data)
+	banModel.create(JSON.parse(data))
 }
 
 /**

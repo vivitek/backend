@@ -1,6 +1,7 @@
 /**
  * @typedef {Object} RouterData
- * @param {string} address - mac address
+ * @param {string} address- mac address
+ * @param {boolean} banned - is the user banned from using the network ?
  */
 
 /**
