@@ -32,7 +32,7 @@ describe("Service routes testing", () => {
 		return done()
 	})
     it("get a specific service", async done => {
-		const newService = await new serviceModel({name:"testing name", displayName:"name", bandwidth:200.0}).save()
+		const newService = await serviceModel.create({name:"testing name", displayName:"name", bandwidth:200.0})
         const res = await request(app).get(`/service/${newService._id}`)
         expect(res.status).toBe(200)
         expect(res.body.name).toBe("testing name")

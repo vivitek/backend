@@ -8,6 +8,7 @@ const serviceRouter = require("./routes/service")
 const authRouter = require("./routes/auth")
 const routerRouter = require("./routes/router")
 const configRouter = require("./routes/config")
+const banRouter = require("./routes/bans")
 // imports db client
 const db = require("./db")
 
@@ -32,6 +33,7 @@ app.use("/service", serviceRouter)
 app.use("/auth", authRouter)
 app.use("/router", routerRouter)
 app.use("/config", configRouter)
+app.use("/ban", banRouter)
 
 app.get("/", (req, res) => {
 	res.send("🦔")
