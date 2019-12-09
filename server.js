@@ -36,7 +36,7 @@ app.use("/config", configRouter)
 app.use("/ban", banRouter)
 
 app.get("/", (req, res) => {
-	res.send("🦔")
+	res.send("⚛ + 🦔 = 🦔 blue")
 })
 
 var http = require('http').createServer(app);
