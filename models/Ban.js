@@ -5,6 +5,6 @@ const banUserSchema = mongoose.Schema({
 	banned: {type: Boolean}
 })
 
-const banUserModel = mongoose.model("config", banUserSchema);
+const banUserModel = mongoose.model("ban", banUserSchema);
 
 module.exports = banUserModel
