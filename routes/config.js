@@ -24,7 +24,9 @@ router.patch("/:id", authentication , async(req, res) => {
     let {id} = req.params
     let {name, services} = req.body
     let config = await configModel.findById(id)
-
+    if (!config) {
+        res.status(500).json({message:"could not find asked config"})
+    }
     if (name)
         config.name = name
     if (services)
