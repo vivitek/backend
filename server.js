@@ -9,24 +9,22 @@ const authRouter = require("./routes/auth")
 const routerRouter = require("./routes/router")
 const configRouter = require("./routes/config")
 const banRouter = require("./routes/bans")
-// imports db client
-const db = require("./db")
-
-// if there is a connection error, do this
-db.on("error", () => {
-	console.error.bind(console, '[-] connection error: ')
-})
-
-// once a connection is established, do this
-db.once("open", () => {
-	console.log("[+] Connection to database established")
-})
-
 
 // configure initial app
+if (!process.env.DEBUG) {
+	const db = require("./db")
 
-if (!process.env.DEBUG)
+	// if there is a connection error, do this
+	db.on("error", () => {
+		console.error.bind(console, '[-] connection error: ')
+	})
+	
+	// once a connection is established, do this
+	db.once("open", () => {
+		console.log("[+] Connection to database established")
+	})
 	app.use(morgan("dev"))
+}
 app.use(cors())
 app.use(bodyParser.json());
 app.use("/service", serviceRouter)

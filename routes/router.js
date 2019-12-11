@@ -6,7 +6,7 @@ const authentication = require("../middleware").checkAuthentication
 
 router.post("/", authentication , async (req, res) => {
     let theUser = await userModel.findById(req.user._id)
-    let newRouter = new routerModel(req.body)
+    let newRouter = await routerModel.create(req.body)
 
     theUser.routers.push(newRouter)
     theUser = await theUser.save()
@@ -14,7 +14,7 @@ router.post("/", authentication , async (req, res) => {
 })
 
 router.get("/", authentication , async (req, res) => {
-    let routerList = await userModel.findById(req.user._id).populate("routers");
+    let routerList = await userModel.findById(req.user._id).populate("routers").exec()
     res.json(routerList.routers);
 })
 

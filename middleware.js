@@ -17,12 +17,12 @@ async function checkAuthentication(req, res, next) {
 		}
 		return next();
 	}
-	if (req.headers["Authorization"]) {
-		let {Authorization} = req.headers
-		let token = Authorization.split(" ")[1]
+	if (req.headers["authorization"]) {
+		let {authorization} = req.headers
+		let token = authorization.split(" ")[1]
 		try {
-			let user = jwt.sign(token, "lifebeforedeath")
-			req.user = JSON.parse(user)
+			let user = jwt.decode(token, "lifebeforedeath")
+			req.user = user
 			next()
 		} catch (error) {
 			res.status(401).json({message:"Invalid Token"})
