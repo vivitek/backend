@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 
 const banUserSchema = mongoose.Schema({
-	address: {type: String, required:true, unique:true},
+	address: {type: String, required:true},
 	banned: {type: Boolean},
 	router: {type: String}
 })
