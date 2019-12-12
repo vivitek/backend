@@ -3,7 +3,7 @@ const mongoose = require("mongoose")
 const banUserSchema = mongoose.Schema({
 	address: {type: String, required:true, unique:true},
 	banned: {type: Boolean},
-	router: {type: mongoose.Schema.Types.ObjectId, ref:"router"}
+	router: {type: String}
 })
 
 const banUserModel = mongoose.model("ban", banUserSchema);
