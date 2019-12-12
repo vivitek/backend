@@ -16,9 +16,11 @@ const banModel = require("../models/Ban")
  * @param {DataRouter} data 
  * @param {SocketIO.Server} io 
  * @param {String} id 
+ * @param {SocketIO.Socket} socket
  */
-const mobileClientAuthorization = (data, io, id) => {
+const mobileClientAuthorization = (data, io, id, socket) => {
 	io.in(`/${id}/router`).emit("client authorization", data)
+	socket.in(`/${id}/mobile`).send("client added", {address:data.address, banned:data.banned})
 	banModel.create({address:data.address, banned:data.banned, routerSet:id})
 }
 
