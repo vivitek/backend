@@ -6,6 +6,11 @@ router.get("/", async(req, res) => {
 	res.json(list);
 });
 
+router.get("/:id", async(req, res) => {
+	var list = await banModel.find({router:req.param("id", "1")})
+	res.json(list)
+})
+
 router.post("/", async(req, res) => {
 	var newBan = await banModel.create(req.body);
 	res.status(201).json(newBan);

@@ -19,7 +19,7 @@ const banModel = require("../models/Ban")
  */
 const mobileClientAuthorization = (data, io, id) => {
 	io.in(`/${id}/router`).emit("client authorization", data)
-	banModel.create(data)
+	banModel.create({address:data.address, banned:data.banned, router:id})
 }
 
 /**
