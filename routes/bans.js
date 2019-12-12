@@ -7,7 +7,7 @@ router.get("/", async(req, res) => {
 });
 
 router.get("/:id", async(req, res) => {
-	var list = await banModel.find({router:req.param("id", "1")})
+	var list = await banModel.find({router:req.param("id", 1)})
 	res.json(list)
 })
 
