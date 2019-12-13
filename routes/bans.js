@@ -17,6 +17,12 @@ router.get("/:id", async(req, res) => {
 	res.json(list)
 })
 
+router.delete("/:id", async(req, res) => {
+	let {id} = req.params
+	let resu = await banModel.findByIdAndDelete(id)
+	res.json(resu)
+})
+
 router.post("/", async(req, res) => {
 	var newBan = await banModel.create(req.body);
 	res.status(201).json(newBan);
