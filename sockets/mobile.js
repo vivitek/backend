@@ -43,7 +43,7 @@ const mobileServiceAuthorization = (data, io, id) => {
 const entrypoint = (socket, io, id) => {
 	socket.on("client allow", (data) => {
 		console.log("[+]" + id + " received client allow request")
-		mobileClientAuthorization(data, io, id)
+		mobileClientAuthorization(data, io, id, socket)
 	})
 	socket.on("packet allow", (data) => {
 		console.log("[+]" + id + " received packet allow request")
