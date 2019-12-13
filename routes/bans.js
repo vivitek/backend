@@ -10,7 +10,7 @@ router.get("/:id", async(req, res) => {
 	let {id} = req.params
 	var list
 	try {
-		list = await banModel.find({"router":id})
+		list = await banModel.find({"routerSet":id})
 	} catch (error) {
 		res.status(500).json({message:"could not find required data"})
 	}
