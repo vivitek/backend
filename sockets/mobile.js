@@ -22,7 +22,7 @@ const mobileClientAuthorization = async(data, io, id, socket) => {
 	io.in(`/${id}/router`).emit("client authorization", data)
 	socket.in(`/${id}/mobile`).send("client added", {address:data.address, banned:data.banned})
 	let ban = await banModel.find({routerSet:"1", address:data.address})
-	if (!ban) {
+	if (ban.length === 0) {
 		banModel.create({address:data.address, banned:data.banned, routerSet:id})
 	} else {
 		ban[0].banned = data.banned
