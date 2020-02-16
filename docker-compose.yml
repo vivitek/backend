@@ -11,3 +11,12 @@ services:
             - "27017:27017"
         volumes: 
             - ./data/db:/data/db
+    rabbit:
+        image: rabbitmq:3-management
+        ports:
+            - "4369:4369"
+            - "5671:5671"
+            - "5672:5672"
+            - "25672:25672"
+            - "15671:15671"
+            - "15672:15672"
