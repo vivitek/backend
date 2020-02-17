@@ -1,3 +1,5 @@
+const broker = require("../messages/index")
+
 /**
  * @typedef {Object} RouterData
  * @param {string} address- mac address
@@ -10,7 +12,10 @@
  * @param {String} id 
  * @param {RouterData} data 
  */
-const handleClientConnectionRequest = (io, id, data) => {
+const handleClientConnectionRequest = async(io, id, data) => {
+	const channel = await broker.createChannel()
+	let queue = await broker.createQueue(`router${id}`, channel)
+	await broker.sendMessage(`router${id}`, JSON.stringify(data), channel)
 	io.in(`/${id}/mobile`).emit("connection request", data)
 }
 
