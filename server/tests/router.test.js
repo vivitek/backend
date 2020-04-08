@@ -34,12 +34,6 @@ describe("Router model test", () => {
 		}
 		expect(err).toBeInstanceOf(mongoose.Error.ValidationError)
 	})
-	it("add a config to a router", async () => {
-		const config = await new configModel({name: "test"}).save()
-		const router = await new routerModel({name: "test 2", url:"asa", config}).save()
-		expect(router._id).toBeDefined()
-		expect(router.config.name).toBe("test")
-	})
 	afterAll(async () => {
 		await mongod.stop()
 	})
