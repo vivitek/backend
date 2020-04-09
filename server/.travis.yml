@@ -5,11 +5,14 @@ node_js:
 branches:
   only:
   - master
+services:
+    - docker
 cache:
   directories:
   - node_modules
 before_install:
 - npm update
+- docker-compose up --build
 install:
 - npm install
 script:
