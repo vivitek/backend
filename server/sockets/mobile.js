@@ -1,4 +1,5 @@
 const banModel = require("../models/Ban")
+const broker = require("../messages/index")
 /**
  *  @typedef {Object} DataRouter
  *  @property {string} address - MAC address
@@ -46,7 +47,13 @@ const mobileServiceAuthorization = (data, io, id) => {
  * @param {SocketIO.Server} io
  * @param {string} id
  */
-const entrypoint = (socket, io, id) => {
+const entrypoint = async(socket, io, id) => {
+	let channel = await broker.createChannel()
+	await broker.createQueue(`router${id}`)
+	channel.consume(`router${id}`, (msg) => {
+		console.log(`[+] received message: ${msg.content.toString()}`)
+		io.in(`/${id}/mobile`).emit("connection request", msg.content.toString())
+	})
 	socket.on("client allow", (data) => {
 		console.log("[+]" + id + " received client allow request")
 		mobileClientAuthorization(data, io, id, socket)

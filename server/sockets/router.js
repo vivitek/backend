@@ -13,10 +13,8 @@ const broker = require("../messages/index")
  * @param {RouterData} data 
  */
 const handleClientConnectionRequest = async(io, id, data) => {
-	const channel = await broker.createChannel()
-	let queue = await broker.createQueue(`router${id}`, channel)
-	await broker.sendMessage(`router${id}`, JSON.stringify(data), channel)
-	io.in(`/${id}/mobile`).emit("connection request", data)
+	await broker.sendMessage(`router${id}`, JSON.stringify(data))
+	console.log("message sent")
 }
 
 /**
@@ -25,7 +23,9 @@ const handleClientConnectionRequest = async(io, id, data) => {
  * @param {SocketIO.Server} io
  * @param {string} id
  */
-const entrypoint = (socket, io, id) => {
+const entrypoint = async(socket, io, id) => {
+
+
 	socket.on("connection request", (data) => {
 		handleClientConnectionRequest(io, id, data);
 	})
