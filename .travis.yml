@@ -11,9 +11,8 @@ cache:
   directories:
   - node_modules
 before_install:
-- cd server && npm update
+- cd server; npm update
 install:
-- npm cd server && install
+- cd server; npm install
 script:
-- cd server && npm test
-- cd server && npm run coveralls
+- cd server; npm test; npm run coveralls
