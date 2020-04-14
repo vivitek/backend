@@ -11,10 +11,9 @@ cache:
   directories:
   - node_modules
 before_install:
-- docker-compose up --build
-- npm update
+- cd server && npm update
 install:
-- npm install
+- npm cd server && install
 script:
-- npm test
-- npm run coveralls
+- cd server && npm test
+- cd server && npm run coveralls
