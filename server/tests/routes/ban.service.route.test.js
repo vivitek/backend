@@ -38,10 +38,10 @@ describe("Ban routes testing", () => {
 
     })
     it("delete a ban", async() => {
-        const config = await banModel({address: "super banned address", banned: true}).save()
-        const res = await request(app).delete(`/ban/${config._id}`)
-        expect(res.body._id).toBeDefined()
-        expect(res.body.address).toBe("super banned address")
+        const config = await banModel({address: "super banned address", banned: true}).save();
+        const res = await request(app).delete(`/ban/${config._id}`);
+        expect(res.body._id).toBeDefined();
+        expect(res.body.address).toBe("super banned address");
     })
     it("update a ban", async () => {
         const newConfig = await banModel({address: "super config", banned: true}).save()
