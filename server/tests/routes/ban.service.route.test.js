@@ -37,6 +37,11 @@ describe("Ban routes testing", () => {
         expect(res.body.address).toBe("test config")
 
     })
+    it("can't get a ban which doesn't exists", async () => {
+        const res = await request(app).get('/ban/toto42');
+        expect(res.status).toBe(500);
+        expect(res.body.message).toBe("could not find required data");
+    })
     it("delete a ban", async() => {
         const config = await banModel({address: "super banned address", banned: true}).save();
         const res = await request(app).delete(`/ban/${config._id}`);

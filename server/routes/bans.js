@@ -8,11 +8,12 @@ router.get("/", async(req, res) => {
 
 router.get("/:id", async(req, res) => {
 	let {id} = req.params
-	var list
+	var list = []
 	try {
 		list = await banModel.find({"_id": id})
 	} catch (error) {
 		res.status(500).json({message:"could not find required data"})
+        return
 	}
 	res.json(list[0])
 })
