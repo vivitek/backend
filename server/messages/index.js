@@ -2,12 +2,6 @@ const amqp = require("amqplib")
 
 
 let connection = null
-let channel = null
-
-const channels = {
-
-}
-
 
 
 const createConnection = async() => {
@@ -20,12 +14,9 @@ const createConnection = async() => {
  * @param {String} queue 
  */
 const createChannel = async(queue) => {
-	if (!channels[queue]) {
 		let connection = await createConnection()
-		channels[queue] = await connection.createChannel() 
-		return channels[queue]
-	}
-	return channels[queue]
+		let channel = await connection.createChannel() 
+		return channel
 }
 
 
@@ -37,7 +28,9 @@ const createChannel = async(queue) => {
  */
 const createQueue = async(name) => {
 	const channel = await createChannel(name)
-	return await channel.assertQueue(name, {durable:true})
+	const result = await channel.assertQueue(name, {durable:true})
+	await channel.close()
+	return result
 }
 
 /**
@@ -58,14 +51,13 @@ const sendMessage = async(name, message) => {
  * @param {String} name 
  */
 const readQueue = async(name) => {
-	let channel = await createChannel(name)
 	await createQueue(name)
+	let channel = await createChannel(name)
 	return channel
 }
 
-const removeChannel = async(name) => {
-	await channels[name].close()
-	delete channels[name]
+const removeChannel = async(channel) => {
+	await channel.close()
 }
 
 module.exports = {createConnection, createChannel, createQueue, sendMessage, readQueue, removeChannel}

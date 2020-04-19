@@ -3,19 +3,20 @@ const broker = require("../messages/index")
 
 
 router.get("/:id", async(req, res) => {
+	let delivered = {}
 	let {id} = req.params
 	res.writeHead(200, {
 		'Content-Type':"text/event-stream",
 		'Cache-Control': "no-cache",
 		'Connection': "keep-alive"
 	})
-	console.log(id)
 	const channel = await broker.readQueue(`router${id}`)
 	channel.consume(`router${id}`, (msg) => {
-		res.write("data: " + msg.content.toString() + "\n\n")
+		channel.nack(msg)
+		res.write("data: " + JSON.stringify({content: msg.content.toString(), id:msg.fields.deliveryTag}) + "\n\n")
 	})
 	res.on("close", async() => {
-		await broker.removeChannel(`router${id}`)
+		await channel.close()
 		res.end()
 	})
 })
