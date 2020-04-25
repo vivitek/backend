@@ -1,20 +1,20 @@
 version: "3"
 
-services: 
+services:
     server:
         build: ./server
-        depends_on: 
+        depends_on:
             - mongo
             - rabbit
         environment: 
             - RABBIT=rabbit
-        ports: 
+        ports:
             - "8080:5000"
     mongo:
         image: mongo
-        ports: 
+        ports:
             - "27017:27017"
-        volumes: 
+        volumes:
             - ./data/db:/data/db
     rabbit:
         image: rabbitmq:3-management
