@@ -1,4 +1,4 @@
-const broker = require("../messages/index")
+const broker = require("../messages/index");
 
 /**
  * @typedef {Object} RouterData
@@ -13,9 +13,9 @@ const broker = require("../messages/index")
  * @param {RouterData} data 
  */
 const handleClientConnectionRequest = async(io, id, data) => {
-	await broker.sendMessage(`router${id}`, JSON.stringify(data))
-	console.log("message sent")
-}
+	await broker.sendMessage(`router${id}`, JSON.stringify(data));
+	console.log("message sent");
+};
 
 /**
  * Entrypoint for handling mobile app socket communication
@@ -28,9 +28,9 @@ const entrypoint = async(socket, io, id) => {
 
 	socket.on("connection request", (data) => {
 		handleClientConnectionRequest(io, id, data);
-	})
-}
+	});
+};
 
 
 
-module.exports = entrypoint
+module.exports = entrypoint;

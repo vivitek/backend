@@ -11,8 +11,8 @@
  * @param {RouterData} data 
  */
 const handleClientConnectionRequest = (io, id, data) => {
-	io.in(`/${id}/mobile`).emit("service request", data)
-}
+	io.in(`/${id}/mobile`).emit("service request", data);
+};
 
 /**
  * Entrypoint for handling mobile app socket communication
@@ -23,9 +23,9 @@ const handleClientConnectionRequest = (io, id, data) => {
 const entrypoint = (socket, io, id) => {
 	socket.on("service request", (data) => {
 		handleClientConnectionRequest(io, id, data);
-	})
-}
+	});
+};
 
 
 
-module.exports = entrypoint
+module.exports = entrypoint;
