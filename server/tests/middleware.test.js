@@ -1,5 +1,5 @@
-const MongoMemoryServer = require("mongodb-memory-server").MongoMemoryServer
-const mongoose = require('mongoose');
+const MongoMemoryServer = require("mongodb-memory-server").MongoMemoryServer;
+const mongoose = require("mongoose");
 const mongod = new MongoMemoryServer();
 const request = require("supertest");
 const app = require("../server");
@@ -9,7 +9,7 @@ describe("Middleware test", () => {
 		const uri = await mongod.getConnectionString();
 		await mongoose.connect(`${uri}`, { useNewUrlParser: true, useCreateIndex: true }, (err) => {
 			if (err) {
-				console.error(err);
+				console.error(err); // eslint-disable-line no-console
 				process.exit(1);
 			}
 		});
