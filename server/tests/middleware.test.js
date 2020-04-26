@@ -32,5 +32,5 @@ describe("Middleware test", () => {
             .send({isTestingAuth: true})
             .set("authorization", user.body.token);
         expect(res.status).toBe(200);
-    })
+    });
 })
