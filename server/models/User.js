@@ -1,4 +1,4 @@
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
 
 var userSchema = mongoose.Schema({
 	email: {type: String, required:true, unique:true},
@@ -7,9 +7,9 @@ var userSchema = mongoose.Schema({
 	lastName: {type: String, required:true},
 	telephoneNumber: {type:String, required:true},
 	routers: [{type: mongoose.Schema.Types.ObjectId, ref:"router"}]
-})
+});
 
-var userModel = mongoose.model("user", userSchema)
+var userModel = mongoose.model("user", userSchema);
 
 
-module.exports = userModel
+module.exports = userModel;

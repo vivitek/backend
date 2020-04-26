@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>SSE</title>
+</head>
+<body>
+	<ul id="messages">
+
+	</ul>
+
+	<script>
+		const msgs = []
+		const list = document.querySelector("ul#messages")
+		const event = new EventSource("http://localhost:8080/listen/1")
+		event.onmessage = (e) => {
+			console.log(e.data)
+			const obj = JSON.parse(e.data)
+			var newElement = document.createElement("li");
+			if (msgs.indexOf(obj.content) < 0) {
+				newElement.textContent = "message: " + obj.content;
+				list.appendChild(newElement)
+				msgs.push(obj.content)
+			}
+		}
+	</script>
+</body>
+</html>

@@ -1,7 +1,7 @@
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
 
-mongoose.connect("mongodb://mongo:27017/vivi", {useUnifiedTopology:true, useNewUrlParser:true})
+mongoose.connect("mongodb://mongo:27017/vivi", {useUnifiedTopology:true, useNewUrlParser:true});
 
-var db = mongoose.connection
+var db = mongoose.connection;
 
-module.exports = db
+module.exports = db;

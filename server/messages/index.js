@@ -1,13 +1,22 @@
-const amqp = require("amqplib")
+const amqp = require("amqplib");
+
+
+let connection = null;
+
 
 const createConnection = async() => {
-	return await amqp.connect("amqp://rabbit")
-}
+	if (!connection) connection = await amqp.connect(`amqp://${process.env.RABBIT}`);
+	return connection;
+};
 
+/**
+ * 
+ */
 const createChannel = async() => {
-	let connection = await createConnection()
-	return await connection.createChannel()
-}
+	let connection = await createConnection();
+	let channel = await connection.createChannel(); 
+	return channel;
+};
 
 
 
@@ -16,9 +25,12 @@ const createChannel = async() => {
  * @param {String} name
  * @param {Object} channel
  */
-const createQueue = async(name, channel) => {
-	let queue = await channel.assertQueue(name)
-}
+const createQueue = async(name) => {
+	const channel = await createChannel(name);
+	const result = await channel.assertQueue(name, {durable:true});
+	await channel.close();
+	return result;
+};
 
 /**
  * 
@@ -27,8 +39,24 @@ const createQueue = async(name, channel) => {
  * @param {Object} channel
  * @returns {Boolean}
  */
-const sendMessage = async(name, message, channel) => {
-	return channel.sendToQueue(name, Buffer.from(message))
-}
+const sendMessage = async(name, message) => {
+	await createQueue(name);
+	let channel = await createChannel(name);
+	return channel.sendToQueue(name, Buffer.from(message), {persistent:true});
+};
 
-module.exports = {createConnection, createChannel, createQueue, sendMessage}
+/**
+ * 
+ * @param {String} name 
+ */
+const readQueue = async(name) => {
+	await createQueue(name);
+	let channel = await createChannel(name);
+	return channel;
+};
+
+const removeChannel = async(channel) => {
+	await channel.close();
+};
+
+module.exports = {createConnection, createChannel, createQueue, sendMessage, readQueue, removeChannel};

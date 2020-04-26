@@ -1,4 +1,5 @@
-const banModel = require("../models/Ban")
+const banModel = require("../models/Ban");
+const broker = require("../messages/index");
 /**
  *  @typedef {Object} DataRouter
  *  @property {string} address - MAC address
@@ -19,16 +20,16 @@ const banModel = require("../models/Ban")
  * @param {SocketIO.Socket} socket
  */
 const mobileClientAuthorization = async(data, io, id, socket) => {
-	io.in(`/${id}/router`).emit("client authorization", data)
-	socket.in(`/${id}/mobile`).send("client added", {address:data.address, banned:data.banned})
-	let ban = await banModel.find({routerSet:"1", address:data.address})
+	io.in(`/${id}/router`).emit("client authorization", data);
+	socket.in(`/${id}/mobile`).send("client added", {address:data.address, banned:data.banned});
+	let ban = await banModel.find({routerSet:"1", address:data.address});
 	if (ban.length === 0) {
-		banModel.create({address:data.address, banned:data.banned, routerSet:id})
+		banModel.create({address:data.address, banned:data.banned, routerSet:id});
 	} else {
-		ban[0].banned = data.banned
-		ban[0].save()
+		ban[0].banned = data.banned;
+		ban[0].save();
 	}
-}
+};
 
 /**
  * 
@@ -37,8 +38,8 @@ const mobileClientAuthorization = async(data, io, id, socket) => {
  * @param {String} id 
  */
 const mobileServiceAuthorization = (data, io, id) => {
-	io.in(`/${id}/firewall`).emit("client authorization", data)
-}
+	io.in(`/${id}/firewall`).emit("client authorization", data);
+};
 
 /**
  * Entrypoint for handling mobile app socket communication
@@ -46,17 +47,23 @@ const mobileServiceAuthorization = (data, io, id) => {
  * @param {SocketIO.Server} io
  * @param {string} id
  */
-const entrypoint = (socket, io, id) => {
+const entrypoint = async(socket, io, id) => {
+	let channel = await broker.createChannel();
+	await broker.createQueue(`router${id}`);
+	channel.consume(`router${id}`, (msg) => {
+		console.log(`[+] received message: ${msg.content.toString()}`);
+		io.in(`/${id}/mobile`).emit("connection request", msg.content.toString());
+	});
 	socket.on("client allow", (data) => {
-		console.log("[+]" + id + " received client allow request")
-		mobileClientAuthorization(data, io, id, socket)
-	})
+		console.log("[+]" + id + " received client allow request");
+		mobileClientAuthorization(data, io, id, socket);
+	});
 	socket.on("packet allow", (data) => {
-		console.log("[+]" + id + " received packet allow request")
+		console.log("[+]" + id + " received packet allow request");
 		mobileServiceAuthorization(data, io, id);
-	})
-}
+	});
+};
 
 
 
-module.exports = entrypoint
+module.exports = entrypoint;
