@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.com/vivitek/backend.svg?branch=master)](https://travis-ci.com/vivitek/backend)
 [![Coverage Status](https://coveralls.io/repos/github/vivitek/backend/badge.svg)](https://coveralls.io/github/vivitek/backend)
-
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/b49ce173f43e49e89951935ef9a868a4)](https://www.codacy.com/gh/vivitek/backend?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=vivitek/backend&amp;utm_campaign=Badge_Grade)
 ## the all-knowing service for configurating your router
 
 ---

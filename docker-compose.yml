@@ -6,6 +6,8 @@ services:
         depends_on:
             - mongo
             - rabbit
+        environment: 
+            - RABBIT=rabbit
         ports:
             - "8080:5000"
     mongo:
