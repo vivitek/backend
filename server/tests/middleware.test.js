@@ -13,7 +13,7 @@ describe("Middleware test", () => {
 				process.exit(1);
 			}
 		});
-	})
+	});
     it("non connected user", async () => {
         const res = await request(app).get("/config").send({isTestingAuth: true});
         expect(res.status).toBe(401);
