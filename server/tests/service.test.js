@@ -1,6 +1,6 @@
-const MongoMemoryServer = require("mongodb-memory-server").MongoMemoryServer
-const mongoose = require('mongoose');
-const serviceModel = require("../models/Service")
+const MongoMemoryServer = require("mongodb-memory-server").MongoMemoryServer;
+const mongoose = require("mongoose");
+const serviceModel = require("../models/Service");
 
 const mongod = new MongoMemoryServer();
 describe("Service model test", () => {
@@ -12,7 +12,7 @@ describe("Service model test", () => {
 				process.exit(1);
 			}
 		});
-	})
+	});
 	it("create & save a service", async () => {
 		const validConfig = new serviceModel({
 			displayName:"test",
@@ -22,19 +22,19 @@ describe("Service model test", () => {
 		const savedConfig = await validConfig.save();
 		expect(savedConfig._id).toBeDefined();
 		expect(savedConfig.name).toBe("test.exe");
-	})
+	});
 	it("create invalid service", async () => {
-		const routerWithoutRequiredFields = new serviceModel({ name: 'TekLoon' });
+		const routerWithoutRequiredFields = new serviceModel({ name: "TekLoon" });
 		let err;
-        try {
-            const savedrouterWithoutRequiredFields = await routerWithoutRequiredFields.save();
-            error = savedrouterWithoutRequiredFields;
-        } catch (error) {
-            err = error
+		try {
+			const savedrouterWithoutRequiredFields = await routerWithoutRequiredFields.save();
+			error = savedrouterWithoutRequiredFields;
+		} catch (error) {
+			err = error;
 		}
-		expect(err).toBeInstanceOf(mongoose.Error.ValidationError)
-	})
+		expect(err).toBeInstanceOf(mongoose.Error.ValidationError);
+	});
 	afterAll(async () => {
-		await mongod.stop()
-	})
-})
+		await mongod.stop();
+	});
+});

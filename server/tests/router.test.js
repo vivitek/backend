@@ -1,7 +1,6 @@
-const MongoMemoryServer = require("mongodb-memory-server").MongoMemoryServer
-const mongoose = require('mongoose');
-const routerModel = require('../models/Router');
-const configModel = require("../models/Config")
+const MongoMemoryServer = require("mongodb-memory-server").MongoMemoryServer;
+const mongoose = require("mongoose");
+const routerModel = require("../models/Router");
 
 const mongod = new MongoMemoryServer();
 describe("Router model test", () => {
@@ -13,7 +12,7 @@ describe("Router model test", () => {
 				process.exit(1);
 			}
 		});
-	})
+	});
 	it("create & save a router", async () => {
 		const validRouter = new routerModel({
 			name: "test router",
@@ -22,19 +21,19 @@ describe("Router model test", () => {
 		const savedRouter = await validRouter.save();
 		expect(savedRouter._id).toBeDefined();
 		expect(savedRouter.name).toBe("test router");
-	})
+	});
 	it("create invalid router", async () => {
-		const routerWithoutRequiredFields = new routerModel({ name: 'TekLoon' });
+		const routerWithoutRequiredFields = new routerModel({ name: "TekLoon" });
 		let err;
-        try {
-            const savedrouterWithoutRequiredFields = await routerWithoutRequiredFields.save();
-            error = savedrouterWithoutRequiredFields;
-        } catch (error) {
-            err = error
+		try {
+			const savedrouterWithoutRequiredFields = await routerWithoutRequiredFields.save();
+			error = savedrouterWithoutRequiredFields;
+		} catch (error) {
+			err = error;
 		}
-		expect(err).toBeInstanceOf(mongoose.Error.ValidationError)
-	})
+		expect(err).toBeInstanceOf(mongoose.Error.ValidationError);
+	});
 	afterAll(async () => {
-		await mongod.stop()
-	})
-})
+		await mongod.stop();
+	});
+});
