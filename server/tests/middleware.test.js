@@ -14,23 +14,23 @@ describe("Middleware test", () => {
 			}
 		});
 	});
-    it("non connected user", async () => {
-        const res = await request(app).get("/config").send({isTestingAuth: true});
-        expect(res.status).toBe(401);
-        expect(res.body.message).toBe("No authentication provided");
-    });
+	it("non connected user", async () => {
+		const res = await request(app).get("/config").send({isTestingAuth: true});
+		expect(res.status).toBe(401);
+		expect(res.body.message).toBe("No authentication provided");
+	});
 
-    it("connected user", async () => {
-        const user = await request(app).post("/auth/register").send({
-            email: "john.doe@yopmail.com",
-            password: "password",
-            firstName: "John",
-            lastName: "Doe",
-            telephoneNumber: "0000000000"
-        });
-        const res = await request(app).get("/config")
-            .send({isTestingAuth: true})
-            .set("authorization", user.body.token);
-        expect(res.status).toBe(200);
-    });
+	it("connected user", async () => {
+		const user = await request(app).post("/auth/register").send({
+			email: "john.doe@yopmail.com",
+			password: "password",
+			firstName: "John",
+			lastName: "Doe",
+			telephoneNumber: "0000000000"
+		});
+		const res = await request(app).get("/config")
+			.send({isTestingAuth: true})
+			.set("authorization", user.body.token);
+		expect(res.status).toBe(200);
+	});
 });

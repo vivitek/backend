@@ -1,7 +1,7 @@
-const MongoMemoryServer = require("mongodb-memory-server").MongoMemoryServer
-const mongoose = require('mongoose');
-const UserModel = require('../models/User');
-const routerModel = require("../models/Router")
+const MongoMemoryServer = require("mongodb-memory-server").MongoMemoryServer;
+const mongoose = require("mongoose");
+const UserModel = require("../models/User");
+const routerModel = require("../models/Router");
 
 const mongod = new MongoMemoryServer();
 describe("User model test", () => {
@@ -13,7 +13,7 @@ describe("User model test", () => {
 				process.exit(1);
 			}
 		});
-	})
+	});
 	it("create & save a user", async () => {
 		const validUser = new UserModel({
 			email: "mgassend2@gmail.com",
@@ -21,22 +21,22 @@ describe("User model test", () => {
 			firstName: "matteo",
 			lastName: "gassend",
 			telephoneNumber: "0781916684"
-		})
+		});
 		const savedUser = await validUser.save();
 		expect(savedUser._id).toBeDefined();
 		expect(savedUser.email).toBe("mgassend2@gmail.com");
-	})
+	});
 	it("create invalid user", async () => {
-		const userWithoutRequiredField = new UserModel({ email: 'TekLoon' });
+		const userWithoutRequiredField = new UserModel({ email: "TekLoon" });
 		let err;
-        try {
-            const savedUserWithoutRequiredField = await userWithoutRequiredField.save();
-            error = savedUserWithoutRequiredField;
-        } catch (error) {
-            err = error
+		try {
+			const savedUserWithoutRequiredField = await userWithoutRequiredField.save();
+			error = savedUserWithoutRequiredField;
+		} catch (error) {
+			err = error;
 		}
-		expect(err).toBeInstanceOf(mongoose.Error.ValidationError)
-	})
+		expect(err).toBeInstanceOf(mongoose.Error.ValidationError);
+	});
 	it("create user and add router to it", async () => {
 		const validUser = new UserModel({
 			email: "mgassend2@hotmail.com",
@@ -44,17 +44,17 @@ describe("User model test", () => {
 			firstName: "matteo",
 			lastName: "gassend",
 			telephoneNumber: "0781916684"
-		})
+		});
 		let savedUser = await validUser.save();
 		expect(savedUser._id).toBeDefined();
-		const validRouter = await new routerModel({name:"test", url:"https://"}).save()
-		savedUser.routers.push(validRouter)
-		savedUser = await savedUser.save()
-		expect(savedUser.routers[0].name).toBe("test")
-		savedUser = await UserModel.findOne({email:"mgassend2@hotmail.com"}).populate("routers")
-		expect(savedUser.routers[0].name).toBe("test")
-	})
+		const validRouter = await new routerModel({name:"test", url:"https://"}).save();
+		savedUser.routers.push(validRouter);
+		savedUser = await savedUser.save();
+		expect(savedUser.routers[0].name).toBe("test");
+		savedUser = await UserModel.findOne({email:"mgassend2@hotmail.com"}).populate("routers");
+		expect(savedUser.routers[0].name).toBe("test");
+	});
 	afterAll(async () => {
-		await mongod.stop()
-	})
-})
+		await mongod.stop();
+	});
+});
