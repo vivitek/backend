@@ -10,10 +10,5 @@ services:
 cache:
   directories:
   - node_modules
-before_install:
-- cd server; npm update
-install:
-- cd server; npm install
 script:
-- npm test
-- npm run coveralls
+    - docker-compose run server npm run coveralls
