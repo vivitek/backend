@@ -1,0 +1,5 @@
+*.md
+/data/**
+/coverage/**
+/node_modules/**
+*.sh
