@@ -15,5 +15,4 @@ before_install:
 install:
 - cd server; npm install
 script:
-- npm test
-- npm run coveralls
+    - docker-compose run server npm run coveralls
