@@ -54,7 +54,7 @@ current_branch=$(git branch | grep "^\*." | sed "s/^\* //g")
 if [ $current_branch == "master" ]; then
     exit 0
 fi
-echo $current_branch | grep "^(feature|improvement|fix)\/[a-zA-Z0-9-_]+" > /dev/null
+echo $current_branch | grep -qP "^(feature|improvement|fix)\/[a-zA-Z0-9-_]+" > /dev/null
 if [[ $? == 1 ]]; then
     echo -e "\033[31m\033[1mYour branch name is valid.\nPatern : (feature|improvement|fix)/branchName\033[0m"
     exit 1
