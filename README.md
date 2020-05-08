@@ -44,5 +44,9 @@ This will spawn a series of containers including :
 - Configurations creation
   - [ ] determine which services are allowed to pass through
   - [ ] determine how much bandwith to allocate to each service
-
+- Realtime events between server and dashboard
+  - [x] Sending connection requests from server to dashboard
+  - [ ] Accepting response for connection requests from dashboard to server
+  - [ ] Sending service connections from server to dashboard
+  - [ ] Accepting response for services requests from dashboard to server
 ---
