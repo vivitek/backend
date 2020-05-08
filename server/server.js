@@ -33,7 +33,7 @@ app.use("/auth", authRouter);
 app.use("/router", routerRouter);
 app.use("/config", configRouter);
 app.use("/ban", banRouter);
-app.use("/listen", eventsRouter);
+app.use("/connections", eventsRouter);
 
 app.get("/", (req, res) => {
 	res.send("⚛ + 🦔 = 🦔 blue");

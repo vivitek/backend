@@ -20,5 +20,25 @@ router.get("/:id", async(req, res) => {
 	});
 });
 
+router.post("/publish/:id", async(req, res) => {
+	let {id} = req.params;
+	await broker.sendMessage(`router${id}`, req.body.data);
+	res.json({status:"success", data:{}});
+});
+
+router.post("/ack/:id", async(req, res) => {
+	const {id} = req.params;
+	const {data} = req.params;
+	const channel = await broker.readQueue(`router${id}`);
+	channel.consume(`router${id}`, (msg) => {
+		if (msg.content.toString() == data.message) {
+			channel.ack(msg);
+		} else {
+			channel.nack(msg);
+		}
+	});
+	res.json({status:"success", data:{}});
+});
+
 
 module.exports = router;
