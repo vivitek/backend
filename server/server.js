@@ -2,7 +2,6 @@ const app = require("express")();
 const cors = require("cors");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
-const socketEntry = require("./sockets/entrypoint");
 // routers for services
 const serviceRouter = require("./routes/service");
 const authRouter = require("./routes/auth");
@@ -40,11 +39,6 @@ app.get("/", (req, res) => {
 });
 
 var http = require("http").createServer(app);
-var io = require("socket.io")(http);
 
-
-io.on("connection", (socket) => {
-	socketEntry(socket, io);
-});
 
 module.exports = http;
