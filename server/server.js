@@ -8,6 +8,7 @@ const authRouter = require("./routes/auth");
 const routerRouter = require("./routes/router");
 const configRouter = require("./routes/config");
 const banRouter = require("./routes/bans");
+const templateRouter = require("./routes/template");
 const eventsRouter = require("./sse/index");
 
 // configure initial app
@@ -32,6 +33,7 @@ app.use("/auth", authRouter);
 app.use("/router", routerRouter);
 app.use("/config", configRouter);
 app.use("/ban", banRouter);
+app.use("/template", templateRouter);
 app.use("/listen", eventsRouter);
 
 app.get("/", (req, res) => {
