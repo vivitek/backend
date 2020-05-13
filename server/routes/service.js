@@ -8,8 +8,8 @@ router.get("/", authentication ,async(req, res) => {
 });
 
 router.post("/", authentication ,async(req, res) => {
-	let {name, displayName, bandwidth, tags} = req.body;
-	let newService = await new serviceModel({name, displayName, bandwidth, tags}).save();
+	let {name, displayName, bandwidth, tags, ips} = req.body;
+	let newService = await new serviceModel({name, displayName, bandwidth, tags, ips}).save();
 	res.status(201).json(newService);
 });
 
@@ -21,7 +21,7 @@ router.get("/:id", authentication ,async(req, res) => {
 
 router.patch("/:id", authentication ,async(req, res) => {
 	let {id} = req.params;
-	let {name, displayName, bandwidth, tags} = req.body;
+	let {name, displayName, bandwidth, tags, ips} = req.body;
 	let service = await serviceModel.findById(id);
 
 	if (name)
@@ -32,6 +32,8 @@ router.patch("/:id", authentication ,async(req, res) => {
 		service.bandwidth = bandwidth;
 	if (tags)
 		service.tags = tags;
+	if (ips)
+		service.ips = ips;
 	service = await service.save();
 	res.json(service);
 });
