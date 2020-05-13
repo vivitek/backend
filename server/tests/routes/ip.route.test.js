@@ -57,9 +57,11 @@ describe("Ip routes testing", () => {
 	it("update an ip", async () => {
 		const ip = await ipModel({v4Ip: "4.4.4.4"}).save();
 		const res = await request(app).patch(`/ip/${ip._id}`).send({
-			v4Ip: "5.5.5.5"
+			v4Ip: "5.5.5.5",
+			v6Ip: "6.6.6.6"
 		});
 		expect(res.body._id).toBeDefined();
 		expect(res.body.v4Ip).toBe("5.5.5.5");
+		expect(res.body.v6Ip).toBe("6.6.6.6");
 	});
 });
