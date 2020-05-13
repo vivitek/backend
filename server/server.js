@@ -10,6 +10,7 @@ const configRouter = require("./routes/config");
 const banRouter = require("./routes/bans");
 const templateRouter = require("./routes/template");
 const tagRouter = require("./routes/tag");
+const ipRouter = require("./routes/ip");
 const eventsRouter = require("./sse/index");
 
 // configure initial app
@@ -36,6 +37,7 @@ app.use("/config", configRouter);
 app.use("/ban", banRouter);
 app.use("/template", templateRouter);
 app.use("/tag", tagRouter);
+app.use("/ip", ipRouter);
 app.use("/listen", eventsRouter);
 
 app.get("/", (req, res) => {
