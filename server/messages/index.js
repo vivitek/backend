@@ -55,8 +55,4 @@ const readQueue = async(name) => {
 	return channel;
 };
 
-const removeChannel = async(channel) => {
-	await channel.close();
-};
-
-module.exports = {createConnection, createChannel, createQueue, sendMessage, readQueue, removeChannel};
+module.exports = {createConnection, createChannel, createQueue, sendMessage, readQueue};
