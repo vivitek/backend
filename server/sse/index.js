@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const broker = require("../messages/index");
-
+const banModel = require("../models/Ban");
 
 router.get("/:id", async(req, res) => {
 	const {datetime} = req.query;
@@ -36,9 +36,16 @@ router.post("/ack/:id", async(req, res) => {
 	const {id} = req.params;
 	const {data} = req.body;
 	const channel = await broker.readQueue(`router${id}`);
-	channel.consume(`router${id}`, (msg) => {
+	channel.consume(`router${id}`, async(msg) => {
 		if (msg.content.toString() == data.message) {
 			channel.ack(msg);
+			const ban = await banModel.find({address:data.message});
+			if (ban) {
+				ban.banned = data.auth;
+				await ban.save();
+			} else {
+				await banModel.create({address:data.message, banned:data.auth});
+			}
 		} else {
 			channel.nack(msg);
 		}
