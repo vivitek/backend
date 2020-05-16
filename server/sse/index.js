@@ -34,7 +34,7 @@ router.post("/publish/:id", async(req, res) => {
 
 router.post("/ack/:id", async(req, res) => {
 	const {id} = req.params;
-	const {data} = req.params;
+	const {data} = req.body;
 	const channel = await broker.readQueue(`router${id}`);
 	channel.consume(`router${id}`, (msg) => {
 		if (msg.content.toString() == data.message) {
