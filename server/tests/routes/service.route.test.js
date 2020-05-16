@@ -1,6 +1,8 @@
 const MongoMemoryServer = require("mongodb-memory-server").MongoMemoryServer;
 const mongoose = require("mongoose");
 const serviceModel = require("../../models/Service");
+const tagModel = require("../../models/Tag");
+const ipModel = require("../../models/Ip");
 const app = require("../../server");
 const mongod = new MongoMemoryServer();
 const request = require("supertest");
@@ -40,13 +42,21 @@ describe("Service routes testing", () => {
 	});
 	it("updates a service", async done => {
 		const newService = await new serviceModel({name:"testing", displayName:"name", bandwidth:200.0}).save();
+		const tag = new tagModel({name: "vivi"});
+		const ip = new ipModel({v4I: "1.1.1.1"});
 		const res = await request(app).patch(`/service/${newService._id}`).send({
 			name:"tester",
 			displayName:"testername",
-			bandwidth:300.0
+			bandwidth:300.0,
+			tags: [tag],
+			ips: [ip]
 		});
 		expect(res.status).toBe(200);
 		expect(res.body.name).toBe("tester");
+		expect(res.body.displayName).toBe("testername");
+		expect(res.body.bandwidth).toBe(300.0);
+		expect(res.body.tags[0]).toBeDefined();
+		expect(res.body.ips[0]).toBeDefined();
 		return done();
 	});
 });
