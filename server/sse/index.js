@@ -3,6 +3,9 @@ const broker = require("../messages/index");
 
 
 router.get("/:id", async(req, res) => {
+	const {datetime} = req.query;
+	const sentValues = {};
+	sentValues[datetime] = [];
 	let {id} = req.params;
 	res.writeHead(200, {
 		"Content-Type":"text/event-stream",
@@ -12,7 +15,10 @@ router.get("/:id", async(req, res) => {
 	const channel = await broker.readQueue(`router${id}`);
 	channel.consume(`router${id}`, (msg) => {
 		channel.nack(msg);
-		res.write("data: " + JSON.stringify({content: msg.content.toString(), id:msg.fields.deliveryTag}) + "\n\n");
+		if (sentValues[datetime].indexOf(msg.content.toString()) < 0) {
+			sentValues[datetime].push(msg.content.toString());
+			res.write("data: " + JSON.stringify({content: msg.content.toString(), id:msg.fields.deliveryTag}) + "\n\n");
+		}
 	});
 	res.on("close", async() => {
 		await channel.close();
