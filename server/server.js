@@ -8,6 +8,9 @@ const authRouter = require("./routes/auth");
 const routerRouter = require("./routes/router");
 const configRouter = require("./routes/config");
 const banRouter = require("./routes/bans");
+const templateRouter = require("./routes/template");
+const tagRouter = require("./routes/tag");
+const ipRouter = require("./routes/ip");
 const eventsRouter = require("./sse/index");
 
 // configure initial app
@@ -18,7 +21,7 @@ if (!process.env.DEBUG) {
 	db.on("error", () => {
 		console.error.bind(console, "[-] connection error: ");
 	});
-	
+
 	// once a connection is established, do this
 	db.once("open", () => {
 		console.log("[+] Connection to database established");
@@ -32,6 +35,9 @@ app.use("/auth", authRouter);
 app.use("/router", routerRouter);
 app.use("/config", configRouter);
 app.use("/ban", banRouter);
+app.use("/template", templateRouter);
+app.use("/tag", tagRouter);
+app.use("/ip", ipRouter);
 app.use("/listen", eventsRouter);
 
 app.get("/", (req, res) => {

@@ -1,6 +1,7 @@
 const MongoMemoryServer = require("mongodb-memory-server").MongoMemoryServer;
 const mongoose = require("mongoose");
 const serviceModel = require("../models/Service");
+const tagModel = require("../models/Tag");
 
 const mongod = new MongoMemoryServer();
 describe("Service model test", () => {
@@ -17,11 +18,14 @@ describe("Service model test", () => {
 		const validConfig = new serviceModel({
 			displayName:"test",
 			name: "test.exe",
-			bandwidth: 200.0
+			bandwidth: 200.0,
+			tags: [new tagModel({ name: "vivi"})]
 		});
 		const savedConfig = await validConfig.save();
 		expect(savedConfig._id).toBeDefined();
 		expect(savedConfig.name).toBe("test.exe");
+		expect(savedConfig.bandwidth).toBe(200.0);
+		expect(savedConfig.tags[0].name).toBe("vivi");
 	});
 	it("create invalid service", async () => {
 		const routerWithoutRequiredFields = new serviceModel({ name: "TekLoon" });
