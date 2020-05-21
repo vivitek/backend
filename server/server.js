@@ -35,7 +35,7 @@ if (!process.env.DEBUG) {
 			await db.close();
 			console.log("[-] Closing database connection");
 		}
-		exit(0);
+		process.exit(0);
 	});
 }
 app.use(cors());
