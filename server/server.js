@@ -27,6 +27,16 @@ if (!process.env.DEBUG) {
 		console.log("[+] Connection to database established");
 	});
 	app.use(morgan("dev"));
+
+	// handle ctrl+C and `docker-compose down`
+	process.on("SIGINT", async () => {
+		console.log("[-] Stopping server");
+		if (db) {
+			await db.close();
+			console.log("[-] Closing database connection");
+		}
+		process.exit(0);
+	});
 }
 app.use(cors());
 app.use(bodyParser.json());
