@@ -6,7 +6,7 @@ To be sure than you'll be in law, run [setup-hooks.sh](setup-hooks.sh).
 
 ---
 ## Commit messages
-There is seven types of allowed tags
+There are seven types of allowed tags
 * feat (allowed only on the first commit of your branch)
 * add
 * fix
@@ -33,7 +33,7 @@ This commit is actually a backup
 
 ---
 ## Branch name
-As for the commit message, branch name use a specific patern too.
+As for the commit message, branch name uses a specific patern too.
 Only three tags are allowed.
 * feature
 * improvement
