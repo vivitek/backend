@@ -51,7 +51,7 @@ echo '#!/bin/sh
 
 current_branch=$(git branch | grep "^\*." | sed "s/^\* //g")
 
-if [ $current_branch == "master" ]; then
+if [ "$current_branch" = "master" ]; then
     exit 0
 fi
 echo $current_branch | grep -qP "^(feature|improvement|fix)\/[a-zA-Z0-9-_]+" > /dev/null
