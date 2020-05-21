@@ -3,6 +3,8 @@
 [![Build Status](https://travis-ci.com/vivitek/backend.svg?branch=master)](https://travis-ci.com/vivitek/backend)
 [![Coverage Status](https://coveralls.io/repos/github/vivitek/backend/badge.svg?branch=master)](https://coveralls.io/github/vivitek/backend?branch=master)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/b49ce173f43e49e89951935ef9a868a4)](https://www.codacy.com/gh/vivitek/backend?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=vivitek/backend&amp;utm_campaign=Badge_Grade)
+[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
+
 
 ## the all-knowing service for configurating your router
 
