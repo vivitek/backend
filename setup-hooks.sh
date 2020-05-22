@@ -62,5 +62,21 @@ fi' > .git/hooks/pre-push
 chmod +x .git/hooks/pre-push
 }
 
+commit_msg()
+{
+echo '#!/bin/sh
+
+COMMIT_MSG=$(cat $1)
+
+echo $COMMIT_MSG | grep -qP "^\[(add|delete|feat|fix|doc|improve|refactor)\][a-zA-Z0-9-_ ]+(\n\nBREAKING[ _]CHANGE:[a-zA-Z0-9-_ \n.,;/]+)?" > /dev/null
+
+if [[ $? == 1 ]]; then
+    echo -e "\033[31m\033[1mYour commit message is invalid.\033[0m\nRead CONVENTION.md for details."
+    exit 1
+fi' > .git/hooks/commit-msg
+chmod +x .git/hooks/commit-msg
+}
+
 pre_commit
 pre_push
+commit_msg
