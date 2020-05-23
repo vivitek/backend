@@ -45,10 +45,10 @@ app.use("/auth", authRouter);
 app.use("/router", routerRouter);
 app.use("/config", configRouter);
 app.use("/ban", banRouter);
+app.use("/connections", eventsRouter);
 app.use("/template", templateRouter);
 app.use("/tag", tagRouter);
 app.use("/ip", ipRouter);
-app.use("/listen", eventsRouter);
 
 app.get("/", (req, res) => {
 	res.send("⚛ + 🦔 = 🦔 blue");
