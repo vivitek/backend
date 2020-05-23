@@ -1,8 +1,8 @@
 const router = require("express").Router();
 const broker = require("../messages/index");
 const banModel = require("../models/Ban");
-
-router.get("/:id", async(req, res) => {
+const {checkAuthentication} = require("../middleware");
+router.get("/:id", checkAuthentication, async(req, res) => {
 	const {datetime} = req.query;
 	const sentValues = {};
 	sentValues[datetime] = [];
@@ -26,13 +26,13 @@ router.get("/:id", async(req, res) => {
 	});
 });
 
-router.post("/publish/:id", async(req, res) => {
+router.post("/publish/:id", checkAuthentication, async(req, res) => {
 	let {id} = req.params;
 	await broker.sendMessage(`router${id}`, req.body.data);
 	res.json({status:"success", data:{}});
 });
 
-router.post("/ack/:id", async(req, res) => {
+router.post("/ack/:id", checkAuthentication, async(req, res) => {
 	const {id} = req.params;
 	const {data} = req.body;
 	const channel = await broker.readQueue(`router${id}`);
