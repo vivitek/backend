@@ -73,6 +73,7 @@ echo $COMMIT_MSG | grep -qP "^\[(add|delete|feat|fix|doc|improve|refactor)\][a-z
 
 if [ $? = 1 ]; then
     echo "\033[31m\033[1mYour commit message is invalid.\033[0m\nRead CONVENTION.md for details."
+
     exit 1
 fi' > .git/hooks/commit-msg
 chmod +x .git/hooks/commit-msg

@@ -10,6 +10,8 @@ services:
             - RABBIT=rabbit
         ports:
             - "8080:5000"
+        volumes:
+            - ./data/server_logs:/logs
     mongo:
         image: mongo
         ports:
