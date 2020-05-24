@@ -10,12 +10,18 @@ services:
             - --certificatesresolvers.le.acme.email=matteo.gassend@epitech.eu
             - --certificatesresolvers.le.acme.storage=/acme.json
             - --certificatesresolvers.le.acme.tlschallenge=true
-            - --api.insecure
+            - --api
         labels: 
             - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
             - "traefik.http.routers.redirs.rule=hostregexp(`{host:.+}`)"
             - "traefik.http.routers.redirs.entrypoints=web"
             - "traefik.http.routers.redirs.middlewares=redirect-to-https"
+            - "traefik.http.routers.traefik.rule=Host(`dashboard.server.vincipit.com`)"
+            - "traefik.http.routers.traefik.service=api@internal"
+            # - "traefik.http.routers.traefik.middlewares=admin"
+            # - "traefik.http.middlewares.admin.basicauth.users=admin:xxx"
+            - "traefik.http.routers.traefik.tls.certresolver=le"
+            - "traefik.http.routers.traefik.entrypoints=secureweb"
         ports:
             - "80:80"
             - "8080:8080"
