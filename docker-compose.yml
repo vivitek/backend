@@ -1,6 +1,19 @@
-version: "3"
+version: "3.3"
 
 services:
+    traefik:
+        image: "traefik:v2.2"
+        command:
+            - --entrypoints.web.address=:80
+            - --entrypoints.secureweb.address=:443
+            - --providers.docker=true
+            - --api.insecure
+        ports:
+            - "80:80"
+            - "8080:8080"
+            - "443:443"
+        volumes:
+            - "/var/run/docker.sock:/var/run/docker.sock:ro"
     server:
         build: ./server
         depends_on:
@@ -9,17 +22,34 @@ services:
         environment: 
             - RABBIT=rabbit
         ports:
-            - "8080:5000"
+            - "5000:5000"
         volumes:
             - ./data/server_logs:/logs
+        labels:
+            - "traefik.http.routers.server-api.rule=Host(`api.docker.localhost`)"
+            - "traefik.http.services.server-api-svc.loadbalancer.server.port=5000"
+    admindb:
+        build: "./adminMongo"
+        ports: 
+            - "1234:1234"
+        depends_on:
+            - mongo
+        labels:
+            - "traefik.http.routers.mongodb.rule=Host(`admin.docker.localhost`)"
+            - "traefik.http.services.mongodb-svc.loadbalancer.server.port=1234"
+
     mongo:
         image: mongo
         ports:
             - "27017:27017"
         volumes:
             - ./data/db:/data/db
+    
     rabbit:
         image: rabbitmq:3-management
+        labels:
+            - "traefik.http.routers.rabbit.rule=Host(`rabbit.docker.localhost`)"
+            - "traefik.http.services.rabbit-svc.loadbalancer.server.port=15672"
         ports:
             - "4369:4369"
             - "5671:5671"
