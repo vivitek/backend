@@ -26,7 +26,7 @@ if (!process.env.DEBUG) {
 		var hour = pad(time.getHours());
 		var minute = pad(time.getMinutes());
 
-		return `${month}/${month}${day}-${hour}${minute}-${index}-file.log`;
+		return `${month}/${day}-${hour}${minute}-${index}-file.log`;
 	};
 	const logStream = rfs.createStream(generator, { interval: "1d", path: "/logs" });
 	// if there is a connection error, do this
