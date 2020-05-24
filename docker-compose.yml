@@ -7,13 +7,22 @@ services:
             - --entrypoints.web.address=:80
             - --entrypoints.secureweb.address=:443
             - --providers.docker=true
+            - --certificatesresolvers.le.acme.email=matteo.gassend@epitech.eu
+            - --certificatesresolvers.le.acme.storage=/acme.json
+            - --certificatesresolvers.le.acme.tlschallenge=true
             - --api.insecure
+        labels: 
+            - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+            - "traefik.http.routers.redirs.rule=hostregexp(`{host:.+}`)"
+            - "traefik.http.routers.redirs.entrypoints=web"
+            - "traefik.http.routers.redirs.middlewares=redirect-to-https"
         ports:
             - "80:80"
             - "8080:8080"
             - "443:443"
         volumes:
             - "/var/run/docker.sock:/var/run/docker.sock:ro"
+            - "./acme.json:/acme.json"
     server:
         build: ./server
         depends_on:
@@ -26,8 +35,10 @@ services:
         volumes:
             - ./data/server_logs:/logs
         labels:
-            - "traefik.http.routers.server-api.rule=Host(`api.docker.localhost`)"
+            - "traefik.http.routers.server-api.rule=Host(`api.docker.localhost`) || Host(`api.server.vincipit.com`)"
             - "traefik.http.services.server-api-svc.loadbalancer.server.port=5000"
+            - "traefik.http.routers.server-api.tls.certresolver=le"
+            - "traefik.http.routers.server-api.entrypoints=secureweb"
     admindb:
         build: "./adminMongo"
         ports: 
@@ -35,8 +46,10 @@ services:
         depends_on:
             - mongo
         labels:
-            - "traefik.http.routers.mongodb.rule=Host(`admin.docker.localhost`)"
+            - "traefik.http.routers.mongodb.rule=Host(`admin.docker.localhost`) || Host(`db.server.vincipit.com`)"
             - "traefik.http.services.mongodb-svc.loadbalancer.server.port=1234"
+            - "traefik.http.routers.mongodb.tls.certresolver=le"
+            - "traefik.http.routers.mongodb.entrypoints=secureweb"
 
     mongo:
         image: mongo
@@ -48,7 +61,9 @@ services:
     rabbit:
         image: rabbitmq:3-management
         labels:
-            - "traefik.http.routers.rabbit.rule=Host(`rabbit.docker.localhost`)"
+            - "traefik.http.routers.rabbit.rule=Host(`rabbit.docker.localhost`) || Host(`rabbit.server.vincipit.com`)"
+            - "traefik.http.routers.rabbit.tls.certresolver=le"
+            - "traefik.http.routers.rabbit.entrypoints=secureweb"
             - "traefik.http.services.rabbit-svc.loadbalancer.server.port=15672"
         ports:
             - "4369:4369"
