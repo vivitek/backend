@@ -2,7 +2,7 @@ const app = require("express")();
 const cors = require("cors");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
-const rfs = require("rotating-file-stream")
+const rfs = require("rotating-file-stream");
 // routers for services
 const serviceRouter = require("./routes/service");
 const authRouter = require("./routes/auth");
