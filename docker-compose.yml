@@ -47,8 +47,8 @@ services:
             - INFLUXDB_USER_PASSWORD=vivi
 
         labels: 
-            - "traefik.http.routers.influx-r.rule=Host(`influx-admin.server.vincipit.com`)"
-            - "traefik.http.services.influx-svr.loadbalancer.server.port=8083"
+            - "traefik.http.routers.influx-r.rule=Host(`influxdb.server.vincipit.com`)"
+            - "traefik.http.services.influx-svr.loadbalancer.server.port=8086"
             - "traefik.http.routers.influx-r.tls.certresolver=le"
             - "traefik.http.routers.influx-r.entrypoints=secureweb"
     grafana:
