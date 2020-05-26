@@ -13,7 +13,6 @@ services:
             - --certificatesresolvers.le.acme.storage=/acme.json
             - --certificatesresolvers.le.acme.tlschallenge=true
             - --api.insecure
-            - --log.level=DEBUG
             - --metrics=true
             - --metrics.influxdb=true
             - --metrics.influxdb.address=influxdb:8086
