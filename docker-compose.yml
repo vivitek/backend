@@ -10,7 +10,7 @@ services:
             - --certificatesresolvers.le.acme.email=matteo.gassend@epitech.eu
             - --certificatesresolvers.le.acme.storage=/acme.json
             - --certificatesresolvers.le.acme.tlschallenge=true
-            - --api
+            - --api.insecure
         labels: 
             - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
             - "traefik.http.routers.redirs.rule=hostregexp(`{host:.+}`)"
