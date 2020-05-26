@@ -18,8 +18,6 @@ services:
             - "traefik.http.routers.redirs.middlewares=redirect-to-https"
             - "traefik.http.routers.traefik.rule=Host(`dashboard.server.vincipit.com`)"
             - "traefik.http.routers.traefik.service=api@internal"
-            # - "traefik.http.routers.traefik.middlewares=admin"
-            # - "traefik.http.middlewares.admin.basicauth.users=admin:xxx"
             - "traefik.http.routers.traefik.tls.certresolver=le"
             - "traefik.http.routers.traefik.entrypoints=secureweb"
         ports:
@@ -41,7 +39,7 @@ services:
         volumes:
             - ./data/server_logs:/logs
         labels:
-            - "traefik.http.routers.server-api.rule=Host(`api.docker.localhost`) || Host(`api.server.vincipit.com`)"
+            - "traefik.http.routers.server-api.rule=Host(`api.server.vincipit.com`)"
             - "traefik.http.services.server-api-svc.loadbalancer.server.port=5000"
             - "traefik.http.routers.server-api.tls.certresolver=le"
             - "traefik.http.routers.server-api.entrypoints=secureweb"
@@ -52,7 +50,7 @@ services:
         depends_on:
             - mongo
         labels:
-            - "traefik.http.routers.mongodb.rule=Host(`admin.docker.localhost`) || Host(`db.server.vincipit.com`)"
+            - "traefik.http.routers.mongodb.rule=Host(`db.server.vincipit.com`)"
             - "traefik.http.services.mongodb-svc.loadbalancer.server.port=1234"
             - "traefik.http.routers.mongodb.tls.certresolver=le"
             - "traefik.http.routers.mongodb.entrypoints=secureweb"
@@ -67,7 +65,7 @@ services:
     rabbit:
         image: rabbitmq:3-management
         labels:
-            - "traefik.http.routers.rabbit.rule=Host(`rabbit.docker.localhost`) || Host(`rabbit.server.vincipit.com`)"
+            - "traefik.http.routers.rabbit.rule=Host(`rabbit.server.vincipit.com`)"
             - "traefik.http.routers.rabbit.tls.certresolver=le"
             - "traefik.http.routers.rabbit.entrypoints=secureweb"
             - "traefik.http.services.rabbit-svc.loadbalancer.server.port=15672"
