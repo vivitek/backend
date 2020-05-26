@@ -4,6 +4,8 @@ services:
     traefik:
         image: "traefik:v2.2"
         command:
+            # - --metrics.prometheus=true
+            # - --metrics.prometheus.buckets=0.1,0.3,1.2,5.0
             - --entrypoints.web.address=:80
             - --entrypoints.secureweb.address=:443
             - --providers.docker=true
@@ -11,6 +13,15 @@ services:
             - --certificatesresolvers.le.acme.storage=/acme.json
             - --certificatesresolvers.le.acme.tlschallenge=true
             - --api.insecure
+            - --log.level=DEBUG
+            - --metrics=true
+            - --metrics.influxdb=true
+            - --metrics.influxdb.address=influxdb:8086
+            - --metrics.influxdb.protocol=http
+            - --metrics.influxdb.database=vivi
+            - --metrics.influxdb.username=vivi
+            - --metrics.influxdb.password=vivi
+            - --metrics.influxdb.addServicesLabels=true
         labels: 
             - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
             - "traefik.http.routers.redirs.rule=hostregexp(`{host:.+}`)"
@@ -27,6 +38,37 @@ services:
         volumes:
             - "/var/run/docker.sock:/var/run/docker.sock:ro"
             - "./acme.json:/acme.json"
+    influxdb:
+        image: influxdb:latest
+        volumes: 
+            - ./data/influx:/var/lib/influxdb
+        environment: 
+            - INFLUXDB_DB=vivi 
+            - INFLUXDB_USER=vivi
+            - INFLUXDB_USER_PASSWORD=vivi
+
+        labels: 
+            - "traefik.http.routers.influx-r.rule=Host(`influx-admin.server.vincipit.com`)"
+            - "traefik.http.services.influx-svr.loadbalancer.server.port=8083"
+            - "traefik.http.routers.influx-r.tls.certresolver=le"
+            - "traefik.http.routers.influx-r.entrypoints=secureweb"
+    grafana:
+        image: grafana/grafana
+        depends_on:
+            - influxdb
+        volumes:
+            # - grafana_data:/var/lib/grafana
+            - ./grafana/provisioning/:/etc/grafana/provisioning/:rw
+        env_file:
+            - ./grafana/config.monitoring
+        user: "407"
+        labels:
+            - "traefik.http.routers.grafana.rule=Host(`grafana.server.vincipit.com`)"
+            - "traefik.http.routers.grafana.service=grafana"
+            - "traefik.http.services.grafana.loadbalancer.server.port=3000"
+            - "traefik.http.routers.grafana.tls.certresolver=le"
+            - "traefik.http.routers.grafana.entrypoints=secureweb"
+            
     server:
         build: ./server
         depends_on:
@@ -76,3 +118,6 @@ services:
             - "25672:25672"
             - "15671:15671"
             - "15672:15672"
+volumes:
+    prometheus_data: {}
+    grafana_data: {}
