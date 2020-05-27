@@ -26,7 +26,7 @@ services:
             - "traefik.http.routers.redirs.rule=hostregexp(`{host:.+}`)"
             - "traefik.http.routers.redirs.entrypoints=web"
             - "traefik.http.routers.redirs.middlewares=redirect-to-https"
-            - "traefik.http.routers.traefik.rule=Host(`dashboard.server.vincipit.com`)"
+            - "traefik.http.routers.traefik.rule=Host(`dashboard.${DOMAIN}`)"
             - "traefik.http.routers.traefik.service=api@internal"
             - "traefik.http.routers.traefik.tls.certresolver=le"
             - "traefik.http.routers.traefik.entrypoints=secureweb"
@@ -47,7 +47,7 @@ services:
             - INFLUXDB_USER_PASSWORD=vivi
 
         labels: 
-            - "traefik.http.routers.influx-r.rule=Host(`influxdb.server.vincipit.com`)"
+            - "traefik.http.routers.influx-r.rule=Host(`influxdb.${DOMAIN}`)"
             - "traefik.http.services.influx-svr.loadbalancer.server.port=8086"
             - "traefik.http.routers.influx-r.tls.certresolver=le"
             - "traefik.http.routers.influx-r.entrypoints=secureweb"
@@ -62,7 +62,7 @@ services:
             - ./grafana/config.monitoring
         user: "407"
         labels:
-            - "traefik.http.routers.grafana.rule=Host(`grafana.server.vincipit.com`)"
+            - "traefik.http.routers.grafana.rule=Host(`grafana.${DOMAIN}`)"
             - "traefik.http.routers.grafana.service=grafana"
             - "traefik.http.services.grafana.loadbalancer.server.port=3000"
             - "traefik.http.routers.grafana.tls.certresolver=le"
@@ -80,7 +80,7 @@ services:
         volumes:
             - ./data/server_logs:/logs
         labels:
-            - "traefik.http.routers.server-api.rule=Host(`api.server.vincipit.com`)"
+            - "traefik.http.routers.server-api.rule=Host(`api.${DOMAIN}`)"
             - "traefik.http.services.server-api-svc.loadbalancer.server.port=5000"
             - "traefik.http.routers.server-api.tls.certresolver=le"
             - "traefik.http.routers.server-api.entrypoints=secureweb"
@@ -91,7 +91,7 @@ services:
         depends_on:
             - mongo
         labels:
-            - "traefik.http.routers.mongodb.rule=Host(`db.server.vincipit.com`)"
+            - "traefik.http.routers.mongodb.rule=Host(`db.${DOMAIN}`)"
             - "traefik.http.services.mongodb-svc.loadbalancer.server.port=1234"
             - "traefik.http.routers.mongodb.tls.certresolver=le"
             - "traefik.http.routers.mongodb.entrypoints=secureweb"
@@ -106,7 +106,7 @@ services:
     rabbit:
         image: rabbitmq:3-management
         labels:
-            - "traefik.http.routers.rabbit.rule=Host(`rabbit.server.vincipit.com`)"
+            - "traefik.http.routers.rabbit.rule=Host(`rabbit.${DOMAIN}`)"
             - "traefik.http.routers.rabbit.tls.certresolver=le"
             - "traefik.http.routers.rabbit.entrypoints=secureweb"
             - "traefik.http.services.rabbit-svc.loadbalancer.server.port=15672"
