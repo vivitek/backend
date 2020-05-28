@@ -1,3 +1,5 @@
+/*eslint-disable */
+
 @media (max-width: 980px) {
     body {
         padding-bottom: 0px;
@@ -506,3 +508,4 @@ h4{
         left: 0;
     }
 }
+/*eslint-enable*/
