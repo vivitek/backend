@@ -4,4 +4,4 @@
 /node_modules/**
 *.sh
 *.css
-adminMongo/**
+adminMongo/*
