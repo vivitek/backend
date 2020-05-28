@@ -21,6 +21,11 @@ services:
             - --metrics.influxdb.username=vivi
             - --metrics.influxdb.password=vivi
             - --metrics.influxdb.addServicesLabels=true
+            - --accesslog=true
+            - --accesslog.filepath=/logs/access.log
+            - --accesslog.format=json
+            - --tracing.jaeger=true
+            - --tracing.jaeger.samplingServerURL=http://localhost:5778/sampling
         labels: 
             - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
             - "traefik.http.routers.redirs.rule=hostregexp(`{host:.+}`)"
@@ -36,6 +41,7 @@ services:
             - "443:443"
         volumes:
             - "/var/run/docker.sock:/var/run/docker.sock:ro"
+            - "./data/traefik_logs:/logs"
             - "./acme.json:/acme.json"
     influxdb:
         image: influxdb:latest
