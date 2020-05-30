@@ -11,7 +11,7 @@ There are seven types of allowed tags
 * add
 * fix
 * improve
-* delete
+* del
 * refactor
 * doc
 

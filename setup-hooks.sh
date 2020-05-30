@@ -27,7 +27,7 @@ git add $STAGED_FILES
 # Run eslint
 for file in $STAGED_FILES; do
     output=$(eslint --config=./.eslintrc.json $file | head -n -4 | sed 1,2d | sed "s/^..//")
-    if [[ $output != "" ]]; then
+    if [ $output != "" ]; then
         echo "[ \033[31m\033[1mKO\033[0m ] $file"
         echo "$output" | sed "s/^/  /"
         VALID=false
@@ -69,7 +69,7 @@ echo '#!/bin/sh
 
 COMMIT_MSG=$(cat $1)
 
-echo $COMMIT_MSG | grep -qP "^\[(add|delete|feat|fix|doc|improve|refactor)\][a-zA-Z0-9-_ ]+(\\n\\nBREAKING[ _]CHANGE:[a-zA-Z0-9-_ \\n.,;/]+)?" > /dev/null
+echo $COMMIT_MSG | grep -qP "^\[(add|del|feat|fix|doc|improve|refactor)\][a-zA-Z0-9-_ ]+(\\n\\nBREAKING[ _]CHANGE:[a-zA-Z0-9-_ \\n.,;/]+)?" > /dev/null
 
 if [ $? = 1 ]; then
     echo "\033[31m\033[1mYour commit message is invalid.\033[0m\nRead CONVENTION.md for details."
