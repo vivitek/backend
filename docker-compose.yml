@@ -1,6 +1,77 @@
-version: "3"
+version: "3.3"
 
 services:
+    traefik:
+        image: "traefik:v2.2"
+        command:
+            # - --metrics.prometheus=true
+            # - --metrics.prometheus.buckets=0.1,0.3,1.2,5.0
+            - --entrypoints.web.address=:80
+            - --entrypoints.secureweb.address=:443
+            - --providers.docker=true
+            - --certificatesresolvers.le.acme.email=matteo.gassend@epitech.eu
+            - --certificatesresolvers.le.acme.storage=/acme.json
+            - --certificatesresolvers.le.acme.tlschallenge=true
+            - --api.insecure
+            - --metrics=true
+            - --metrics.influxdb=true
+            - --metrics.influxdb.address=influxdb:8086
+            - --metrics.influxdb.protocol=http
+            - --metrics.influxdb.database=vivi
+            - --metrics.influxdb.username=vivi
+            - --metrics.influxdb.password=vivi
+            - --metrics.influxdb.addServicesLabels=true
+            - --accesslog=true
+            - --accesslog.filepath=/logs/access.log
+            - --accesslog.format=json
+        labels: 
+            - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+            - "traefik.http.routers.redirs.rule=hostregexp(`{host:.+}`)"
+            - "traefik.http.routers.redirs.entrypoints=web"
+            - "traefik.http.routers.redirs.middlewares=redirect-to-https"
+            - "traefik.http.routers.traefik.rule=Host(`dashboard.${DOMAIN}`)"
+            - "traefik.http.routers.traefik.service=api@internal"
+            - "traefik.http.routers.traefik.tls.certresolver=le"
+            - "traefik.http.routers.traefik.entrypoints=secureweb"
+        ports:
+            - "80:80"
+            - "8080:8080"
+            - "443:443"
+        volumes:
+            - "/var/run/docker.sock:/var/run/docker.sock:ro"
+            - "./data/traefik_logs:/logs"
+            - "./acme.json:/acme.json"
+    influxdb:
+        image: influxdb:latest
+        volumes: 
+            - ./data/influx:/var/lib/influxdb
+        environment: 
+            - INFLUXDB_DB=vivi 
+            - INFLUXDB_USER=vivi
+            - INFLUXDB_USER_PASSWORD=vivi
+
+        labels: 
+            - "traefik.http.routers.influx-r.rule=Host(`influxdb.${DOMAIN}`)"
+            - "traefik.http.services.influx-svr.loadbalancer.server.port=8086"
+            - "traefik.http.routers.influx-r.tls.certresolver=le"
+            - "traefik.http.routers.influx-r.entrypoints=secureweb"
+    grafana:
+        image: grafana/grafana
+        depends_on:
+            - influxdb
+        volumes:
+            # - grafana_data:/var/lib/grafana
+            - ./grafana/provisioning/:/etc/grafana/provisioning/:rw
+        env_file:
+            - ./grafana/config.monitoring
+        user: "407"
+        labels:
+            - "traefik.http.routers.grafana.rule=Host(`grafana.${DOMAIN}`)"
+            - "traefik.http.routers.grafana.service=grafana"
+            - "traefik.http.services.grafana.loadbalancer.server.port=3000"
+            - "traefik.http.routers.grafana.tls.certresolver=le"
+            - "traefik.http.routers.grafana.entrypoints=secureweb"
+            
     server:
         build: ./server
         depends_on:
@@ -9,17 +80,40 @@ services:
         environment: 
             - RABBIT=rabbit
         ports:
-            - "8080:5000"
+            - "5000:5000"
         volumes:
             - ./data/server_logs:/logs
+        labels:
+            - "traefik.http.routers.server-api.rule=Host(`api.${DOMAIN}`)"
+            - "traefik.http.services.server-api-svc.loadbalancer.server.port=5000"
+            - "traefik.http.routers.server-api.tls.certresolver=le"
+            - "traefik.http.routers.server-api.entrypoints=secureweb"
+    admindb:
+        build: "./adminMongo"
+        ports: 
+            - "1234:1234"
+        depends_on:
+            - mongo
+        labels:
+            - "traefik.http.routers.mongodb.rule=Host(`db.${DOMAIN}`)"
+            - "traefik.http.services.mongodb-svc.loadbalancer.server.port=1234"
+            - "traefik.http.routers.mongodb.tls.certresolver=le"
+            - "traefik.http.routers.mongodb.entrypoints=secureweb"
+
     mongo:
         image: mongo
         ports:
             - "27017:27017"
         volumes:
             - ./data/db:/data/db
+    
     rabbit:
         image: rabbitmq:3-management
+        labels:
+            - "traefik.http.routers.rabbit.rule=Host(`rabbit.${DOMAIN}`)"
+            - "traefik.http.routers.rabbit.tls.certresolver=le"
+            - "traefik.http.routers.rabbit.entrypoints=secureweb"
+            - "traefik.http.services.rabbit-svc.loadbalancer.server.port=15672"
         ports:
             - "4369:4369"
             - "5671:5671"
@@ -27,3 +121,6 @@ services:
             - "25672:25672"
             - "15671:15671"
             - "15672:15672"
+volumes:
+    prometheus_data: {}
+    grafana_data: {}
