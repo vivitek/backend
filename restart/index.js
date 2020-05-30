@@ -3,7 +3,7 @@ const express = require("express");
 const app = express();
 
 
-app.get("/", (req, res) => {
+app.post("/", (req, res) => {
 	const stream = fs.createWriteStream("/restart.log");
 	stream.write("restart", "UTF8");
 	stream.end();
