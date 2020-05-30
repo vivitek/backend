@@ -3,7 +3,7 @@
 output=""
 
 while [[ $output != "restart" ]]; do
-    output=$(sudo cat /home/thmarinho/Delivery/Eip/backend/restart.log)
+    output=$(sudo cat {{EXEC_PATH}}/restart.log)
     sleep 600
 done
 
