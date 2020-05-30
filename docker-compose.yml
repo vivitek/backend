@@ -121,6 +121,16 @@ services:
             - "25672:25672"
             - "15671:15671"
             - "15672:15672"
+    restart-service:
+        build: "./restart"
+        volumes: 
+            - ./restart.log:/restart.log
+        labels:
+            - "traefik.http.routers.restart.rule=Host(`restart.${DOMAIN}`)"
+            - "traefik.http.routers.restart.tls.certresolver=le"
+            - "traefik.http.routers.restart.entrypoints=secureweb"
+            - "traefik.http.services.restart-svc.loadbalancer.server.port=4000"
+
 volumes:
     prometheus_data: {}
     grafana_data: {}
