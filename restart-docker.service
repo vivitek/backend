@@ -1,0 +1,14 @@
+[Unit]
+Description=Update and restart vivi's server container
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=on-failure
+RestartSec=1
+User=root
+ExecStart=
+
+
+[Install]
+WantedBy=multi-user.target
