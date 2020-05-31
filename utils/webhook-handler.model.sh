@@ -8,6 +8,6 @@ while true; do
         sleep 60
     done
 
-    echo "" > restart.log
+    echo "" > {{EXEC_PATH}}/restart.log
     sudo sh {{EXEC_PATH}}/restart.sh
 done
