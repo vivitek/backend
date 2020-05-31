@@ -8,4 +8,4 @@ while [[ $output != "restart" ]]; do
 done
 
 echo "" > restart.log
-sudo sh restart.sh
+sudo sh {{EXEC_PATH}}/restart.sh
