@@ -5,7 +5,7 @@ const app = express();
 
 app.post("/", (req, res) => {
 	const stream = fs.createWriteStream("/restart.log");
-	stream.write("restart", "UTF8");
+	stream.write("restart\n", "UTF8");
 	stream.end();
 	res.send("ok");
 });
