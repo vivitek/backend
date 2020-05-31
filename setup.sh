@@ -3,6 +3,10 @@
 # Init git hooks
 #sh utils/setup-hooks.sh
 
+# Configure restart.sh
+cat utils/restart.model.sh | sed "s~{{EXEC_PATH}}~$PWD~" > ./restart.sh
+chmod 777 ./restart.sh
+
 # Configure webhook-handler
 cat utils/webhook-handler.model.sh | sed "s~{{EXEC_PATH}}~$PWD~" > ./webhook-handler.sh
 chmod 777 ./webhook-handler.sh
