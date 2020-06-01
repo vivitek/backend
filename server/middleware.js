@@ -17,18 +17,21 @@ async function checkAuthentication(req, res, next) {
 		}
 		return next();
 	}
-	if (req.headers["authorization"]) {
-		let {authorization} = req.headers;
-		let token = authorization.split(" ")[1];
-		try {
-			let user = jwt.decode(token, "lifebeforedeath");
-			req.user = user;
-			next();
-		} catch (error) {
-			res.status(401).json({message:"Invalid Token"});
-		}
+	let token;
+	if (req.headers.authorization) {
+		let authorization = req.headers;
+		token = authorization.split(" ")[1];
+	} else if (req.query.token) {
+		token = req.query.token;
 	} else {
 		res.status(401).json({message:"No authentication provided"});
+	}
+	try {
+		let user = jwt.decode(token, "lifebeforedeath");
+		req.user = user;
+		next();
+	} catch (error) {
+		res.status(401).json({message:"Invalid Token"});
 	}
 }
 
