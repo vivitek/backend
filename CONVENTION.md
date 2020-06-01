@@ -37,6 +37,7 @@ As for the commit message, branch name uses a specific patern too.
 Only three tags are allowed.
 * feature
 * improvement
+* hotfix
 * fix
 
 ```
