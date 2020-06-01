@@ -19,7 +19,7 @@ async function checkAuthentication(req, res, next) {
 	}
 	let token;
 	if (req.headers.authorization) {
-		let authorization = req.headers;
+		let {authorization} = req.headers;
 		token = authorization.split(" ")[1];
 	} else if (req.query.token) {
 		token = req.query.token;
