@@ -5,6 +5,7 @@ const {checkAuthentication} = require("../middleware");
 router.get("/:id", checkAuthentication, async(req, res) => {
 	const {datetime} = req.query;
 	const sentValues = {};
+	console.log(datetime);
 	sentValues[datetime] = [];
 	let {id} = req.params;
 	res.writeHead(200, {
@@ -12,16 +13,14 @@ router.get("/:id", checkAuthentication, async(req, res) => {
 		"Cache-Control": "no-cache",
 		"Connection": "keep-alive"
 	});
-	const channel = await broker.readQueue(`router${id}`);
-	channel.consume(`router${id}`, (msg) => {
-		channel.nack(msg);
-		if (sentValues[datetime].indexOf(msg.content.toString()) < 0) {
-			sentValues[datetime].push(msg.content.toString());
-			res.write("data: " + JSON.stringify({content: msg.content.toString(), id:msg.fields.deliveryTag}) + "\n\n");
-		}
+	await broker.readConnections(`${id}`, (err, val) => {
+		if (err) res.end();
+		val.each((err, e) => {
+			if (err) res.end();
+			res.write("data: " + JSON.stringify(e.new_val) + "\n\n");
+		});
 	});
 	res.on("close", async() => {
-		await channel.close();
 		res.end();
 	});
 });
