@@ -1,9 +1,11 @@
-const r = require("rethinkdb");
+const amqp = require("amqplib");
 
-let connection;
+
+let connection = null;
+
 
 const createConnection = async() => {
-	if (!connection) connection = await r.connect({host:"rethink", port:28015, db:"vivi"});
+	if (!connection) connection = await amqp.connect(`amqp://${process.env.RABBIT}`);
 	return connection;
 };
 
@@ -38,20 +40,14 @@ const createQueue = async(name) => {
  * @returns {Boolean}
  */
 const sendMessage = async(name, message) => {
-	await createConnection();
-	await r.table("connections").insert([{
-		routerId: name,
-		data: message,
-		createdAt: new Date().getTime(),
-		updatedAt: new Date().getTime(),
-		treated: false
-	}]).run(connection);
+	await createQueue(name);
+	let channel = await createChannel(name);
+	return channel.sendToQueue(name, Buffer.from(message), {persistent:true});
 };
 
 /**
  * 
- * @param {String} name
- * @param {Function} callback
+ * @param {String} name 
  */
 const readConnections = async(name, callback) => {
 	await createConnection();
@@ -67,6 +63,11 @@ const getConnections = async(name, callback) => {
 	await createConnection();
 
 	r.db("vivi").table("connections").filter(r.row("treated").eq(false)).filter(r.row("routerId").eq(name)).run(connection, callback);
+}
+const readQueue = async(name) => {
+	await createQueue(name);
+	let channel = await createChannel(name);
+	return channel;
 };
 
-module.exports = {createConnection, createChannel, createQueue, sendMessage, readConnections, treatConnection, getConnections};
+module.exports = {createConnection, createChannel, createQueue, sendMessage, readQueue};
