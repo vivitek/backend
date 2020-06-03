@@ -5,6 +5,7 @@ const {checkAuthentication} = require("../middleware");
 router.get("/:id", checkAuthentication, async(req, res) => {
 	const {datetime} = req.query;
 	const sentValues = {};
+	console.log(datetime);
 	sentValues[datetime] = [];
 	let {id} = req.params;
 	res.writeHead(200, {
@@ -28,7 +29,7 @@ router.get("/:id", checkAuthentication, async(req, res) => {
 			res.write("data: " + JSON.stringify(e.new_val) + "\n\n");
 		});
 	});
-	res.on("close", () => {
+	res.on("close", async() => {
 		res.end();
 	});
 });
