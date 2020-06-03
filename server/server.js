@@ -3,8 +3,6 @@ const cors = require("cors");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const rfs = require("rotating-file-stream");
-const r = require("rethinkdb");
-
 // routers for services
 const serviceRouter = require("./routes/service");
 const authRouter = require("./routes/auth");
@@ -15,18 +13,6 @@ const templateRouter = require("./routes/template");
 const tagRouter = require("./routes/tag");
 const ipRouter = require("./routes/ip");
 const eventsRouter = require("./sse/index");
-
-
-const initializeRethink = async(connection) => {
-	try {
-		await r.dbCreate("vivi").run(connection);
-		await r.db("vivi").tableCreate("connections").run(connection);
-		console.log("[+] Connection to rethinkdb established");
-	} catch (error) {
-		console.log("[-] Tried creating tables for rethinkdb; they probably exist already");
-	}
-};
-
 
 // configure initial app
 if (!process.env.DEBUG) {
@@ -52,7 +38,6 @@ if (!process.env.DEBUG) {
 	db.once("open", () => {
 		console.log("[+] Connection to database established");
 	});
-	r.connect({host:"rethink", port:28015, db:"vivi"}).then(initializeRethink);
 	app.use(morgan("combined", { stream: logStream }));
 	app.use(morgan("dev"));
 	// handle ctrl+C and `docker-compose down`

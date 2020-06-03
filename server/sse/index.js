@@ -5,7 +5,6 @@ const {checkAuthentication} = require("../middleware");
 router.get("/:id", checkAuthentication, async(req, res) => {
 	const {datetime} = req.query;
 	const sentValues = {};
-	console.log(datetime);
 	sentValues[datetime] = [];
 	let {id} = req.params;
 	res.writeHead(200, {
@@ -13,23 +12,16 @@ router.get("/:id", checkAuthentication, async(req, res) => {
 		"Cache-Control": "no-cache",
 		"Connection": "keep-alive"
 	});
-	broker.getConnections(id, (err, val) => {
-		if (!err) {
-			val.each((err, e) => {
-				if (!err) {
-					res.write(`data: ${JSON.stringify(e)}\n\n`);
-				}
-			});
+	const channel = await broker.readQueue(`router${id}`);
+	channel.consume(`router${id}`, (msg) => {
+		channel.nack(msg);
+		if (sentValues[datetime].indexOf(msg.content.toString()) < 0) {
+			sentValues[datetime].push(msg.content.toString());
+			res.write("data: " + JSON.stringify({content: msg.content.toString(), id:msg.fields.deliveryTag}) + "\n\n");
 		}
 	});
-	broker.readConnections(`${id}`, (err, val) => {
-		if (err) res.end();
-		val.each((err, e) => {
-			if (err) res.end();
-			res.write("data: " + JSON.stringify(e.new_val) + "\n\n");
-		});
-	});
 	res.on("close", async() => {
+		await channel.close();
 		res.end();
 	});
 });
@@ -42,11 +34,22 @@ router.post("/publish/:id", checkAuthentication, async(req, res) => {
 
 router.post("/ack/:id", checkAuthentication, async(req, res) => {
 	const {id} = req.params;
-	const {connectionId, address, auth} = req.body;
-	
-	await broker.treatConnection(connectionId);
-	const ban = await banModel.findOneAndUpdate({address}, {banned:auth});
-	if (!ban) await ban.create({routerSet: id, address, banned:auth});
+	const {data} = req.body;
+	const channel = await broker.readQueue(`router${id}`);
+	channel.consume(`router${id}`, async(msg) => {
+		if (msg.content.toString() == data.message) {
+			channel.ack(msg);
+			const ban = await banModel.find({address:data.message});
+			if (ban) {
+				ban.banned = data.auth;
+				await ban.save();
+			} else {
+				await banModel.create({address:data.message, banned:data.auth});
+			}
+		} else {
+			channel.nack(msg);
+		}
+	});
 	res.json({status:"success", data:{}});
 });
 
