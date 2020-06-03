@@ -58,4 +58,14 @@ const readConnections = async(name, callback) => {
 	r.db("vivi").table("connections").filter(r.row("treated").eq(false)).filter(r.row("routerId").eq(name)).changes().run(connection, callback);
 };
 
-module.exports = {createConnection, createChannel, createQueue, sendMessage, readConnections};
+const treatConnection = async(id) => {
+	await createConnection();
+	await r.db("vivi").table("connections").get(id).update({treated:true, updatedAt: new Date().getTime()}).run(connection);
+};
+
+const getConnections = async(name, callback) => {
+	await createConnection();
+	r.db("vivi").table("connections").filter(r.row("treated").eq(false)).filter(r.row("routerId").eq(name)).run(connection, callback);
+};
+
+module.exports = {createConnection, createChannel, createQueue, sendMessage, readConnections, treatConnection, getConnections};
