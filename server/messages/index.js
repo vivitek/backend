@@ -65,6 +65,7 @@ const treatConnection = async(id) => {
 
 const getConnections = async(name, callback) => {
 	await createConnection();
+
 	r.db("vivi").table("connections").filter(r.row("treated").eq(false)).filter(r.row("routerId").eq(name)).run(connection, callback);
 };
 

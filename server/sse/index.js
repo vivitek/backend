@@ -29,7 +29,7 @@ router.get("/:id", checkAuthentication, async(req, res) => {
 			res.write("data: " + JSON.stringify(e.new_val) + "\n\n");
 		});
 	});
-	res.on("close", async() => {
+	res.on("close", () => {
 		res.end();
 	});
 });
