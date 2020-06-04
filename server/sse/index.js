@@ -17,7 +17,7 @@ router.get("/:id", checkAuthentication, async(req, res) => {
 		if (!err) {
 			val.each((err, e) => {
 				if (!err) {
-					res.write(`data: ${JSON.stringify(e)}\n\n`);
+					res.write(`event:untreated\ndata: ${JSON.stringify(e)}\n\n`);
 				}
 			});
 		}
