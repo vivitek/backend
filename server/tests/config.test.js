@@ -26,7 +26,7 @@ describe("Config model test", () => {
 		let err;
 		try {
 			const savedrouterWithoutRequiredFields = await routerWithoutRequiredFields.save();
-			error = savedrouterWithoutRequiredFields;
+			err = savedrouterWithoutRequiredFields;
 		} catch (error) {
 			err = error;
 		}
