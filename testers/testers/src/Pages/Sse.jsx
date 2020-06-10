@@ -8,24 +8,18 @@ const Sse = () => {
 	const [data, setData] = useState([])
 
 	const updateData = (value) => {
-		const oldData = [...data]
-		console.log(JSON.parse(value))
-		const parsedValue = value
-		const index = data.findIndex((e) => e.value === parsedValue)
-		if (index === - 1) {
-			oldData.push({parsedValue, count: 1})
-		} else if (index >= 0) {
-			oldData[index].count += 1
-		}
-		setData(oldData)
+		setData(old => [...old, {value, count: 1}])
 
 	}
 	const startListening = () => {
-		const ev = new EventSource(`http://localhost:5000/connections/${source}?datetime=${new Date().getTime()}&token=${localStorage.getItem("jwt")}`)
+		const ev = new EventSource(`http://localhost:5000/connections/${source}?token=${localStorage.getItem("jwt")}`)
 		ev.onmessage = (e) => {
 			updateData(e.data)
 		}
 		ev.addEventListener("untreated", (e) => {
+			updateData(e.data)
+		})
+		ev.addEventListener("new", (e) => {
 			updateData(e.data)
 		})
 	}
@@ -52,7 +46,7 @@ const Sse = () => {
 						</MDBTableHead>
 						<MDBTableBody>
 							{data.map((d) => 
-							<tr>
+							<tr key={d.value}>
 								<td>{d.value}</td>
 								<td>{d.count}</td>
 								<td>
