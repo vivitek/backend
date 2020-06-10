@@ -29,8 +29,8 @@ describe("Middleware test", () => {
 			telephoneNumber: "0000000000"
 		});
 		const res = await request(app).get("/config")
+		.set("authorization", `Bearer ${user.body.token}`);
 			.send({isTestingAuth: true})
-			.set("authorization", user.body.token);
 		expect(res.status).toBe(200);
 	});
 });
