@@ -29,7 +29,7 @@ async function checkAuthentication(req, res, next) {
 	try {
 		let user = jwt.decode(token, "lifebeforedeath");
 		req.user = user;
-		next();
+		return next();
 	} catch (error) {
 		res.status(401).json({message:"Invalid Token"});
 	}
