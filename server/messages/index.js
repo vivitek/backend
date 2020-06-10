@@ -9,29 +9,6 @@ const createConnection = async() => {
 
 /**
  * 
- */
-const createChannel = async() => {
-	let connection = await createConnection();
-	let channel = await connection.createChannel(); 
-	return channel;
-};
-
-
-
-/**
- * 
- * @param {String} name
- * @param {Object} channel
- */
-const createQueue = async(name) => {
-	const channel = await createChannel(name);
-	const result = await channel.assertQueue(name, {durable:true});
-	await channel.close();
-	return result;
-};
-
-/**
- * 
  * @param {String} name 
  * @param {String} message
  * @param {Object} channel
@@ -68,4 +45,4 @@ const getConnections = async(name, callback) => {
 	r.db("vivi").table("connections").filter(r.row("treated").eq(false)).filter(r.row("routerId").eq(name)).run(connection, callback);
 };
 
-module.exports = {createConnection, createChannel, createQueue, sendMessage, readConnections, treatConnection, getConnections};
+module.exports = {createConnection, sendMessage, readConnections, treatConnection, getConnections};
