@@ -1,6 +1,19 @@
 const broker = require("../messages/index");
+const r = require("rethinkdb");
 
 describe("Message Broker", () => {
+	beforeAll(async() => {
+		const initializeRethink = async(connection) => {
+			try {
+				await r.dbCreate("vivi").run(connection);
+				await r.db("vivi").tableCreate("connections").run(connection);
+				console.log("[+] Connection to rethinkdb established");
+			} catch (error) {
+				console.log("[-] Tried creating tables for rethinkdb; they probably exist already");
+			}
+		};
+		r.connect({host:"rethink", port:28015, db:"vivi"}).then(initializeRethink);
+	});
 	it("Send a Message to queue", async() => {
 		await broker.sendMessage("test1", "this is a test");
 		broker.getConnections("test1", async(err, cursor) => {
