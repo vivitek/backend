@@ -1,4 +1,3 @@
-const r = require("rethinkdb");
 const broker = require("../messages/index");
 
 describe("Message Broker", () => {
