@@ -12,7 +12,8 @@ describe("Message Broker", () => {
 				console.log("[-] Tried creating tables for rethinkdb; they probably exist already");
 			}
 		};
-		r.connect({host:"rethink", port:28015, db:"vivi"}).then(initializeRethink);
+		const connection = await r.connect({host:"rethink", port:28015, db:"vivi"});
+		await initializeRethink(connection);
 	});
 	it("Send a Message to queue", async() => {
 		await broker.sendMessage("test1", "this is a test");
