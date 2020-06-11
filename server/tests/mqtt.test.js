@@ -34,4 +34,12 @@ describe("Message Broker", () => {
 			});
 		});
 	});
+	it("Reads incoming message", async() => {
+		broker.readConnections("test3", async(err, cursor) => {
+			cursor.each((err, e) => {
+				expect(e.new_val.data).toBe("ok");
+			});
+		});
+		await broker.sendMessage("test3", "ok");
+	});
 });
