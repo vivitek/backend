@@ -1,8 +1,10 @@
+
 version: "3.3"
 
 services:
     traefik:
         image: "traefik:v2.2"
+        restart: on-failure
         command:
             # - --metrics.prometheus=true
             # - --metrics.prometheus.buckets=0.1,0.3,1.2,5.0
@@ -29,7 +31,7 @@ services:
             - "traefik.http.routers.redirs.rule=hostregexp(`{host:.+}`)"
             - "traefik.http.routers.redirs.entrypoints=web"
             - "traefik.http.routers.redirs.middlewares=redirect-to-https"
-            - "traefik.http.routers.traefik.rule=Host(`dashboard.${DOMAIN}`)"
+            - "traefik.http.routers.traefik.rule=Host(`dashboard.${DOMAIN:?err}`)"
             - "traefik.http.routers.traefik.service=api@internal"
             - "traefik.http.routers.traefik.tls.certresolver=le"
             - "traefik.http.routers.traefik.entrypoints=secureweb"
@@ -43,6 +45,7 @@ services:
             - "./acme.json:/acme.json"
     influxdb:
         image: influxdb:latest
+        restart: on-failure
         volumes: 
             - ./data/influx:/var/lib/influxdb
         environment: 
@@ -51,12 +54,13 @@ services:
             - INFLUXDB_USER_PASSWORD=vivi
 
         labels: 
-            - "traefik.http.routers.influx-r.rule=Host(`influxdb.${DOMAIN}`)"
+            - "traefik.http.routers.influx-r.rule=Host(`influxdb.${DOMAIN:?err}`)"
             - "traefik.http.services.influx-svr.loadbalancer.server.port=8086"
             - "traefik.http.routers.influx-r.tls.certresolver=le"
             - "traefik.http.routers.influx-r.entrypoints=secureweb"
     grafana:
         image: grafana/grafana
+        restart: on-failure
         depends_on:
             - influxdb
         volumes:
@@ -66,7 +70,7 @@ services:
             - ./grafana/config.monitoring
         user: "407"
         labels:
-            - "traefik.http.routers.grafana.rule=Host(`grafana.${DOMAIN}`)"
+            - "traefik.http.routers.grafana.rule=Host(`grafana.${DOMAIN:?err}`)"
             - "traefik.http.routers.grafana.service=grafana"
             - "traefik.http.services.grafana.loadbalancer.server.port=3000"
             - "traefik.http.routers.grafana.tls.certresolver=le"
@@ -74,17 +78,16 @@ services:
             
     server:
         build: ./server
+        restart: on-failure
         depends_on:
             - mongo
-            - rabbit
-        environment: 
-            - RABBIT=rabbit
+            - rethink
         ports:
             - "5000:5000"
         volumes:
             - ./data/server_logs:/logs
         labels:
-            - "traefik.http.routers.server-api.rule=Host(`api.${DOMAIN}`)"
+            - "traefik.http.routers.server-api.rule=Host(`api.${DOMAIN:?err}`)"
             - "traefik.http.services.server-api-svc.loadbalancer.server.port=5000"
             - "traefik.http.routers.server-api.tls.certresolver=le"
             - "traefik.http.routers.server-api.entrypoints=secureweb"
@@ -95,42 +98,40 @@ services:
         depends_on:
             - mongo
         labels:
-            - "traefik.http.routers.mongodb.rule=Host(`db.${DOMAIN}`)"
+            - "traefik.http.routers.mongodb.rule=Host(`db.${DOMAIN:?err}`)"
             - "traefik.http.services.mongodb-svc.loadbalancer.server.port=1234"
             - "traefik.http.routers.mongodb.tls.certresolver=le"
             - "traefik.http.routers.mongodb.entrypoints=secureweb"
 
     mongo:
         image: mongo
+        restart: always
         ports:
             - "27017:27017"
         volumes:
             - ./data/db:/data/db
-    
-    rabbit:
-        image: rabbitmq:3-management
-        labels:
-            - "traefik.http.routers.rabbit.rule=Host(`rabbit.${DOMAIN}`)"
-            - "traefik.http.routers.rabbit.tls.certresolver=le"
-            - "traefik.http.routers.rabbit.entrypoints=secureweb"
-            - "traefik.http.services.rabbit-svc.loadbalancer.server.port=15672"
-        ports:
-            - "4369:4369"
-            - "5671:5671"
-            - "5672:5672"
-            - "25672:25672"
-            - "15671:15671"
-            - "15672:15672"
+
     restart-service:
         build: "./restart"
         volumes: 
             - ./restart.log:/restart.log
         labels:
-            - "traefik.http.routers.restart.rule=Host(`restart.${DOMAIN}`)"
+            - "traefik.http.routers.restart.rule=Host(`restart.${DOMAIN:?err}`)"
             - "traefik.http.routers.restart.tls.certresolver=le"
             - "traefik.http.routers.restart.entrypoints=secureweb"
             - "traefik.http.services.restart-svc.loadbalancer.server.port=4000"
-
+    rethink:
+        image: rethinkdb:2.4
+        restart: always
+        ports: 
+            - "8081:8080"
+        volumes: 
+            - ./data/rethink:/data
+        labels: 
+            - "traefik.http.routers.rethink.rule=Host(`rethink-admin.${DOMAIN:?err}`)"
+            - "traefik.http.routers.rethink.tls.certresolver=le"
+            - "traefik.http.routers.rethink.entrypoints=secureweb"
+            - "traefik.http.services.rethink-admin-svc.loadbalancer.server.port=8080"
 volumes:
     prometheus_data: {}
     grafana_data: {}
