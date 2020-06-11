@@ -20,7 +20,7 @@ router.get("/:id", checkAuthentication, async(req, res) => {
 			});
 		}
 	});
-	r.db("vivi").table("connections").filter(r.row("treated").eq(false)).filter(r.row("routerId").eq(id)).changes().run(connection, (err, val) => {
+	broker.readConnections(id, (err, val) => {
 		if (err) throw err;
 		val.each((err, e) => {
 			if (err) throw err;
@@ -43,7 +43,7 @@ router.post("/ack/:id", checkAuthentication, async(req, res) => {
 	
 	await broker.treatConnection(connectionId);
 	const ban = await banModel.findOneAndUpdate({address}, {banned:auth});
-	if (!ban) await ban.create({routerSet: id, address, banned:auth});
+	if (!ban) await banModel.create({routerSet: id, address, banned:auth});
 	res.json({status:"success", data:{}});
 });
 
