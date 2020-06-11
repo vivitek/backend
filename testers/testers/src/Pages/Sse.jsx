@@ -8,7 +8,7 @@ const Sse = () => {
 	const [data, setData] = useState([])
 
 	const updateData = (value) => {
-		setData(old => [...old, {value, count: 1}])
+		setData(old => [...old, {value: JSON.parse(value)["data"], count: 1, data:JSON.parse(value)}])
 
 	}
 	const startListening = () => {
@@ -50,8 +50,8 @@ const Sse = () => {
 								<td>{d.value}</td>
 								<td>{d.count}</td>
 								<td>
-									<MDBBtn color="green" onClick={() => ack(source, d.value.id, false).then(Swal.fire("Success", "Message Acked", "success"))}>Accept</MDBBtn>
-									<MDBBtn color="danger" onClick={() => ack(source, d.value.id, true).then(Swal.fire("Success", "Message Acked", "success"))}>Deny</MDBBtn>
+									<MDBBtn color="green" onClick={() => ack(source, d.data.id, d.data.data, false).then(Swal.fire("Success", "Message Acked", "success"))}>Accept</MDBBtn>
+									<MDBBtn color="danger" onClick={() => ack(source, d.data.id, d.data.data, true).then(Swal.fire("Success", "Message Acked", "success"))}>Deny</MDBBtn>
 								</td>
 							</tr>)}
 						</MDBTableBody>
