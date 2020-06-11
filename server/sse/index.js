@@ -2,10 +2,9 @@ const router = require("express").Router();
 const broker = require("../messages/index");
 const banModel = require("../models/Ban");
 const {checkAuthentication} = require("../middleware");
-const r = require("rethinkdb");
+
 router.get("/:id", checkAuthentication, async(req, res) => {
 	let {id} = req.params;
-	const connection = await broker.createConnection();
 	res.writeHead(200, {
 		"Content-Type":"text/event-stream",
 		"Cache-Control": "no-cache",
