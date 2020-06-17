@@ -6,7 +6,8 @@ var userSchema = mongoose.Schema({
 	firstName: {type: String, required:true},
 	lastName: {type: String, required:true},
 	telephoneNumber: {type:String, required:true},
-	routers: [{type: mongoose.Schema.Types.ObjectId, ref:"router"}]
+	routers: [{type: mongoose.Schema.Types.ObjectId, ref:"router"}],
+	role: {type: mongoose.Schema.Types.ObjectId, ref: "role"}
 });
 
 var userModel = mongoose.model("user", userSchema);

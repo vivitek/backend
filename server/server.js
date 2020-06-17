@@ -14,6 +14,8 @@ const banRouter = require("./routes/bans");
 const templateRouter = require("./routes/template");
 const tagRouter = require("./routes/tag");
 const ipRouter = require("./routes/ip");
+const permissionRouter = require("./routes/permission");
+const roleRouter = require("./routes/role");
 const eventsRouter = require("./sse/index");
 
 
@@ -76,6 +78,8 @@ app.use("/connections", eventsRouter);
 app.use("/template", templateRouter);
 app.use("/tag", tagRouter);
 app.use("/ip", ipRouter);
+app.use("/permission", permissionRouter);
+app.use("/role", roleRouter);
 
 app.get("/", (req, res) => {
 	res.send("⚛ + 🦔 = 🦔 blue");
