@@ -1,7 +1,7 @@
 var router = require("express").Router();
 var userModel = require("../models/User");
 var routerModel = require("../models/Router");
-const authentication = require("../middleware").checkAuthentication;
+const authentication = require("../middleware/token").checkTokenValidity;
 
 
 router.post("/", authentication , async (req, res) => {

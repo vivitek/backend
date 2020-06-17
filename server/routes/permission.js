@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const permissionModel = require("../models/Permission");
-const authentication = require("../middleware").checkAuthentication;
+const authentication = require("../middleware/token").checkTokenValidity;
 
 router.post("/", authentication, async (req, res) => {
 	const permission = await permissionModel.create(req.body);

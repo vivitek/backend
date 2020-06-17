@@ -1,23 +1,23 @@
 const router = require("express").Router();
 const roleModel = require("../models/Role");
-const authentication = require("../middleware").checkAuthentication;
+const authentication = require("../middleware/token").checkTokenValidity;
 
-router.post("/", async(req, res) => {
+router.post("/", authentication, async(req, res) => {
 	const role = await roleModel.create(req.body);
 	res.status(201).json(role);
 });
 
-router.get("/", async(req, res) => {
+router.get("/", authentication, async(req, res) => {
 	const roles = await roleModel.find();
 	res.json(roles);
 });
 
-router.get("/:id", async(req, res) => {
+router.get("/:id", authentication, async(req, res) => {
 	const role  = await roleModel.findById(req.params.id);
 	res.json(role);
 });
 
-router.patch("/:id", async(req, res) => {
+router.patch("/:id", authentication, async(req, res) => {
 	const { name, permissions } = req.body;
 	let role = await roleModel.findById(req.params.id);
 	if (name)
@@ -28,7 +28,7 @@ router.patch("/:id", async(req, res) => {
 	res.send(role);
 });
 
-router.delete("/:id", async(req, res) => {
+router.delete("/:id", authentication, async(req, res) => {
 	let role = await roleModel.findByIdAndDelete(req.params.id);
 	res.json(role);
 });

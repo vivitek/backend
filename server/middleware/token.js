@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
-const userModel = require("./models/User");
+const userModel = require("../models/User");
 
-async function checkAuthentication(req, res, next) {
+async function checkTokenValidity(req, res, next) {
 	if (process.env.DEBUG && !req.body.isTestingAuth) {
 		let users = await userModel.find();
 		if (users.length > 0) {
@@ -35,4 +35,4 @@ async function checkAuthentication(req, res, next) {
 	}
 }
 
-module.exports = {checkAuthentication};
+module.exports = {checkTokenValidity};

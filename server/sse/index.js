@@ -1,9 +1,9 @@
 const router = require("express").Router();
 const broker = require("../messages/index");
 const banModel = require("../models/Ban");
-const {checkAuthentication} = require("../middleware");
+const checkTokenValidity = require("../middleware/token").checkTokenValidity;
 
-router.get("/:id", checkAuthentication, async(req, res) => {
+router.get("/:id", checkTokenValidity, async(req, res) => {
 	let {id} = req.params;
 	res.writeHead(200, {
 		"Content-Type":"text/event-stream",
@@ -30,13 +30,13 @@ router.get("/:id", checkAuthentication, async(req, res) => {
 
 });
 
-router.post("/publish/:id", checkAuthentication, async(req, res) => {
+router.post("/publish/:id", checkTokenValidity, async(req, res) => {
 	let {id} = req.params;
 	await broker.sendMessage(`router${id}`, req.body.data);
 	res.json({status:"success", data:{}});
 });
 
-router.post("/ack/:id", checkAuthentication, async(req, res) => {
+router.post("/ack/:id", checkTokenValidity, async(req, res) => {
 	const {id} = req.params;
 	const {connectionId, address, auth} = req.body;
 	

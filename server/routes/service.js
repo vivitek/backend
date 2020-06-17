@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const serviceModel = require("../models/Service");
-const authentication = require("../middleware").checkAuthentication;
+const authentication = require("../middleware/token").checkTokenValidity;
 
 router.get("/", authentication ,async(req, res) => {
 	let services = await serviceModel.find();
