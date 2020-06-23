@@ -27,7 +27,7 @@ git add $STAGED_FILES
 # Run eslint
 for file in $STAGED_FILES; do
     output=$(eslint --config=./.eslintrc.json $file | head -n -4 | sed 1,2d | sed "s/^..//")
-    if [ $output != "" ]; then
+    if [[ $output != "" ]]; then
         echo "[ \033[31m\033[1mKO\033[0m ] $file"
         echo "$output" | sed "s/^/  /"
         VALID=false
