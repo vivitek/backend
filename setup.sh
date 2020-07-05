@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Init git hooks
-#sh utils/setup-hooks.sh
+sh utils/setup-hooks.sh
 
 # Configure restart.sh
 cat utils/restart.model.sh | sed "s~{{EXEC_PATH}}~$PWD~g" > ./restart.sh
