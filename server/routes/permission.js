@@ -1,37 +1,37 @@
 const router = require("express").Router();
 const permissionModel = require("../models/Permission");
-const authentication = require("../middleware/token").checkTokenValidity;
+const {checkTokenValidity} = require("../middleware/token");
 
-router.post("/", authentication, async (req, res) => {
+router.post("/", checkTokenValidity, async (req, res) => {
 	const permission = await permissionModel.create(req.body);
 	res.status(201).json(permission);
 });
 
-router.get("/", authentication, async (req, res) => {
+router.get("/", checkTokenValidity, async (req, res) => {
 	const permissions = await permissionModel.find();
 	res.json(permissions);
 });
 
-router.get("/:id", authentication, async(req, res) => {
+router.get("/:id", checkTokenValidity, async(req, res) => {
 	const permission = await permissionModel.findById(req.params.id);
 	res.json(permission);
 });
 
-router.patch("/:id", authentication, async(req, res) => {
-	const { name, url, create, read, update, expunge } = req.body;
+router.patch("/:id", checkTokenValidity, async(req, res) => {
+	const { name, url, POST, GET, PATCH, DELETE } = req.body;
 	let permission = await permissionModel.findById(req.params.id);
 	if (name)
 		permission.name = name;
 	if (url)
 		permission.url = url;
-	if (create)
-		permission.create = create;
-	if (read)
-		permission.read = read;
-	if (update)
-		permission.update = update;
-	if (expunge)
-		permission.expunge = expunge;
+	if (POST)
+		permission.POST = POST;
+	if (GET)
+		permission.GET = GET;
+	if (PATCH)
+		permission.PATCH = PATCH;
+	if (DELETE)
+		permission.DELETE = DELETE;
 	permission = await permission.save();
 	res.json(permission);
 });

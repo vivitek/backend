@@ -8,14 +8,14 @@ router.get("/", async(req, res) => {
 
 router.get("/:id", async(req, res) => {
 	let {id} = req.params;
-	var list = [];
+	let template;
 	try {
-		list = await templateModel.find({"_id": id});
+		template = await templateModel.findById(id);
 	} catch (error) {
 		res.status(500).json({message:"could not find required data"});
 		return;
 	}
-	res.json(list[0]);
+	res.json(template);
 });
 
 router.delete("/:id", async(req, res) => {

@@ -32,20 +32,20 @@ describe("Permissions routes testing", () => {
 			{
 				name: "su-permission",
 				url: "/test",
-				create: false,
-				read: false,
-				update: false,
-				expunge: false
+				POST: false,
+				GET: false,
+				PATCH: false,
+				DELETE: false
 			}
 		);
 		expect(res.statusCode).toBe(201);
 		expect(res.body._id).toBeDefined();
 		expect(res.body.name).toBe("su-permission");
 		expect(res.body.url).toBe("/test");
-		expect(res.body.create).toBe(false);
-		expect(res.body.read).toBe(false);
-		expect(res.body.update).toBe(false);
-		expect(res.body.expunge).toBe(false);
+		expect(res.body.POST).toBe(false);
+		expect(res.body.GET).toBe(false);
+		expect(res.body.PATCH).toBe(false);
+		expect(res.body.DELETE).toBe(false);
 	});
 	it("delete a permission", async() => {
 		const perm = await permissionModel({ name: "to delete", url: "/test" }).save();
@@ -60,18 +60,18 @@ describe("Permissions routes testing", () => {
 			{
 				name: "this is not cool",
 				url: "/none",
-				create: true,
-				read: true,
-				update: true,
-				expunge: true
+				POST: true,
+				GET: true,
+				PATCH: true,
+				DELETE: true
 			}
 		);
 		expect(res.statusCode).toBe(200);
 		expect(res.body.name).toBe("this is not cool");
 		expect(res.body.url).toBe("/none");
-		expect(res.body.create).toBe(true);
-		expect(res.body.read).toBe(true);
-		expect(res.body.update).toBe(true);
-		expect(res.body.expunge).toBe(true);
+		expect(res.body.POST).toBe(true);
+		expect(res.body.GET).toBe(true);
+		expect(res.body.PATCH).toBe(true);
+		expect(res.body.DELETE).toBe(true);
 	});
 });
