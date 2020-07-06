@@ -1,6 +1,9 @@
 const router = require("express").Router();
 const permissionModel = require("../models/Permission");
 const {checkTokenValidity} = require("../middleware/token");
+const {checkPermission} = require("../middleware/permission");
+
+router.use(checkPermission);
 
 router.post("/", checkTokenValidity, async (req, res) => {
 	const permission = await permissionModel.create(req.body);
@@ -36,7 +39,7 @@ router.patch("/:id", checkTokenValidity, async(req, res) => {
 	res.json(permission);
 });
 
-router.delete("/:id", async(req, res) => {
+router.delete("/:id", checkTokenValidity, async(req, res) => {
 	let permission = await permissionModel.findByIdAndDelete(req.params.id);
 	res.json(permission);
 });

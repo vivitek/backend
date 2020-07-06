@@ -1,6 +1,9 @@
 const router = require("express").Router();
 const serviceModel = require("../models/Service");
 const {checkTokenValidity} = require("../middleware/token");
+const {checkPermission} = require("../middleware/permission");
+
+router.use(checkPermission);
 
 router.get("/", checkTokenValidity ,async(req, res) => {
 	let services = await serviceModel.find();

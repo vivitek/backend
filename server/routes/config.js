@@ -1,6 +1,9 @@
 const router = require("express").Router();
 const configModel = require("../models/Config");
 const {checkTokenValidity} = require("../middleware/token");
+const {checkPermission} = require("../middleware/permission");
+
+router.use(checkPermission);
 
 
 router.get("/", checkTokenValidity , async(req, res) => {

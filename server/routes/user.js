@@ -2,6 +2,9 @@ const router = require("express").Router();
 const userModel = require("../models/User");
 const bcrypt = require("bcrypt");
 const { checkTokenValidity } = require("../middleware/token");
+const {checkPermission} = require("../middleware/permission");
+
+router.use(checkPermission);
 
 router.get("/", checkTokenValidity, async (req, res) => {
 	const users = await userModel.find();
@@ -13,7 +16,7 @@ router.get("/:id", checkTokenValidity, async (req, res) => {
 	res.json(user);
 });
 
-router.patch("/:id", async (req, res) => {
+router.patch("/:id", checkTokenValidity, async (req, res) => {
 	const { email, password, firstName, lastName, telephoneNumber, routers, role } = req.body;
 	let user = await userModel.findById(req.params.id);
 

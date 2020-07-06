@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const userModel = require("../models/User");
 const roleModel = require("../models/Role");
 
-async function checkBanPermission(req, res, next) {
+async function checkPermission(req, res, next) {
 	let role;
 	if (process.env.DEBUG && !req.body.isTestingAuth)
 		return next();
@@ -14,12 +14,10 @@ async function checkBanPermission(req, res, next) {
 	} catch (err) {
 		return res.status(401).json({message: "Invalid token"});
 	}
-	const banPermission = role.permissions.find(permission => permission.url === "/ban");
-	if (!banPermission)
-		return res.status(401).json({message: "Invalid permission"});
-	if (!banPermission[req.method])
-		return res.status(401).send({message: "Invalid permission"});
+	const banPermission = role.permissions.find(permission => permission.url === `/${req.baseUrl.split("/")[1]}`);
+	if (!banPermission || !banPermission[req.method])
+		return res.status(401).send({message: "Invalid token"});
 	next();
 }
 
-module.exports = { checkBanPermission };
+module.exports = { checkPermission };

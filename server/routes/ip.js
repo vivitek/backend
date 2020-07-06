@@ -1,12 +1,16 @@
 const router = require("express").Router();
 const ipModel = require("../models/Ip");
+const {checkPermission} = require("../middleware/permission");
+const {checkTokenValidity} = require("../middleware/token");
 
-router.get("/", async (req, res) => {
+router.use(checkPermission);
+
+router.get("/", checkTokenValidity, async (req, res) => {
 	const ips = await ipModel.find();
 	res.json(ips);
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", checkTokenValidity, async (req, res) => {
 	let ip = [];
 	try {
 		ip = await ipModel.findById(req.params.id);
@@ -17,17 +21,17 @@ router.get("/:id", async (req, res) => {
 	res.json(ip);
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", checkTokenValidity, async (req, res) => {
 	const res_ = await ipModel.findByIdAndDelete(req.params.id);
 	res.json(res_);
 });
 
-router.post("/", async (req, res) => {
+router.post("/", checkTokenValidity, async (req, res) => {
 	const newIp = await ipModel.create(req.body);
 	res.status(201).json(newIp);
 });
 
-router.patch("/:id", async (req, res) => {
+router.patch("/:id", checkTokenValidity, async (req, res) => {
 	let ip = await ipModel.findById(req.params.id);
 	const { v4Ip, v6Ip } = req.body;
 

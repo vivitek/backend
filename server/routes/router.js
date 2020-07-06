@@ -2,6 +2,9 @@ var router = require("express").Router();
 var userModel = require("../models/User");
 var routerModel = require("../models/Router");
 const {checkTokenValidity} = require("../middleware/token");
+const {checkPermission} = require("../middleware/permission");
+
+router.use(checkPermission);
 
 
 router.post("/", checkTokenValidity , async (req, res) => {

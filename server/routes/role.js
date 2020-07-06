@@ -1,13 +1,16 @@
 const router = require("express").Router();
 const roleModel = require("../models/Role");
 const {checkTokenValidity} = require("../middleware/token");
+const {checkPermission} = require("../middleware/permission");
+
+router.use(checkPermission);
 
 router.post("/", checkTokenValidity, async(req, res) => {
 	const role = await roleModel.create(req.body);
 	res.status(201).json(role);
 });
 
-router.get("/", async(req, res) => {
+router.get("/", checkTokenValidity, async(req, res) => {
 	const roles = await roleModel.find();
 	res.json(roles);
 });
