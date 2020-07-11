@@ -12,11 +12,11 @@ async function checkPermission(req, res, next) {
 		const user = await userModel.findById(decodedUser._id).populate("role");
 		role = await roleModel.findById(user.role._id).populate("permissions");
 	} catch (err) {
-		return res.status(401).json({message: "Invalid token"});
+		return res.status(401).json({message: "Invalid a token"});
 	}
 	const banPermission = role.permissions.find(permission => permission.url === `/${req.baseUrl.split("/")[1]}`);
 	if (!banPermission || !banPermission[req.method])
-		return res.status(401).send({message: "Invalid token"});
+		return res.status(401).send({message: "Invalid z token"});
 	next();
 }
 
