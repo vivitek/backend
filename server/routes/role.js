@@ -3,24 +3,25 @@ const roleModel = require("../models/Role");
 const {checkTokenValidity} = require("../middleware/token");
 const {checkPermission} = require("../middleware/permission");
 
+router.use(checkTokenValidity);
 router.use(checkPermission);
 
-router.post("/", checkTokenValidity, async(req, res) => {
+router.post("/", async(req, res) => {
 	const role = await roleModel.create(req.body);
 	res.status(201).json(role);
 });
 
-router.get("/", checkTokenValidity, async(req, res) => {
+router.get("/", async(req, res) => {
 	const roles = await roleModel.find();
 	res.json(roles);
 });
 
-router.get("/:id", checkTokenValidity, async(req, res) => {
+router.get("/:id", async(req, res) => {
 	const role  = await roleModel.findById(req.params.id);
 	res.json(role);
 });
 
-router.patch("/:id", checkTokenValidity, async(req, res) => {
+router.patch("/:id", async(req, res) => {
 	const { name, permissions } = req.body;
 	let role = await roleModel.findById(req.params.id);
 	if (name)
@@ -31,7 +32,7 @@ router.patch("/:id", checkTokenValidity, async(req, res) => {
 	res.send(role);
 });
 
-router.delete("/:id", checkTokenValidity, async(req, res) => {
+router.delete("/:id", async(req, res) => {
 	let role = await roleModel.findByIdAndDelete(req.params.id);
 	res.json(role);
 });

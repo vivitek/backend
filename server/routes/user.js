@@ -4,19 +4,20 @@ const bcrypt = require("bcrypt");
 const { checkTokenValidity } = require("../middleware/token");
 const {checkPermission} = require("../middleware/permission");
 
+router.use(checkTokenValidity);
 router.use(checkPermission);
 
-router.get("/", checkTokenValidity, async (req, res) => {
+router.get("/", async (req, res) => {
 	const users = await userModel.find();
 	res.json(users);
 });
 
-router.get("/:id", checkTokenValidity, async (req, res) => {
+router.get("/:id", async (req, res) => {
 	const user = await userModel.findById(req.params.id);
 	res.json(user);
 });
 
-router.patch("/:id", checkTokenValidity, async (req, res) => {
+router.patch("/:id", async (req, res) => {
 	const { email, password, firstName, lastName, telephoneNumber, routers, role } = req.body;
 	let user = await userModel.findById(req.params.id);
 
@@ -38,7 +39,7 @@ router.patch("/:id", checkTokenValidity, async (req, res) => {
 	res.json(user);
 });
 
-router.delete("/:id", checkTokenValidity, async (req, res) => {
+router.delete("/:id", async (req, res) => {
 	const role = await userModel.findByIdAndDelete(req.params.id);
 	res.json(role);
 });

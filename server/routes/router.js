@@ -4,10 +4,10 @@ var routerModel = require("../models/Router");
 const {checkTokenValidity} = require("../middleware/token");
 const {checkPermission} = require("../middleware/permission");
 
+router.use(checkTokenValidity);
 router.use(checkPermission);
 
-
-router.post("/", checkTokenValidity , async (req, res) => {
+router.post("/", async (req, res) => {
 	let theUser = await userModel.findById(req.user._id);
 	let newRouter = await routerModel.create(req.body);
 
@@ -16,18 +16,18 @@ router.post("/", checkTokenValidity , async (req, res) => {
 	res.status(201).json(newRouter);
 });
 
-router.get("/", checkTokenValidity , async (req, res) => {
+router.get("/", async (req, res) => {
 	let routerList = await userModel.findById(req.user._id).populate("routers").exec();
 	res.json(routerList.routers);
 });
 
-router.get("/:id", checkTokenValidity , async (req, res) => {
+router.get("/:id", async (req, res) => {
 	let { id } = req.params;
 	let theRouter = await routerModel.findById(id);
 	res.json(theRouter);
 });
 
-router.patch("/:id", checkTokenValidity , async (req, res) => {
+router.patch("/:id", async (req, res) => {
 	let { id } = req.params;
 	let { name, url, config } = req.body;
 	let theRouter = await routerModel.findById(id);

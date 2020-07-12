@@ -3,24 +3,25 @@ const permissionModel = require("../models/Permission");
 const {checkTokenValidity} = require("../middleware/token");
 const {checkPermission} = require("../middleware/permission");
 
+router.use(checkTokenValidity);
 router.use(checkPermission);
 
-router.post("/", checkTokenValidity, async (req, res) => {
+router.post("/", async (req, res) => {
 	const permission = await permissionModel.create(req.body);
 	res.status(201).json(permission);
 });
 
-router.get("/", checkTokenValidity, async (req, res) => {
+router.get("/", async (req, res) => {
 	const permissions = await permissionModel.find();
 	res.json(permissions);
 });
 
-router.get("/:id", checkTokenValidity, async(req, res) => {
+router.get("/:id", async(req, res) => {
 	const permission = await permissionModel.findById(req.params.id);
 	res.json(permission);
 });
 
-router.patch("/:id", checkTokenValidity, async(req, res) => {
+router.patch("/:id", async(req, res) => {
 	const { name, url, POST, GET, PATCH, DELETE } = req.body;
 	let permission = await permissionModel.findById(req.params.id);
 	if (name)
@@ -39,7 +40,7 @@ router.patch("/:id", checkTokenValidity, async(req, res) => {
 	res.json(permission);
 });
 
-router.delete("/:id", checkTokenValidity, async(req, res) => {
+router.delete("/:id", async(req, res) => {
 	let permission = await permissionModel.findByIdAndDelete(req.params.id);
 	res.json(permission);
 });

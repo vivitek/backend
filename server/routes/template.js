@@ -3,14 +3,15 @@ const templateModel = require("../models/Template");
 const {checkTokenValidity} = require("../middleware/token");
 const {checkPermission} = require("../middleware/permission");
 
+router.use(checkTokenValidity);
 router.use(checkPermission);
 
-router.get("/", checkTokenValidity, async(req, res) => {
+router.get("/", async(req, res) => {
 	var list = await templateModel.find();
 	res.json(list);
 });
 
-router.get("/:id", checkTokenValidity,  async(req, res) => {
+router.get("/:id",  async(req, res) => {
 	let {id} = req.params;
 	let template;
 	try {
@@ -22,18 +23,18 @@ router.get("/:id", checkTokenValidity,  async(req, res) => {
 	res.json(template);
 });
 
-router.delete("/:id", checkTokenValidity, async(req, res) => {
+router.delete("/:id", async(req, res) => {
 	let {id} = req.params;
 	let _res = await templateModel.findByIdAndDelete(id);
 	res.json(_res);
 });
 
-router.post("/", checkTokenValidity, async(req, res) => {
+router.post("/", async(req, res) => {
 	var newtemplate = await templateModel.create(req.body);
 	res.status(201).json(newtemplate);
 });
 
-router.patch("/:id", checkTokenValidity, async(req, res) => {
+router.patch("/:id", async(req, res) => {
 	let template = await templateModel.findById(req.params.id);
 	const {name} = req.body;
 
