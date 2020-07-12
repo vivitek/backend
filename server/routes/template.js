@@ -11,7 +11,7 @@ router.get("/", async(req, res) => {
 	res.json(list);
 });
 
-router.get("/:id",  async(req, res) => {
+router.get("/:id", async(req, res) => {
 	let {id} = req.params;
 	let template;
 	try {

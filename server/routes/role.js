@@ -17,7 +17,7 @@ router.get("/", async(req, res) => {
 });
 
 router.get("/:id", async(req, res) => {
-	const role  = await roleModel.findById(req.params.id);
+	const role = await roleModel.findById(req.params.id);
 	res.json(role);
 });
 
