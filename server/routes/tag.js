@@ -6,7 +6,7 @@ const { checkTokenValidity } = require("../middleware/token");
 router.use(checkTokenValidity);
 router.use(checkPermission);
 
-router.get("/", checkPermission, async (req, res) => {
+router.get("/", async (req, res) => {
 	const tags = await tagModel.find();
 	res.json(tags);
 });
