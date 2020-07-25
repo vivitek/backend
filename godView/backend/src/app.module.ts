@@ -1,10 +1,12 @@
 import { Module } from '@nestjs/common';
 import { appController } from './app.controller';
-import { MongooseModule } from '@nestjs/mongoose';
-
+import { MongooseConnector } from './shared/MongooseConnector/mongooseConnector'
+import { MongooseConnectorModule } from './shared/MongooseConnector/mongooseConnectorModule'
 
 @Module({
-  imports: [MongooseModule.forRoot('mongodb://mongo:27017/vivi')],
+  imports: [MongooseConnectorModule],
   controllers:[appController]
 })
-export class AppModule {}
+export class AppModule {
+  public constructor(private mongoose: MongooseConnector) {}
+}
