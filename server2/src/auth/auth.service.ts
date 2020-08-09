@@ -24,7 +24,7 @@ export class AuthService {
 		const payload = await this.validateUser(email, password)
 		if (payload) {
 			return {
-				access_token: this.jwtService.sign(payload)
+				access_token: this.jwtService.sign(payload, {secret: "sting-sell-pioneer"})
 			}
 		}
 		return null
