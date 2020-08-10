@@ -7,9 +7,20 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { BanModule } from './ban/ban.module';
 import { TagModule } from './tag/tag.module';
 import { DatabaseModule } from './database/database.module';
+import { RouterModule } from './router/router.module';
+
+const MODULES = [
+  MongooseModule.forRoot(`mongodb://${process.env.MONGO}/vivi`),
+  BanModule,
+  TagModule,
+  AuthModule,
+  UsersModule,
+  DatabaseModule,
+  RouterModule
+]
 
 @Module({
-  imports: [MongooseModule.forRoot(`mongodb://${process.env.MONGO}/vivi`), BanModule, TagModule, AuthModule, UsersModule, DatabaseModule],
+  imports: MODULES,
   controllers: [AppController],
   providers: [AppService],
 })
