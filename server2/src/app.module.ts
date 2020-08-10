@@ -8,6 +8,7 @@ import { BanModule } from './ban/ban.module';
 import { TagModule } from './tag/tag.module';
 import { DatabaseModule } from './database/database.module';
 import { RouterModule } from './router/router.module';
+import { IpModule } from './ip/ip.module';
 
 const MODULES = [
   MongooseModule.forRoot(`mongodb://${process.env.MONGO}/vivi`),
@@ -16,7 +17,8 @@ const MODULES = [
   AuthModule,
   UsersModule,
   DatabaseModule,
-  RouterModule
+  RouterModule,
+  IpModule
 ]
 
 @Module({
