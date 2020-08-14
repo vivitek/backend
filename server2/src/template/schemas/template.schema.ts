@@ -1,8 +1,8 @@
 import { Schema, Prop, SchemaFactory } from "@nestjs/mongoose";
 import { Document } from "mongoose"
-import { User } from "src/users/schemas/user.schema";
-import { Ban } from "src/ban/schemas/ban.schema";
-import { Service } from "src/service/schemas/service.schema";
+import { User } from "../../users/schemas/user.schema";
+import { Ban } from "../../ban/schemas/ban.schema";
+import { Service } from "../../service/schemas/service.schema";
 
 @Schema()
 export class Template extends Document {

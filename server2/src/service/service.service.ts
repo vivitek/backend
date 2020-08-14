@@ -2,8 +2,8 @@ import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Service } from "./schemas/service.schema"
 import { Model } from "mongoose";
-import { Tag } from "src/tag/schemas/tag.schema";
-import { Ip } from "src/ip/schemas/ip.schema";
+import { Tag } from "../tag/schemas/tag.schema";
+import { Ip } from "../ip/schemas/ip.schema";
 
 @Injectable()
 export class ServiceService {

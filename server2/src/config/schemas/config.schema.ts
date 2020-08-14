@@ -1,6 +1,6 @@
 import { Schema, Prop, SchemaFactory } from "@nestjs/mongoose";
 import { Document } from "mongoose"
-import { Service } from "src/service/schemas/service.schema";
+import { Service } from "../../service/schemas/service.schema";
 
 @Schema()
 export class Config extends Document {

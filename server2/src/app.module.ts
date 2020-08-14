@@ -11,6 +11,7 @@ import { RouterModule } from './router/router.module';
 import { IpModule } from './ip/ip.module';
 import { ServiceModule } from './service/service.module';
 import { ConfigModule } from './config/config.module';
+import { TemplateModule } from './template/tempalte.module';
 
 const MODULES = [
   MongooseModule.forRoot(`mongodb://${process.env.MONGO}/vivi`),
@@ -22,7 +23,8 @@ const MODULES = [
   RouterModule,
   IpModule,
   ServiceModule,
-  ConfigModule
+  ConfigModule,
+  TemplateModule
 ]
 
 @Module({

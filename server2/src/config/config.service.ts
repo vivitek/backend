@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Config } from "./schemas/config.schema"
 import { Model } from "mongoose";
-import { Service } from "src/service/schemas/service.schema";
+import { Service } from "../service/schemas/service.schema";
 
 @Injectable()
 export class ConfigService {
