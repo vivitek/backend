@@ -1,4 +1,4 @@
-import { UserDto } from './users.controller';
+import { UserDto } from './schemas/user.dto';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from './schemas/user.schema';

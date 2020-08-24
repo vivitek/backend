@@ -1,20 +1,8 @@
 import { User } from './schemas/user.schema';
 import { UsersService } from './users.service';
 import { Controller, Get, Param, Delete, Patch, Body } from '@nestjs/common';
-import { ApiProperty } from '@nestjs/swagger';
+import {UserDto} from './schemas/user.dto'
 
-export class UserDto {
-	@ApiProperty()
-	email: string
-	@ApiProperty()
-	username:string
-
-	constructor(email, username) {
-		this.email = email
-		this.username = username
-	}
-
-}
 
 export function fromUser(user: User) : UserDto {
 	return new UserDto(user.email, user.username)
