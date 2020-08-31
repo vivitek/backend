@@ -24,12 +24,17 @@ export class AuthService {
 		const payload = await this.validateUser(email, password)
 		if (payload) {
 			return {
-				access_token: this.jwtService.sign(payload, {secret: "sting-sell-pioneer"})
+				access_token: this.jwtService.sign(payload, {secret: "sting-sell-pioneer"}),
+				user: payload
 			}
 		}
 		return null
 	}
 	async register(email:string, password:string, username:string) {
-		return this.usersService.createUser(email, password, username)
+		const user = await this.usersService.createUser(email, password, username)
+		return {
+			access_token: this.jwtService.sign(user, {secret: "sting-sell-pioneer"}),
+			user
+		}
 	}
 }
