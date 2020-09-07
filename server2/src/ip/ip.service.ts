@@ -5,31 +5,31 @@ import { Model } from "mongoose";
 
 @Injectable()
 export class IpService {
-    constructor(@InjectModel(Ip.name) private routerModel: Model<Ip>) {}
+    constructor(@InjectModel(Ip.name) private ipModel: Model<Ip>) {}
 
     async findAll() : Promise<Ip[]> {
-        return this.routerModel.find().exec()
+        return this.ipModel.find().exec()
     }
 
     async findById(id: string): Promise<Ip> {
-        return this.routerModel.findById(id).exec()
+        return this.ipModel.findById(id).exec()
     }
 
     async create(content: IpCreation): Promise<Ip> {
-        return this.routerModel.create(content)
+        return this.ipModel.create(content)
     }
 
     async deleteById(id: string): Promise<Ip> {
-        return (await this.routerModel.findByIdAndDelete(id))
+        return (await this.ipModel.findByIdAndDelete(id))
     }
 
     async updateById(id: string, content: IpUpdate): Promise<Ip> {
-        const router = await this.routerModel.findById(id)
+        const ip = await this.ipModel.findById(id)
         if (content.v4ip)
-            router.v4ip = content.v4ip
+            ip.v4ip = content.v4ip
         if (content.v6ip)
-            router.v6ip = content.v6ip
-        return router.save()
+            ip.v6ip = content.v6ip
+        return ip.save()
     }
 }
 
