@@ -2,31 +2,29 @@ import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Template } from "./schemas/template.schema"
 import { Model } from "mongoose";
-import { User } from "../users/schemas/user.schema";
-import { Ban } from "../ban/schemas/ban.schema";
-import { Service } from "../service/schemas/service.schema";
+import { TemplateCreation, TemplateDTO, TemplateUpdate } from "./schemas/template.dto";
 
 @Injectable()
 export class TemplateService {
     constructor(@InjectModel(Template.name) private templateModel: Model<Template>) {}
 
-    async findAll() : Promise<Template[]> {
-        return this.templateModel.find().exec()
+    async findAll() : Promise<TemplateDTO[]> {
+        return (await this.templateModel.find().exec()).map(d => toDTO(d))
     }
 
-    async findById(id: string): Promise<Template> {
-        return this.templateModel.findById(id).exec()
+    async findById(id: string): Promise<TemplateDTO> {
+        return toDTO(await this.templateModel.findById(id).exec())
     }
 
-    async create(content: TemplateCreation): Promise<Template> {
-        return this.templateModel.create(content)
+    async create(content: TemplateCreation): Promise<TemplateDTO> {
+        return toDTO(await this.templateModel.create(content))
     }
 
-    async deleteById(id: string): Promise<Template> {
-        return (await this.templateModel.findByIdAndDelete(id))
+    async deleteById(id: string): Promise<TemplateDTO> {
+        return toDTO(await this.templateModel.findByIdAndDelete(id))
     }
 
-    async updateById(id: string, content: TemplateUpdate): Promise<Template> {
+    async updateById(id: string, content: TemplateUpdate): Promise<TemplateDTO> {
         const template = await this.templateModel.findById(id)
         if (content.name)
             template.name = content.name
@@ -36,32 +34,21 @@ export class TemplateService {
             template.hosts = content.hosts
         if (content.services)
             template.services = content.services
-        return template.save()
+        return toDTO(await template.save())
+    }
+
+    async deleteAll() {
+        if (!process.env.DEBUG) return
+        return this.templateModel.db.dropDatabase()
     }
 }
 
-export interface TemplateCreation {
-    name: string;
-    author: User;
-    hosts: Array<{
-        banRef: Ban,
-        banned: boolean
-    }>
-    services: Array<{
-        serviceRef: Service,
-        banned: boolean
-    }>
-}
-
-export interface TemplateUpdate {
-    name?: string;
-    author?: User;
-    hosts?: Array<{
-        banRef: Ban,
-        banned: boolean
-    }>
-    services?: Array<{
-        serviceRef: Service,
-        banned: boolean
-    }>
+function toDTO(data: Template) {
+    return !data ? null : {
+        _id: data._id,
+        name: data.name,
+        author: data.author,
+        hosts: data.hosts,
+        services: data.services
+    }
 }

@@ -1,5 +1,6 @@
 import { Controller, Get, Param, Post, Body, Delete, Patch } from "@nestjs/common";
-import { TemplateService, TemplateCreation, TemplateUpdate } from "./template.service"
+import { TemplateCreation, TemplateUpdate } from "./schemas/template.dto";
+import { TemplateService } from "./template.service"
 
 @Controller('template')
 export class TemplateController {
@@ -11,7 +12,7 @@ export class TemplateController {
     }
 
     @Get("/:id")
-    async getById(@Param() id: string) {
+    async getById(@Param("id") id: string) {
         return this.templateService.findById(id)
     }
 
@@ -21,12 +22,12 @@ export class TemplateController {
     }
 
     @Delete("/:id")
-    async deleteById(@Param() id: string) {
+    async deleteById(@Param("id") id: string) {
         return this.templateService.deleteById(id)
     }
 
     @Patch("/:id")
-    async updateById(@Param() id: string ,@Body() content: TemplateUpdate) {
+    async updateById(@Param("id") id: string ,@Body() content: TemplateUpdate) {
         return this.templateService.updateById(id, content)
     }
 }
