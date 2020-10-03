@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Config } from "./schemas/config.schema"
 import { Model } from "mongoose";
-import { Service } from "../service/schemas/service.schema";
+import { ConfigCreation, ConfigUpdate } from "./schemas/config.dto";
 
 @Injectable()
 export class ConfigService {
@@ -32,14 +32,9 @@ export class ConfigService {
             config.services = content.services
         return config.save()
     }
-}
 
-export interface ConfigCreation {
-    name: string;
-    services: Array<Service>
-}
-
-export interface ConfigUpdate {
-    name?: string;
-    services?: Array<Service>
+    async deleteAll() {
+        if (!process.env.DEBUG) return
+        return this.configModel.db.dropDatabase()
+    }
 }

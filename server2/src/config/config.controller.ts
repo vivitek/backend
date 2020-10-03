@@ -1,5 +1,6 @@
 import { Controller, Get, Param, Post, Body, Delete, Patch } from "@nestjs/common";
-import { ConfigService, ConfigCreation, ConfigUpdate } from "./config.service"
+import { ConfigService } from "./config.service"
+import { ConfigCreation, ConfigUpdate } from "./schemas/config.dto";
 
 @Controller('config')
 export class ConfigController {
@@ -11,7 +12,7 @@ export class ConfigController {
     }
 
     @Get("/:id")
-    async getById(@Param() id: string) {
+    async getById(@Param("id") id: string) {
         return this.configService.findById(id)
     }
 
@@ -21,12 +22,12 @@ export class ConfigController {
     }
 
     @Delete("/:id")
-    async deleteById(@Param() id: string) {
+    async deleteById(@Param("id") id: string) {
         return this.configService.deleteById(id)
     }
 
     @Patch("/:id")
-    async updateById(@Param() id: string ,@Body() content: ConfigUpdate) {
+    async updateById(@Param("id") id: string ,@Body() content: ConfigUpdate) {
         return this.configService.updateById(id, content)
     }
 }
