@@ -1,5 +1,6 @@
 import { Controller, Get, Param, Post, Body, Delete, Patch } from "@nestjs/common";
-import { RouterService, RouterCreation, RouterUpdate } from "./router.service"
+import { RouterService } from "./router.service"
+import { RouterCreation, RouterUpdate } from "./schemas/router.dto";
 
 @Controller('router')
 export class RouterController {
@@ -11,7 +12,7 @@ export class RouterController {
     }
 
     @Get("/:id")
-    async getById(@Param() id: string) {
+    async getById(@Param("id") id: string) {
         return this.routerService.findById(id)
     }
 
@@ -21,12 +22,12 @@ export class RouterController {
     }
 
     @Delete("/:id")
-    async deleteById(@Param() id: string) {
+    async deleteById(@Param("id") id: string) {
         return this.routerService.deleteById(id)
     }
 
     @Patch("/:id")
-    async updateById(@Param() id: string ,@Body() content: RouterUpdate) {
+    async updateById(@Param("id") id: string ,@Body() content: RouterUpdate) {
         return this.routerService.updateById(id, content)
     }
 }
