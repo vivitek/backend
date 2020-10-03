@@ -15,7 +15,7 @@ import { TemplateModule } from './template/tempalte.module';
 import { ConnectionsModule } from './connections/connections.module';
 
 const MODULES = [
-  MongooseModule.forRoot(`mongodb://${process.env.MONGO}/vivi`),
+  MongooseModule.forRoot(`mongodb://${process.env.MONGO}`),
   BanModule,
   TagModule,
   AuthModule,

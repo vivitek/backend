@@ -1,32 +1,33 @@
 import { Controller, Get, Param, Post, Body, Delete, Patch } from "@nestjs/common";
-import { IpService, IpCreation, IpUpdate } from "./ip.service"
+import { IpService } from "./ip.service"
+import { IpCreation, IpUpdate } from "./schemas/ip.dto";
 
-@Controller('router')
+@Controller('ip')
 export class IpController {
-    constructor(private readonly routerService: IpService) {}
+    constructor(private readonly ipService: IpService) {}
 
     @Get("/")
     async getAll() {
-        return this.routerService.findAll()
+        return this.ipService.findAll()
     }
 
     @Get("/:id")
-    async getById(@Param() id: string) {
-        return this.routerService.findById(id)
+    async getById(@Param("id") id: string) {
+        return this.ipService.findById(id)
     }
 
     @Post("/")
     async create(@Body() content: IpCreation) {
-        return this.routerService.create(content)
+        return this.ipService.create(content)
     }
 
     @Delete("/:id")
-    async deleteById(@Param() id: string) {
-        return this.routerService.deleteById(id)
+    async deleteById(@Param("id") id: string) {
+        return this.ipService.deleteById(id)
     }
 
     @Patch("/:id")
-    async updateById(@Param() id: string ,@Body() content: IpUpdate) {
-        return this.routerService.updateById(id, content)
+    async updateById(@Param("id") id: string, @Body() content: IpUpdate) {
+        return this.ipService.updateById(id, content)
     }
 }
