@@ -2,57 +2,56 @@ import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Service } from "./schemas/service.schema"
 import { Model } from "mongoose";
-import { Tag } from "../tag/schemas/tag.schema";
-import { Ip } from "../ip/schemas/ip.schema";
+import { ServiceCreation, ServiceDTO, ServiceUpdate } from "./schemas/service.dto";
 
 @Injectable()
 export class ServiceService {
   constructor(@InjectModel(Service.name) private serviceModel: Model<Service>) {}
 
-  async findAll() : Promise<Service[]> {
-    return this.serviceModel.find().exec()
+  async findAll() : Promise<ServiceDTO[]> {
+    return (await this.serviceModel.find().exec()).map(d => toDTO(d))
   }
 
-  async findById(id: string): Promise<Service> {
-    return this.serviceModel.findById(id).exec()
+  async findById(id: string): Promise<ServiceDTO> {
+    return toDTO(await this.serviceModel.findById(id).exec())
   }
 
-  async create(content: ServiceCreation): Promise<Service> {
-    return this.serviceModel.create(content)
+  async create(content: ServiceCreation): Promise<ServiceDTO> {
+    return toDTO(await this.serviceModel.create(content))
   }
 
-  async deleteById(id: string): Promise<Service> {
-    return (await this.serviceModel.findByIdAndDelete(id))
+  async deleteById(id: string): Promise<ServiceDTO> {
+    return toDTO(await this.serviceModel.findByIdAndDelete(id))
   }
 
-  async updateById(id: string, content: ServiceUpdate): Promise<Service> {
-    const router = await this.serviceModel.findById(id)
+  async updateById(id: string, content: ServiceUpdate): Promise<ServiceDTO> {
+    const service = await this.serviceModel.findById(id)
     if (content.displayName)
-      router.displayName = content.displayName
+      service.displayName = content.displayName
     if (content.name)
-      router.name = content.name
+      service.name = content.name
     if (content.bandwidth)
-      router.bandwidth = content.bandwidth
+      service.bandwidth = content.bandwidth
     if (content.tags)
-      router.tags = content.tags
+      service.tags = content.tags
     if (content.ips)
-      router.ips = content.ips
-    return router.save()
+      service.ips = content.ips
+    return toDTO(await service.save())
   }
+
+    async deleteAll(): Promise<any> {
+        if (!process.env.DEBUG) return null
+        return this.serviceModel.db.dropDatabase()
+    }
 }
 
-export interface ServiceCreation {
-  displayName: string;
-  name: string;
-  bandwidth: number;
-  tags: Array<Tag>;
-  ips: Array<Ip>;
-}
-
-export interface ServiceUpdate {
-  displayName?: string;
-  name?: string;
-  bandwidth?: number;
-  tags?: Array<Tag>;
-  ips?: Array<Ip>;
+function toDTO(data: Service) {
+  return !data ? null : {
+    _id: data._id,
+    displayName: data.displayName,
+    name: data.name,
+    bandwidth: data.bandwidth,
+    tags: data.tags,
+    ips: data.ips
+  }
 }

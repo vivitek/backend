@@ -1,5 +1,6 @@
 import { Controller, Get, Param, Post, Body, Delete, Patch } from "@nestjs/common";
-import { ServiceService, ServiceCreation, ServiceUpdate } from "./service.service"
+import { ServiceCreation, ServiceUpdate } from "./schemas/service.dto";
+import { ServiceService } from "./service.service"
 
 @Controller('service')
 export class ServiceController {
@@ -11,7 +12,7 @@ export class ServiceController {
     }
 
     @Get("/:id")
-    async getById(@Param() id: string) {
+    async getById(@Param("id") id: string) {
         return this.serviceService.findById(id)
     }
 
@@ -21,12 +22,12 @@ export class ServiceController {
     }
 
     @Delete("/:id")
-    async deleteById(@Param() id: string) {
+    async deleteById(@Param("id") id: string) {
         return this.serviceService.deleteById(id)
     }
 
     @Patch("/:id")
-    async updateById(@Param() id: string ,@Body() content: ServiceUpdate) {
+    async updateById(@Param("id") id: string ,@Body() content: ServiceUpdate) {
         return this.serviceService.updateById(id, content)
     }
 }
