@@ -19,7 +19,7 @@ export class ConnectionDto  {
     @ApiProperty()
     @Field(type => String)
     routerId:string
-    
+
     @ApiProperty()
     @Field(type => Boolean)
     treated:boolean
