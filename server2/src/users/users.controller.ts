@@ -1,11 +1,10 @@
-import { User } from './schemas/user.schema';
+import { User } from './schemas/users.schema';
 import { UsersService } from './users.service';
 import { Controller, Get, Param, Delete, Patch, Body } from '@nestjs/common';
-import {UserDto} from './schemas/user.dto'
-
+import { UserDto } from './schemas/users.dto'
 
 export function fromUser(user: User) : UserDto {
-	return new UserDto(user.email, user.username)
+	return !user ? null : new UserDto(user.email, user.username)
 }
 
 @Controller('users')
@@ -17,9 +16,7 @@ export class UsersController {
 	@Get()
 	async list(): Promise<UserDto[]> {
 		const users = await this.userService.getAll()
-		return users.map((e) => {
-			return fromUser(e)
-		})
+		return users.map((e) => fromUser(e))
 	}
 
 	@Get(':userID')
@@ -27,7 +24,7 @@ export class UsersController {
         const user = await this.userService.findById(userId);
         return fromUser(user);
 	}
-	
+
 	@Delete(":userID")
 	async deleteUser(@Param('userID') userId:string) {
 		const user = await this.userService.deleteUser(userId)
@@ -35,7 +32,8 @@ export class UsersController {
 	}
 
 	@Patch(":userID")
-	async updateUser(@Param('userID') userId: string, @Body() user: UserDto ): Promise<UserDto> {
-		return fromUser(await this.userService.updateUser(userId, user))
+	async updateUser(@Param('userID') userId: string, @Body() user: UserDto ): Promise<UserDto & {_id: string}> {
+		const updated = await this.userService.updateUser(userId, user)
+		return { ...fromUser(updated), _id: updated._id }
 	}
 }

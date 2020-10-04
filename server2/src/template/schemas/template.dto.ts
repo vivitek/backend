@@ -1,6 +1,6 @@
 import { Ban } from "src/ban/schemas/ban.schema";
 import { Service } from "src/service/schemas/service.schema";
-import { User } from "src/users/schemas/user.schema";
+import { User } from "src/users/schemas/users.schema";
 
 export interface TemplateCreation {
     name: string;

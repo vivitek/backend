@@ -1,6 +1,6 @@
 import { Schema, Prop, SchemaFactory } from "@nestjs/mongoose";
 import { Document } from "mongoose"
-import { User } from "../../users/schemas/user.schema";
+import { User } from "../../users/schemas/users.schema";
 import { Ban } from "../../ban/schemas/ban.schema";
 import { Service } from "../../service/schemas/service.schema";
 

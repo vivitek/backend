@@ -4,7 +4,7 @@ import * as request from "supertest"
 import { AppModule } from "../app.module"
 import { TemplateService } from "./template.service"
 import { TemplateCreation, TemplateDTO, TemplateUpdate } from "./schemas/template.dto"
-import { User } from "../users/schemas/user.schema"
+import { User } from "../users/schemas/users.schema"
 import { Ban } from "../ban/schemas/ban.schema"
 import { Service } from "../service/schemas/service.schema"
 

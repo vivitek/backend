@@ -1,4 +1,4 @@
-import { User } from './../users/schemas/user.schema';
+import { User } from '../users/schemas/users.schema';
 import { UsersService } from './../users/users.service';
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';

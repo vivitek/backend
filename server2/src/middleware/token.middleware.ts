@@ -1,6 +1,6 @@
 import { JwtService } from "@nestjs/jwt";
 import { Injectable } from "@nestjs/common";
-import { User } from "../users/schemas/user.schema";
+import { User } from "../users/schemas/users.schema";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { last } from "lodash"

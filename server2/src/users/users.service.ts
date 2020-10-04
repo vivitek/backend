@@ -1,7 +1,7 @@
-import { UserDto } from './schemas/user.dto';
+import { UserDto } from './schemas/users.dto';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { User } from './schemas/user.schema';
+import { User } from './schemas/users.schema';
 import { Model } from 'mongoose';
 import * as bcrypt from "bcrypt" 
 
@@ -31,10 +31,17 @@ export class UsersService {
 	}
 	async updateUser(id:string, data:UserDto): Promise<User> {
 		let user = await this.userModel.findById(id)
-		Object.keys(data).forEach((e) => {
-			user[e] = data[e]
-		})
-		user = await user.save()
-		return user
+		if (data.email)
+			user.email = data.email
+		if (data.username)
+			user.username = data.username
+		const d = await user.save()
+		return d
 	}
+
+	async deleteAll() {
+		if (!process.env.DEBUG) return
+		return this.userModel.db.dropDatabase()
+	}
+
 }

@@ -6,7 +6,7 @@ export class UserDto {
     @ApiProperty()
     @Field(type => String)
     email: string
-    
+
 	@ApiProperty()
     @Field(type => String)
 	username:string
@@ -15,5 +15,4 @@ export class UserDto {
 		this.email = email
 		this.username = username
 	}
-
 }
