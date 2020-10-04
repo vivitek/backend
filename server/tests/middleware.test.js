@@ -7,7 +7,7 @@ const app = require("../server");
 describe("Middleware test", () => {
 	beforeAll(async () => {
 		const uri = await mongod.getConnectionString();
-		await mongoose.connect(`${uri}`, { useNewUrlParser: true, useCreateIndex: true }, (err) => {
+		await mongoose.connect(`${uri}`, { useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true }, (err) => {
 			if (err) {
 				console.error(err); // eslint-disable-line no-console
 				process.exit(1);
@@ -15,7 +15,7 @@ describe("Middleware test", () => {
 		});
 	});
 	it("non connected user", async () => {
-		const res = await request(app).get("/config").send({isTestingAuth: true});
+		const res = await request(app).get("/config?isTestingAuth=true");
 		expect(res.status).toBe(401);
 		expect(res.body.message).toBe("No authentication provided");
 	});

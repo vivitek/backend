@@ -1,5 +1,10 @@
 const router = require("express").Router();
 const banModel = require("../models/Ban");
+const {checkTokenValidity} = require("../middleware/token");
+const {checkPermission} = require("../middleware/permission");
+
+router.use(checkTokenValidity);
+router.use(checkPermission);
 
 router.get("/", async(req, res) => {
 	var list = await banModel.find();
@@ -8,14 +13,14 @@ router.get("/", async(req, res) => {
 
 router.get("/:id", async(req, res) => {
 	let {id} = req.params;
-	var list = [];
+	let ban;
 	try {
-		list = await banModel.find({"_id": id});
+		ban = await banModel.findById(id);
 	} catch (error) {
 		res.status(500).json({message:"could not find required data"});
 		return;
 	}
-	res.json(list[0]);
+	res.json(ban);
 });
 
 router.delete("/:id", async(req, res) => {

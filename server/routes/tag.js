@@ -1,5 +1,10 @@
 const router = require("express").Router();
 const tagModel = require("../models/Tag");
+const {checkPermission} = require("../middleware/permission");
+const { checkTokenValidity } = require("../middleware/token");
+
+router.use(checkTokenValidity);
+router.use(checkPermission);
 
 router.get("/", async (req, res) => {
 	const tags = await tagModel.find();

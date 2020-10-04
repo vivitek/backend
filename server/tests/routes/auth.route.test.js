@@ -9,7 +9,7 @@ describe("Auth routes testing", () => {
 	beforeAll(async () => {
 		api = request(app);
 		const uri = await mongod.getConnectionString();
-		await mongoose.connect(`${uri}`, { useNewUrlParser: true, useCreateIndex: true }, (err) => {
+		await mongoose.connect(`${uri}`, { useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true }, (err) => {
 			if (err) {
 				console.error(err);
 				process.exit(1);

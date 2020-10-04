@@ -75,7 +75,6 @@ services:
             - "traefik.http.services.grafana.loadbalancer.server.port=3000"
             - "traefik.http.routers.grafana.tls.certresolver=le"
             - "traefik.http.routers.grafana.entrypoints=secureweb"
-            
     server:
         build: ./server
         restart: on-failure
@@ -91,6 +90,8 @@ services:
             - "traefik.http.services.server-api-svc.loadbalancer.server.port=5000"
             - "traefik.http.routers.server-api.tls.certresolver=le"
             - "traefik.http.routers.server-api.entrypoints=secureweb"
+        environment:
+            - SUPER_ADMIN_ROLE_ID=5eeba89555a3a7607afe5d03
     admindb:
         build: "./adminMongo"
         ports: 
