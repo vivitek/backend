@@ -3,7 +3,7 @@ import { Test } from "@nestjs/testing"
 import * as request from "supertest"
 import { AppModule } from "../app.module"
 import { UsersService } from "./users.service"
-import { LoginDto, RegisterDto } from "src/auth/auth.controller"
+import { LoginDto, RegisterDto, UpdateUserDto } from "../auth/auth.dto"
 import { User } from "./schemas/users.schema"
 
 describe('Users Controller', () => {
@@ -103,7 +103,8 @@ const ToCreateUser: RegisterDto = {
     username: "xXx_John_Doe_xXx"
 }
 
-const editedUserCredentials: LoginDto = {
+const editedUserCredentials: UpdateUserDto = {
   email: "john@doe.com",
-  password: "v3rys3cur3dp@ssw0rd"
+  password: "v3rys3cur3dp@ssw0rd",
+  username: "John"
 }

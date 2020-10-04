@@ -1,10 +1,8 @@
-import { User } from '../users/schemas/users.schema';
 import { UsersService } from './../users/users.service';
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import * as bcrypt from "bcrypt" 
+import * as bcrypt from "bcrypt"
+
 @Injectable()
 export class AuthService {
 	constructor(
@@ -33,7 +31,7 @@ export class AuthService {
 	async register(email:string, password:string, username:string) {
 		const user = await this.usersService.createUser(email, password, username)
 		return {
-			access_token: this.jwtService.sign(user, {secret: "sting-sell-pioneer"}),
+			access_token: this.jwtService.sign(user.toJSON(), {secret: "sting-sell-pioneer"}),
 			user
 		}
 	}
