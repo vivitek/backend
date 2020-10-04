@@ -92,18 +92,17 @@ services:
             - "traefik.http.routers.server-api.entrypoints=secureweb"
         environment:
             - SUPER_ADMIN_ROLE_ID=5eeba89555a3a7607afe5d03
-    admindb:
-        build: "./adminMongo"
-        ports: 
-            - "1234:1234"
-        depends_on:
-            - mongo
-        labels:
-            - "traefik.http.routers.mongodb.rule=Host(`db.${DOMAIN:?err}`)"
-            - "traefik.http.services.mongodb-svc.loadbalancer.server.port=1234"
-            - "traefik.http.routers.mongodb.tls.certresolver=le"
-            - "traefik.http.routers.mongodb.entrypoints=secureweb"
-
+              #admindb:
+              #build: "./adminMongo"
+              # ports: 
+              #        - "1234:1234"
+              #    depends_on:
+              #     - mongo
+              # labels:
+              #     - "traefik.http.routers.mongodb.rule=Host(`db.${DOMAIN:?err}`)"
+              #- "traefik.http.services.mongodb-svc.loadbalancer.server.port=1234"
+              #- "traefik.http.routers.mongodb.tls.certresolver=le"
+              #- "traefik.http.routers.mongodb.entrypoints=secureweb"
     mongo:
         image: mongo
         restart: always
@@ -112,15 +111,15 @@ services:
         volumes:
             - ./data/db:/data/db
 
-    restart-service:
-        build: "./restart"
-        volumes: 
-            - ./restart.log:/restart.log
-        labels:
-            - "traefik.http.routers.restart.rule=Host(`restart.${DOMAIN:?err}`)"
-            - "traefik.http.routers.restart.tls.certresolver=le"
-            - "traefik.http.routers.restart.entrypoints=secureweb"
-            - "traefik.http.services.restart-svc.loadbalancer.server.port=4000"
+              #   restart-service:
+              # build: "./restart"
+              #volumes: 
+              # - ./restart.log:/restart.log
+              #labels:
+              #- "traefik.http.routers.restart.rule=Host(`restart.${DOMAIN:?err}`)"
+              #- "traefik.http.routers.restart.tls.certresolver=le"
+              #- "traefik.http.routers.restart.entrypoints=secureweb"
+              #- "traefik.http.services.restart-svc.loadbalancer.server.port=4000"
     rethink:
         image: rethinkdb:2.4
         restart: always
