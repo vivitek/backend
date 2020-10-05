@@ -80,6 +80,7 @@ services:
             - "5000:5000"
         volumes:
             - ./data/server_logs:/logs
+            - ./coverage:/app/coverage
         labels:
             - "traefik.http.routers.server-api.rule=Host(`api.${DOMAIN:?err}`)"
             - "traefik.http.services.server-api-svc.loadbalancer.server.port=3000"
