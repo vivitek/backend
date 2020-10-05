@@ -34,4 +34,8 @@ describe('Ip Controller', () => {
    expect(res.status).toBe(200)
    expect(res.text).toBe('Hello World!')
   })
+
+  afterEach(async (done) => {
+    done()
+  })
 })
