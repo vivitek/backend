@@ -17,7 +17,7 @@ async function bootstrap() {
     hideHostname: false
   }
   SwaggerModule.setup("api", app, document)
-  await RedocModule.setup("/docs", app, document, redocOptions)
+  //await RedocModule.setup("/docs", app, document, redocOptions)
   await app.listen(3000);
 }
 bootstrap();
