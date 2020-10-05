@@ -11,4 +11,4 @@ cache:
   directories:
   - node_modules
 script:
-    - docker-compose run server npm run coveralls
+    - docker-compose run server npm run test:cov
