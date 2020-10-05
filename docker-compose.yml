@@ -82,7 +82,7 @@ services:
             - ./data/server_logs:/logs
         labels:
             - "traefik.http.routers.server-api.rule=Host(`api.${DOMAIN:?err}`)"
-            - "traefik.http.services.server-api-svc.loadbalancer.server.port=5000"
+            - "traefik.http.services.server-api-svc.loadbalancer.server.port=3000"
             - "traefik.http.routers.server-api.tls.certresolver=le"
             - "traefik.http.routers.server-api.entrypoints=secureweb"
         environment:
