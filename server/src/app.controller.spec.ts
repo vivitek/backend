@@ -5,7 +5,7 @@ import { AppModule } from "./app.module"
 import { AppService } from "./app.service"
 
 describe('Ip Controller', () => {
-  const url: string = "/"
+  const url = "/"
   let service: AppService
   let server: any;
   let app: INestApplication

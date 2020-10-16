@@ -1,6 +1,5 @@
 import { INestApplication } from "@nestjs/common"
 import { Test } from "@nestjs/testing"
-import { Connection } from "mongoose"
 import { AppModule } from "../app.module"
 import { ConnectionsService } from "./connections.service"
 import { ConnectionDto } from "./schemas/connection.dto"

@@ -6,7 +6,7 @@ import { ServiceService } from "./service.service"
 import { ServiceCreation, ServiceDTO, ServiceUpdate } from "./schemas/service.dto"
 
 describe('Service Controller', () => {
-  const url: string = "/service"
+  const url = "/service"
   let service: ServiceService
   let server: any;
   let app: INestApplication

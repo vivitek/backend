@@ -9,7 +9,7 @@ import { Ban } from "../ban/schemas/ban.schema"
 import { Service } from "../service/schemas/service.schema"
 
 describe('Template Controller', () => {
-  const url: string = "/template"
+  const url = "/template"
   let service: TemplateService
   let server: any;
   let app: INestApplication

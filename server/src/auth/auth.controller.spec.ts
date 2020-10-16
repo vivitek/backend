@@ -7,7 +7,7 @@ import { LoginDto, RegisterDto } from "./auth.dto"
 import { AuthService } from "./auth.service"
 
 describe('Auth Controller', () => {
-  const url: string = "/auth"
+  const url = "/auth"
   let service: AuthService
   let usersService: UsersService
   let server: any;
