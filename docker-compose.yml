@@ -77,7 +77,7 @@ services:
             - mongo
             - rethink
         ports:
-            - "5000:5000"
+            - "5000:3000"
         volumes:
             - ./data/server_logs:/logs
             - ./coverage:/app/coverage
