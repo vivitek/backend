@@ -6,7 +6,7 @@ import { RouterService } from "./router.service"
 import { RouterCreation, RouterDTO, RouterUpdate } from "./schemas/router.dto"
 
 describe('Router Controller', () => {
-  const url: string = "/router"
+  const url = "/router"
   let service: RouterService
   let server: any;
   let app: INestApplication

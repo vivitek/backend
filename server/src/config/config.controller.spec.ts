@@ -7,7 +7,7 @@ import { ConfigService } from "./config.service"
 import { ConfigCreation, ConfigDTO, ConfigUpdate } from "./schemas/config.dto"
 
 describe('Config Controller', () => {
-  const url: string = "/config"
+  const url = "/config"
   let service: ConfigService
   let server: any;
   let app: INestApplication

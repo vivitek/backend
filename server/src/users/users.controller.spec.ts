@@ -7,7 +7,7 @@ import { LoginDto, RegisterDto, UpdateUserDto } from "../auth/auth.dto"
 import { User } from "./schemas/users.schema"
 
 describe('Users Controller', () => {
-  const url: string = "/users"
+  const url = "/users"
   let service: UsersService
   let server: any;
   let app: INestApplication

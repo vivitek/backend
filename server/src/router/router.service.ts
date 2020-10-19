@@ -33,7 +33,7 @@ export class RouterService {
         return toDTO(await router.save())
     }
 
-    async deleteAll() {
+    async deleteAll(): Promise<Array<Router>> {
         if (!process.env.DEBUG) return
         return this.routerModel.db.dropDatabase()
     }

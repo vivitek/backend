@@ -9,9 +9,6 @@ import * as bcrypt from "bcrypt"
 export class UsersService {
 	@InjectModel(User.name) private userModel: Model<User>
 
-	constructor() {
-	}
-
 	async findById(id:string): Promise<User> {
 		return this.userModel.findById(id)
 	}
@@ -28,7 +25,7 @@ export class UsersService {
 		return this.userModel.findByIdAndDelete(id)
 	}
 	async updateUser(id:string, data:UserDto): Promise<User> {
-		let user = await this.userModel.findById(id)
+		const user = await this.userModel.findById(id)
 		if (data.email)
 			user.email = data.email
 		if (data.username)
@@ -37,7 +34,7 @@ export class UsersService {
 		return d
 	}
 
-	async deleteAll() {
+	async deleteAll(): Promise<Array<User>> {
 		if (!process.env.DEBUG) return
 		return this.userModel.db.dropDatabase()
 	}

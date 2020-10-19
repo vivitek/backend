@@ -6,7 +6,7 @@ import { IpService } from "./ip.service"
 import { IpCreation, IpDTO, IpUpdate } from "./schemas/ip.dto"
 
 describe('Ip Controller', () => {
-  const url: string = "/ip"
+  const url = "/ip"
   let service: IpService
   let server: any;
   let app: INestApplication

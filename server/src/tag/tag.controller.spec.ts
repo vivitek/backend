@@ -6,7 +6,7 @@ import { TagService } from "./tag.service"
 import { TagCreation, TagDTO, TagUpdate } from "./schemas/tag.dto"
 
 describe('Tag Controller', () => {
-  const url: string = "/tag"
+  const url = "/tag"
   let service: TagService
   let server: any;
   let app: INestApplication

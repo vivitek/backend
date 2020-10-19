@@ -13,7 +13,7 @@ export class MiddlewareClass {
         @InjectModel('User') private readonly userModel: Model<User>,
         private jwtService: JwtService) {}
 
-    async checkAuthentication(req: ViviRequest, res: Response, next: Function) {
+    async checkAuthentication(req: ViviRequest, res: Response, next: () => Response<any>): Promise<Response<any>> {
         if (process.env.DEBUG) {
             req.user = this.userModel.create({
                 email: "support@vincipit.com",

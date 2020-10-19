@@ -6,7 +6,7 @@ import { BanService } from "./ban.service"
 import { BanCreation, BanDTO, BanUpdate } from "./schemas/ban.dto"
 
 describe('Ban Controller', () => {
-  const url: string = "/ban"
+  const url = "/ban"
   let service: BanService
   let server: any;
   let app: INestApplication

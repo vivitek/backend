@@ -1,4 +1,3 @@
-import { UsersService } from './../users/users.service';
 import { AuthController } from './auth.controller';
 import { jwtConstants } from './constants';
 import { LocalStrategy } from './local.strategy';
