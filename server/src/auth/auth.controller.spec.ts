@@ -40,20 +40,29 @@ describe('Auth Controller', () => {
       toCreateUser.username
     )
     const res = await request(server).post(`${url}/login`).send(userCredentials)
-    expect(res.status).toBe(201)
+    expect(res.status).toBe(200)
     expect(res.body.access_token).toBeDefined()
   })
 
   it('[POST][Non existing user] /login', async () => {
     const res = await request(server).post(`${url}/login`).send(nonExistingUser)
-    expect(res.status).toBe(201)
-    expect(res.body).toStrictEqual({})
+    expect(res.status).toBe(401)
+    expect(res.body).toStrictEqual(
+      {
+        error: "Unauthorized",
+        message: "Invalid credentials",
+        statusCode: 401,
+      })
   })
 
   it('[POST][Empty body] /login', async () => {
     const res = await request(server).post(`${url}/login`)
-    expect(res.status).toBe(201)
-    expect(res.body).toStrictEqual({})
+    expect(res.status).toBe(400)
+    expect(res.body).toStrictEqual({
+        error: "Bad Request",
+        message: "Bad request",
+        statusCode: 400,
+      })
   })
 
   it('[POST] /register', async () => {
@@ -65,6 +74,11 @@ describe('Auth Controller', () => {
   it('[POST][Empty body] /register', async () => {
     const res = await request(server).post(`${url}/register`)
     expect(res.status).toBe(400)
+    expect(res.body).toStrictEqual({
+        error: "Bad Request",
+        message: "Bad request",
+        statusCode: 400,
+      })
   })
 
   afterEach(async () => {
