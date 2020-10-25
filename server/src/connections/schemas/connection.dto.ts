@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Field, ObjectType } from '@nestjs/graphql';
+import { ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 export class ConnectionDto  {
@@ -13,33 +13,21 @@ export class ConnectionDto  {
         this.id = connection.id || ""
     }
     @ApiProperty()
-	//eslint-disable-next-line @typescript-eslint/no-unused-vars
-    @Field(type => String)
     id: string
 
     @ApiProperty()
-	//eslint-disable-next-line @typescript-eslint/no-unused-vars
-    @Field(type => String)
     routerId:string
 
     @ApiProperty()
-	//eslint-disable-next-line @typescript-eslint/no-unused-vars
-    @Field(type => Boolean)
     treated:boolean
 
     @ApiProperty()
-	//eslint-disable-next-line @typescript-eslint/no-unused-vars
-    @Field(type => String)
     address:string
 
     @ApiProperty()
-	//eslint-disable-next-line @typescript-eslint/no-unused-vars
-    @Field(type => Date)
     createdAt: Date
 
     @ApiProperty()
-	//eslint-disable-next-line @typescript-eslint/no-unused-vars
-    @Field(type => String)
     data:string
 }
 

@@ -42,6 +42,9 @@ describe('Auth Controller', () => {
     const res = await request(server).post(`${url}/login`).send(userCredentials)
     expect(res.status).toBe(200)
     expect(res.body.access_token).toBeDefined()
+    expect(res.body.user.email).toBe(toCreateUser.email)
+    expect(res.body.user.username).toBe(toCreateUser.username)
+    expect(res.body.user._id).toBeDefined()
   })
 
   it('[POST][Non existing user] /login', async () => {
@@ -69,6 +72,9 @@ describe('Auth Controller', () => {
     const res = await request(server).post(`${url}/register`).send(toCreateUser)
     expect(res.status).toBe(201)
     expect(res.body.access_token).toBeDefined()
+    expect(res.body.user.email).toBe(toCreateUser.email)
+    expect(res.body.user.username).toBe(toCreateUser.username)
+    expect(res.body.user._id).toBeDefined()
   })
 
   it('[POST][Empty body] /register', async () => {
@@ -79,6 +85,20 @@ describe('Auth Controller', () => {
         message: "Bad request",
         statusCode: 400,
       })
+  })
+
+  it('[POST][Existing user] /register', async () => {
+    await service.register(
+      toCreateUser.email,
+      toCreateUser.password,
+      toCreateUser.username)
+      const res = await request(server).post(`${url}/register`).send(toCreateUser)
+      expect(res.status).toBe(400)
+      expect(res.body).toStrictEqual({
+          error: "Bad Request",
+          message: "User already exists",
+          statusCode: 400,
+        })
   })
 
   afterEach(async () => {

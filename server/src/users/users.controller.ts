@@ -4,7 +4,7 @@ import { Controller, Get, Param, Delete, Patch, Body } from '@nestjs/common';
 import { UserDto } from './schemas/users.dto'
 
 export function fromUser(user: User) : UserDto {
-	return !user ? null : new UserDto(user.email, user.username)
+	return !user ? null : new UserDto(user.email, user.username, user._id)
 }
 
 @Controller('users')

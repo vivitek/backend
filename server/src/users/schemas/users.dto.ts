@@ -1,20 +1,20 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Field, ObjectType } from '@nestjs/graphql';
+import { ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 export class UserDto {
     @ApiProperty()
-	//eslint-disable-next-line @typescript-eslint/no-unused-vars
-    @Field(type => String)
     email: string
 
 	@ApiProperty()
-	//eslint-disable-next-line @typescript-eslint/no-unused-vars
-    @Field(type => String)
 	username:string
 
-	constructor(email: string, username: string) {
+	@ApiProperty()
+	_id:string
+
+	constructor(email: string, username: string, id: string) {
 		this.email = email
 		this.username = username
+		this._id = id
 	}
 }
