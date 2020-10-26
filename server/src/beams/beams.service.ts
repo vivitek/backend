@@ -9,7 +9,7 @@ export class BeamsService {
        @Inject("BeamsProvider") private beamClient: PushNotifications
     ) {}
 
-    async sendNotification(userIds: [string], notification: WebNotificationDTO): Promise<string> {
+    async sendNotification(userIds: string[], notification: WebNotificationDTO): Promise<string> {
         const res = await this.beamClient.publishToUsers(userIds, {
             web: notification
         })
