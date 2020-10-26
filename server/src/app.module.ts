@@ -13,6 +13,7 @@ import { ServiceModule } from './service/service.module';
 import { ConfigModule } from './config/config.module';
 import { TemplateModule } from './template/tempalte.module';
 import { ConnectionsModule } from './connections/connections.module';
+import { BeamsModule } from './beams/beams.module';
 
 const MODULES = [
   MongooseModule.forRoot(`mongodb://${process.env.MONGO}`),
@@ -26,7 +27,8 @@ const MODULES = [
   ServiceModule,
   ConfigModule,
   TemplateModule,
-  ConnectionsModule
+  ConnectionsModule,
+  BeamsModule
 ]
 
 @Module({
