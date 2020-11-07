@@ -1,6 +1,6 @@
 import { Body, Controller, Inject, Get, Query, Post } from "@nestjs/common";
 import PushNotifications from "@pusher/push-notifications-server";
-import { UsersService } from "src/users/users.service";
+import { UsersService } from "../users/users.service";
 import { BeamsService } from "./beams.service";
 import { NotificationDTO } from "./schema/Notifications.dto";
 import { WebNotificationDTO } from "./schema/WebNotification.dto";
