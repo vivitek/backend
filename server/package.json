@@ -17,7 +17,7 @@
     "lint:fix": "eslint . --ext .ts --fix",
     "test": "DEBUG=true jest",
     "test:watch": "DEBUG=true jest --watch --runInBand",
-    "test:cov": "DEBUG=true jest --coverage --ci --runInBand --forceExit", 
+    "test:cov": "DEBUG=true jest --coverage --ci --runInBand --forceExit",
     "test:debug": "DEBUG=true node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "DEBUG=truejest --config ./test/jest-e2e.json --runInBand"
   },
@@ -30,6 +30,7 @@
     "@nestjs/passport": "^7.1.0",
     "@nestjs/platform-express": "^7.3.2",
     "@nestjs/swagger": "^4.5.12",
+    "@pusher/push-notifications-server": "^1.2.1",
     "@types/rethinkdb": "^2.3.16",
     "bcrypt": "^5.0.0",
     "codecov": "^3.7.2",
@@ -77,8 +78,8 @@
       "json",
       "ts"
     ],
-    "coverageDirectory":"/app/coverage",
-    "collectCoverage":true,
+    "coverageDirectory": "/app/coverage",
+    "collectCoverage": true,
     "rootDir": "src",
     "testRegex": ".spec.ts$",
     "transform": {

@@ -88,6 +88,7 @@ services:
             - "traefik.http.routers.server-api.entrypoints=secureweb"
         environment:
             - MONGO=mongo:27017
+            - BEAMS_SECRET=A916C41C8136459EFB3F95AE73F8168CF124786715C4D5FD09F67F3438A41FD5
     mongo:
         image: mongo
         restart: always

@@ -1,6 +1,6 @@
 import { INestApplication } from "@nestjs/common"
 import { Test } from "@nestjs/testing"
-import { Service } from "src/service/schemas/service.schema"
+import { Service } from "../service/schemas/service.schema"
 import * as request from "supertest"
 import { AppModule } from "../app.module"
 import { ConfigService } from "./config.service"
