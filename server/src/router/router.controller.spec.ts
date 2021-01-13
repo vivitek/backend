@@ -4,6 +4,7 @@ import * as request from "supertest"
 import { AppModule } from "../app.module"
 import { RouterService } from "./router.service"
 import { RouterCreation, RouterDTO, RouterUpdate } from "./schemas/router.dto"
+import { Router} from "./schemas/router.schema"
 
 describe('Router Controller', () => {
   const url = "/router"
@@ -37,7 +38,7 @@ describe('Router Controller', () => {
   })
 
   it('[GET] /:id', async () => {
-    const created: RouterDTO = await service.create(ToCreateRouter)
+    const created: Router = await service.create(ToCreateRouter)
     const res = await request(server).get(`${url}/${created._id}`)
     expect(res.status).toBe(200)
     expect(res.body.name).toBe(ToCreateRouter.name)
@@ -53,17 +54,17 @@ describe('Router Controller', () => {
   })
 
   it('[DELETE] /:id', async () => {
-    const created: RouterDTO = await service.create(ToCreateRouter)
+    const created: Router = await service.create(ToCreateRouter)
     const removed = await request(server).delete(`${url}/${created._id}`)
     expect(removed.status).toBe(200)
     expect(removed.body._id.toString()).toBe(created._id.toString())
-    const res = await service.findById(created._id)
+    const res = await service.findById(created._id.toString())
     expect(res).toBeNull()
 
   })
 
   it('[PATCH] /:id', async() => {
-    const created: RouterDTO = await service.create(ToCreateRouter)
+    const created: Router = await service.create(ToCreateRouter)
     const edited = await request(server).patch(`${url}/${created._id}`).send(editedRouter)
     expect(edited.status).toBe(200)
     expect(edited.body._id.toString()).toBe(created._id.toString())

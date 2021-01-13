@@ -3,7 +3,9 @@ import { Test } from "@nestjs/testing"
 import * as request from "supertest"
 import { AppModule } from "../app.module"
 import { BanService } from "./ban.service"
-import { BanCreation, BanDTO, BanUpdate } from "./schemas/ban.dto"
+import { BanDTO, BanUpdate } from "./schemas/ban.dto"
+import { BanCreation } from "./schemas/ban.inputs"
+import { Ban } from "./schemas/ban.schema"
 
 describe('Ban Controller', () => {
   const url = "/ban"
@@ -37,7 +39,7 @@ describe('Ban Controller', () => {
   })
 
   it('[GET] /:id', async () => {
-    const created: BanDTO = await service.create(toCreateBan)
+    const created: Ban = await service.create(toCreateBan)
     const res = await request(server).get(`${url}/${created._id}`)
     expect(res.status).toBe(200)
     expect(res.body.address).toBe(toCreateBan.address)
@@ -55,17 +57,17 @@ describe('Ban Controller', () => {
   })
 
   it('[DELETE] /:id', async () => {
-    const created: BanDTO = await service.create(toCreateBan)
+    const created: Ban = await service.create(toCreateBan)
     const removed = await request(server).delete(`${url}/${created._id}`)
     expect(removed.status).toBe(200)
     expect(removed.body._id.toString()).toBe(created._id.toString())
-    const res = await service.findById(created._id)
+    const res = await service.findById(created._id.toString())
     expect(res).toBeNull()
 
   })
 
   it('[PATCH] /:id', async() => {
-    const created: BanDTO = await service.create(toCreateBan)
+    const created: Ban = await service.create(toCreateBan)
     const edited = await request(server).patch(`${url}/${created._id}`).send(editedBan)
     expect(edited.status).toBe(200)
     expect(edited.body._id.toString()).toBe(created._id.toString())
