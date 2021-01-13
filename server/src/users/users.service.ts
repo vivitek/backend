@@ -34,7 +34,7 @@ export class UsersService {
 		return d
 	}
 
-	async deleteAll(): Promise<Array<User>> {
+	async deleteAll()/*: Promise<Array<User>> */{
 		if (!process.env.DEBUG) return
 		return this.userModel.db.dropDatabase()
 	}

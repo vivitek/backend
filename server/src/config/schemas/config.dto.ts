@@ -1,16 +1,16 @@
 import { Service } from "../../service/schemas/service.schema";
 
-export interface ConfigCreation {
+export class ConfigCreation {
     name: string;
     services: Array<Service>
 }
 
-export interface ConfigUpdate {
+export class ConfigUpdate {
     name?: string;
     services?: Array<Service>
 }
 
-export interface ConfigDTO {
+export class ConfigDTO {
     _id: string;
     name: string;
     services: Array<Service>;

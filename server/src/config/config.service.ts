@@ -33,7 +33,7 @@ export class ConfigService {
         return config.save()
     }
 
-    async deleteAll(): Promise<Array<Config>> {
+    async deleteAll()/*: Promise<Array<Config>>*/ {
         if (!process.env.DEBUG) return
         return this.configModel.db.dropDatabase()
     }

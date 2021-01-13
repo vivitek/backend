@@ -37,7 +37,7 @@ export class TemplateService {
         return toDTO(await template.save())
     }
 
-    async deleteAll(): Promise<Array<Template>> {
+    async deleteAll()/*: Promise<Array<Template>> */{
         if (!process.env.DEBUG) return
         return this.templateModel.db.dropDatabase()
     }
