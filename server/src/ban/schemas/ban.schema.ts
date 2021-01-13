@@ -1,7 +1,7 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
-import { Router } from 'src/router/schemas/router.schema';
+import { Router } from '../../router/schemas/router.schema';
 
 @ObjectType()
 @Schema()
