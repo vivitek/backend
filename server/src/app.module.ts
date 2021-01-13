@@ -15,11 +15,11 @@ import { BeamsModule } from './beams/beams.module';
 import { GraphQLModule } from '@nestjs/graphql';
 
 const MODULES = [
-  MongooseModule.forRoot(`mongodb://${process.env.MONGO}`),
+  MongooseModule.forRoot(`mongodb://${process.env.MONGO}/vivi`),
   GraphQLModule.forRoot({
-    installSubscriptionHandlers:true,
+    installSubscriptionHandlers: true,
     autoSchemaFile: true,
-    playground:true
+    playground: true,
   }),
   BanModule,
   TagModule,
@@ -30,8 +30,8 @@ const MODULES = [
   ServiceModule,
   ConfigModule,
   TemplateModule,
-  BeamsModule
-]
+  BeamsModule,
+];
 
 @Module({
   imports: MODULES,
