@@ -32,8 +32,10 @@ export class RouterService {
     return await this.routerModel.findByIdAndDelete(id);
   }
 
-  async updateById(id: string, content: RouterUpdateInput): Promise<Router> {
-    return this.routerModel.findOneAndUpdate({ _id: id }, content).exec();
+  async updateById(content: RouterUpdateInput): Promise<Router> {
+    return this.routerModel
+      .findOneAndUpdate({ _id: content.id }, content)
+      .exec();
   }
 
   async deleteAll() /*: Promise<Array<Router>> */ {

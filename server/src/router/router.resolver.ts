@@ -50,10 +50,7 @@ export class RouterResolver {
   async updateRouter(
     @Args('updateRouterData') updateRouterData: RouterUpdateInput,
   ) {
-    const router = await this.routerService.updateById(
-      updateRouterData.id,
-      updateRouterData,
-    );
+    const router = await this.routerService.updateById(updateRouterData);
     this.logger.log(`Updated router id ${router._id}`);
     this.pubSub.publish('routerUpdated', { routerUpdated: router });
     return router;
