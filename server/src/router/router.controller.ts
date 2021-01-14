@@ -43,6 +43,6 @@ export class RouterController {
     @Param('id') id: string,
     @Body() content: RouterUpdateInput,
   ): Promise<Router> {
-    return this.routerService.updateById(id, content);
+    return this.routerService.updateById(content);
   }
 }
