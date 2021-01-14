@@ -8,7 +8,10 @@ import {
   Patch,
 } from '@nestjs/common';
 import { RouterService } from './router.service';
-import { RouterCreation, RouterDTO, RouterUpdate } from './schemas/router.dto';
+import {
+  RouterCreationInput,
+  RouterUpdateInput,
+} from './schemas/router.inputs';
 import { Router } from './schemas/router.schema';
 
 @Controller('router')
@@ -26,7 +29,7 @@ export class RouterController {
   }
 
   @Post('/')
-  async create(@Body() content: RouterCreation): Promise<Router> {
+  async create(@Body() content: RouterCreationInput): Promise<Router> {
     return this.routerService.create(content);
   }
 
@@ -38,7 +41,7 @@ export class RouterController {
   @Patch('/:id')
   async updateById(
     @Param('id') id: string,
-    @Body() content: RouterUpdate,
+    @Body() content: RouterUpdateInput,
   ): Promise<Router> {
     return this.routerService.updateById(id, content);
   }
