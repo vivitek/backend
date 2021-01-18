@@ -4,7 +4,6 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { BanUpdate } from './schemas/ban.dto';
 import { BanCreation } from './schemas/ban.inputs';
-import { RouterDTO } from '../router/schemas/router.dto';
 
 @Injectable()
 export class BanService {
@@ -36,20 +35,4 @@ export class BanService {
     const ban = await this.banModel.findByIdAndUpdate(id, content);
     return ban;
   }
-
-  async deleteAll(): Promise<any> {
-    if (!process.env.DEBUG) return null;
-    return this.banModel.db.dropDatabase();
-  }
-}
-
-function toDTO(data: Ban) {
-  return !data
-    ? null
-    : {
-        _id: data._id,
-        address: data.address,
-        banned: data.banned,
-        routerSet: new RouterDTO(data.routerSet),
-      };
 }
