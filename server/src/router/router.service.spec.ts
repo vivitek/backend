@@ -3,7 +3,7 @@ import { RouterService } from './router.service';
 import { getModelToken } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Router } from './schemas/router.schema';
-import { RouterUpdateInput } from './schemas/router.inputs';
+import { RouterUpdateInput, RouterCreationInput } from './schemas/router.inputs';
  
 const routerMaker = (
   _id = 'a uuid',
@@ -14,7 +14,7 @@ const routerMaker = (
     _id,
     name,    
     url,
-    save: jest.fn(),
+    save: jest.fn().mockResolvedValue(true),
   };
 };
  
@@ -30,23 +30,26 @@ describe('RouterService', () => {
         RouterService,
         {
           provide: getModelToken('Router'),
-          useValue: {
-            new: jest.fn().mockResolvedValue(routerMaker()),
-            constructor: jest.fn().mockResolvedValue(routerMaker()),
-            find: jest.fn(),
-            findById: jest.fn(),
-            findOne: jest.fn(),
-            findByUrl: jest.fn(),
-            findByIdAndDelete: jest.fn(),
-            findOneAndUpdate: jest.fn(),
-            update: jest.fn(),
-            create: jest.fn(),
-            remove: jest.fn(),
-            exec: jest.fn(),
-            db: {
+          useValue: class {
+            static find = jest.fn();
+            static findById = jest.fn();
+            static findOne =  jest.fn()
+            static findByUrl = jest.fn()
+            static findByIdAndDelete = jest.fn()
+            static findOneAndUpdate = jest.fn()
+            static update = jest.fn()
+            static create = jest.fn()
+            static remove = jest.fn()
+            static exec = jest.fn()
+            static db = {
               dropDatabase,
-            },
-          },
+            };
+
+            constructor(data: RouterCreationInput) {
+              const model = routerMaker('an id', data.name, data.url);
+              return model;
+            }
+          }
         },
       ],
     }).compile();
@@ -116,10 +119,13 @@ describe('RouterService', () => {
  
     expect(await service.deleteById('an id')).toEqual(value);
   });
+
+  it('create work', async () => {
+    const value = await service.create({
+      name: 'a name',
+      url: 'an url',      
+    });
  
-  it('deleteAll work', async () => {
-    if (process.env.DEBUG) {
-      expect(await service.deleteAll()).toEqual(true);
-    }    
+    expect(value).toBe(true);
   });
 });

@@ -37,9 +37,4 @@ export class RouterService {
       .findOneAndUpdate({ _id: content.id }, content)
       .exec();
   }
-
-  async deleteAll() /*: Promise<Array<Router>> */ {
-    if (!process.env.DEBUG) return;
-    return this.routerModel.db.dropDatabase();
-  }
 }
