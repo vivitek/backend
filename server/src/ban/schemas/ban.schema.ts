@@ -22,5 +22,4 @@ export class Ban extends Document {
   routerSet: Types.ObjectId;
 }
 
-export type BanDocument = Ban & Document;
 export const BanSchema = SchemaFactory.createForClass(Ban);
