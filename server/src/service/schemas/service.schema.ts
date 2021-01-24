@@ -1,24 +1,39 @@
-import { Schema, Prop, SchemaFactory } from "@nestjs/mongoose";
-import { Document } from "mongoose"
-import { Tag } from "../../tag/schemas/tag.schema";
-import { Ip } from "../../ip/schemas/ip.schema";
+import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
+import { Document, Types } from 'mongoose';
+import { Tag } from '../../tag/schemas/tag.schema';
+import { Ip } from '../../ip/schemas/ip.schema';
+import { Field, ObjectType } from '@nestjs/graphql';
+import { Router } from 'src/router/schemas/router.schema';
 
+@ObjectType()
 @Schema()
 export class Service extends Document {
-    @Prop()
-    displayName: string
+  @Field(() => String)
+  _id: Types.ObjectId;
 
-    @Prop()
-    name: string
+  @Field(() => String)
+  @Prop()
+  displayName: string;
 
-    @Prop()
-    bandwidth:  number
+  @Field(() => String)
+  @Prop()
+  name: string;
 
-    @Prop()
-    tags: Array<Tag>
+  @Field(() => String)
+  @Prop()
+  bandwidth: number;
 
-    @Prop()
-    ips: Array<Ip>
+  @Field(() => [Tag])
+  @Prop({ type: Types.ObjectId, ref: Tag.name })
+  tags: [Types.ObjectId];
+
+  @Field(() => [String])
+  @Prop({ type: Types.ObjectId, ref: Ip.name })
+  ips: [string];
+
+  @Field(() => Router)
+  @Prop({ type: Types.ObjectId, ref: Router.name })
+  router: Types.ObjectId;
 }
 
-export const ServiceSchema = SchemaFactory.createForClass(Service)
+export const ServiceSchema = SchemaFactory.createForClass(Service);
