@@ -1,33 +1,43 @@
-import { Controller, Get, Param, Post, Body, Delete, Patch } from "@nestjs/common";
-import { TagService } from "./tag.service"
-import { TagCreation, TagDTO, TagUpdate } from "./schemas/tag.dto";
+import {
+  Controller,
+  Get,
+  Param,
+  Post,
+  Body,
+  Delete,
+  Patch,
+} from '@nestjs/common';
+import { TagService } from './tag.service';
+import { TagCreation, TagDTO, TagUpdate } from './schemas/tag.dto';
+import { TagCreationInput, TagUpdateInput } from './schemas/tag.inputs';
+import { Tag } from './schemas/tag.schema';
 
 @Controller('tag')
 export class TagController {
-    constructor(private readonly tagService: TagService) {}
+  constructor(private readonly tagService: TagService) {}
 
-    @Get("/")
-    async getAll(): Promise<Array<TagDTO>> {
-        return this.tagService.findAll()
-    }
+  @Get('/')
+  async getAll(): Promise<Array<Tag>> {
+    return this.tagService.findAll();
+  }
 
-    @Get("/:id")
-    async getById(@Param("id") id: string): Promise<TagDTO> {
-        return this.tagService.findById(id)
-    }
+  @Get('/:id')
+  async getById(@Param('id') id: string): Promise<Tag> {
+    return this.tagService.findById(id);
+  }
 
-    @Post("/")
-    async create(@Body() content: TagCreation): Promise<TagDTO> {
-        return this.tagService.create(content)
-    }
+  @Post('/')
+  async create(@Body() content: TagCreationInput): Promise<Tag> {
+    return this.tagService.create(content);
+  }
 
-    @Delete("/:id")
-    async deleteById(@Param("id") id: string): Promise<TagDTO> {
-        return this.tagService.deleteById(id)
-    }
+  @Delete('/:id')
+  async deleteById(@Param('id') id: string): Promise<Tag> {
+    return this.tagService.deleteById(id);
+  }
 
-    @Patch("/:id")
-    async updateById(@Param("id") id: string, @Body() content: TagUpdate): Promise<TagDTO> {
-        return this.tagService.updateById(id, content)
-    }
+  @Patch('/:id')
+  async updateById(@Body() content: TagUpdateInput): Promise<Tag> {
+    return this.tagService.updateById(content);
+  }
 }
