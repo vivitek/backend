@@ -3,7 +3,7 @@ import { Document, Types } from 'mongoose';
 import { Tag } from '../../tag/schemas/tag.schema';
 import { Ip } from '../../ip/schemas/ip.schema';
 import { Field, ObjectType } from '@nestjs/graphql';
-import { Router } from 'src/router/schemas/router.schema';
+import { Router } from '../../router/schemas/router.schema';
 
 @ObjectType()
 @Schema()
