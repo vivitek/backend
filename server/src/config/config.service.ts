@@ -31,9 +31,4 @@ export class ConfigService {
   async updateById(content: ConfigUpdateInput): Promise<Config> {
     return this.configModel.findByIdAndUpdate(content._id, content);
   }
-
-  async deleteAll() /*: Promise<Array<Config>>*/ {
-    if (!process.env.DEBUG) return;
-    return this.configModel.db.dropDatabase();
-  }
 }
