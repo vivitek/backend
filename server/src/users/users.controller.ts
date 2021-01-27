@@ -1,6 +1,7 @@
 import { User } from './schemas/users.schema';
 import { UsersService } from './users.service';
 import { Controller, Get, Param, Delete, Patch, Body } from '@nestjs/common';
+import { UserUpdateInput } from './schemas/users.input';
 
 @Controller('users')
 export class UsersController {
@@ -25,11 +26,8 @@ export class UsersController {
   }
 
   @Patch(':userID')
-  async updateUser(
-    @Param('userID') userId: string,
-    @Body() user: User,
-  ): Promise<User> {
-    const updated = await this.userService.updateUser(userId, user);
+  async updateUser(@Body() user: UserUpdateInput): Promise<User> {
+    const updated = await this.userService.updateUser(user);
     return updated;
   }
 }

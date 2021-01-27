@@ -1,6 +1,7 @@
 import { Logger } from '@nestjs/common';
-import { Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
 import { PubSub } from 'graphql-subscriptions';
+import { UserCreationInput } from './schemas/users.input';
 import { User } from './schemas/users.schema';
 import { UsersService } from './users.service';
 
@@ -17,5 +18,25 @@ export class UserResolver {
   @Query(() => [User])
   async getUsers() {
     return this.userService.getAll();
+  }
+
+  @Query(() => User)
+  async getUser(@Args('id') id: string) {
+    return this.userService.findById(id);
+  }
+
+  @Mutation(() => User)
+  async createUser(
+    @Args('userCreationData') userCreationData: UserCreationInput,
+  ) {
+    const user = await this.userService.createUser(userCreationData);
+    this.logger.log(`created user id ${user._id}`);
+    this.pubSub.publish('userCreated', { userCreated: user });
+    return user;
+  }
+
+  @Subscription(() => User)
+  async userCreated() {
+    return this.pubSub.asyncIterator('userCreated');
   }
 }
