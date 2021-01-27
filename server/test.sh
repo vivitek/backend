@@ -1,1 +1,4 @@
+cd ..
+docker-compose up -d mongo
+cd server
 MONGO=localhost:27017 BEAMS_SECRET=A916C41C8136459EFB3F95AE73F8168CF124786715C4D5FD09F67F3438A41FD5 npm run test:cov
