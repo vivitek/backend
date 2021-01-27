@@ -1,9 +1,9 @@
-import { UserDto } from './schemas/users.dto';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from './schemas/users.schema';
 import { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
+import { UserCreationInput, UserUpdateInput } from './schemas/users.input';
 
 @Injectable()
 export class UsersService {
@@ -18,26 +18,17 @@ export class UsersService {
   async getAll(): Promise<User[]> {
     return this.userModel.find();
   }
-  async createUser(
-    email: string,
-    password: string,
-    username: string,
-  ): Promise<User | undefined> {
+  async createUser(data: UserCreationInput): Promise<User> {
     const user = new this.userModel({
-      email: email,
-      password: bcrypt.hashSync(password, 12),
-      username: username,
+      ...data,
+      password: bcrypt.hashSync(data.password, 12),
     });
     return user.save();
   }
   async deleteUser(id: string): Promise<User> {
     return this.userModel.findByIdAndDelete(id);
   }
-  async updateUser(id: string, data: User): Promise<User> {
-    const user = await this.userModel.findById(id);
-    if (data.email) user.email = data.email;
-    if (data.username) user.username = data.username;
-    const d = await user.save();
-    return d;
+  async updateUser(data: UserUpdateInput): Promise<User> {
+    return await this.userModel.findByIdAndUpdate(data._id, data).exec();
   }
 }
