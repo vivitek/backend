@@ -32,7 +32,7 @@ export class BanService {
   }
 
   async updateById(id: string, content: BanUpdate): Promise<Ban> {
-    const ban = await this.banModel.findByIdAndUpdate(id, content).exec();
+    const ban = await this.banModel.findByIdAndUpdate(id, content);
     return ban;
   }
 }
