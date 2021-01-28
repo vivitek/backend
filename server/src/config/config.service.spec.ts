@@ -1,137 +1,111 @@
-import { Test, TestingModule } from '@nestjs/testing';
+import { INestApplication } from "@nestjs/common"
+import { AppModule } from "../app.module"
+import { Test } from '@nestjs/testing';
 import { ConfigService } from './config.service';
-import { getModelToken } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { Config } from './schemas/config.schema';
-import {
-  ConfigUpdateInput,
-  ConfigCreationInput,
-} from './schemas/config.inputs';
-
-const configMaker = (
-  _id = 'a uuid',
-  isPublic = false,
-  creator = {},
-  name = 'a name',
-  services = [],
-  configs = [],
-) => {
-  return {
-    _id,
-    public: isPublic,
-    creator,
-    name,
-    services,
-    configs,
-    save: jest.fn().mockResolvedValue(true),
-  };
-};
-
-const dropDatabase = jest.fn().mockResolvedValue(true);
+import { Types } from 'mongoose';
+import { ConfigCreationInput } from './schemas/config.inputs';
 
 describe('ConfigService', () => {
   let service: ConfigService;
-  let model: Model<Config>;
+  let app: INestApplication
 
   beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        ConfigService,
-        {
-          provide: getModelToken('Config'),
-          useValue: class {
-            static find = jest.fn();
-            static findById = jest.fn();
-            static findOne = jest.fn();
-            static findByUrl = jest.fn();
-            static findByIdAndDelete = jest.fn();
-            static findByIdAndUpdate = jest.fn();
-            static update = jest.fn();
-            static create = jest.fn();
-            static remove = jest.fn();
-            static exec = jest.fn();
-            static db = {
-              dropDatabase,
-            };
+    process.env.MONGO= "mongo:27017/test"
+    const module = await Test.createTestingModule({
+      imports: [AppModule]
+    }).compile()
 
-            constructor() {
-              const model = configMaker();
-              return model;
-            }
-          },
-        },
-      ],
-    }).compile();
-
+    app = module.createNestApplication();    
     service = module.get<ConfigService>(ConfigService);
-    model = module.get<Model<Config>>(getModelToken('Config'));
+    await app.init();
   });
 
-  afterEach(() => {
-    jest.clearAllMocks();
+  afterEach(async () => {
+    await service.findAll().then((configs) => {
+      configs.forEach(async config => {
+        await service.deleteById(config._id.toString())
+      })
+    })
+    await app.close();
   });
 
   it('should be defined', () => {
+    expect(app).toBeDefined();
     expect(service).toBeDefined();
   });
 
   it('should return all', async () => {
-    const arr = [configMaker()];
-
-    jest.spyOn(model, 'find').mockReturnValue({
-      exec: jest.fn().mockResolvedValueOnce(arr),
-    } as any);
+    const arr = [];
 
     const result = await service.findAll();
     expect(result).toEqual(arr);
   });
 
   it('findById work', async () => {
-    const value = configMaker();
+    const id = new Types.ObjectId
+    const config: ConfigCreationInput = {
+      name: 'config name',
+      services: [],
+      configs: [],
+      public: true,
+      creator: id,
+    }
+    const value = await service.create(config);
 
-    const spy = jest.spyOn(model, 'findById').mockReturnValue({
-      exec: jest.fn().mockResolvedValueOnce(value),
-    } as any);
+    const result = await service.findById(value._id.toString());
 
-    const result = await service.findById('1');
-
-    expect(result).toEqual(value);
-    expect(spy).toHaveBeenCalledWith('1');
+    expect(config.name).toEqual(result.name)
+    expect(config.services.toString()).toEqual(result.services.toString()) // cast array & CoreMongoArray to string
+    expect(config.configs.toString()).toEqual(result.configs.toString())
+    expect(config.public).toEqual(result.public)
+    expect(config.creator).toEqual(result.creator)
   });
 
   it('updateById work', async () => {
-    const value = configMaker();
-
-    const spy = jest
-      .spyOn(model, 'findByIdAndUpdate')
-      .mockResolvedValueOnce(value as any);
-
+    const id = new Types.ObjectId
+    const config: ConfigCreationInput = {
+      name: 'another name',
+      public: true,
+      creator: id,
+    }
+    const value = await service.create(config);
     const payload = {
-      _id: '1',
-      name: 'a name',
-    } as ConfigUpdateInput;
+      _id: value._id.toString(),
+      name: 'config name',
+      services: [value._id],
+    }
     const result = await service.updateById(payload);
 
-    expect(result).toEqual(value);
-    expect(spy).toHaveBeenCalledWith('1', payload);
+    expect(payload._id).toEqual(result._id.toString());
+    expect(payload.name).toEqual(result.name);
+    expect(payload.services).toEqual(result.services);
   });
 
   it('deleteById work', async () => {
-    const value = configMaker();
+    const id = new Types.ObjectId
+    const config: ConfigCreationInput = {
+      name: 'config name',
+      services: [],
+      configs: [],
+      public: true,
+      creator: id,
+    }
+    const value = await service.create(config);
 
-    const spy = jest
-      .spyOn(model, 'findByIdAndDelete')
-      .mockResolvedValueOnce(value as any);
+    await service.deleteById(value._id.toString())
 
-    expect(await service.deleteById('1')).toEqual(value);
-    expect(spy).toHaveBeenCalledWith('1');
+    expect(await service.findById(value._id.toString())).toEqual(null);
   });
 
   it('create work', async () => {
+    const id = new Types.ObjectId
     const value = await service.create({
-      name: 'an address',
-    } as ConfigCreationInput);
-
-    expect(value).toBe(true);
+      name: 'config name',
+      services: [],
+      configs: [],
+      public: true,
+      creator: id,
+    });
+    expect(value.name).toEqual('config name');
   });
 });

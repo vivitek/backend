@@ -12,11 +12,11 @@ export class UsersService {
   async findById(id: string): Promise<User> {
     return this.userModel.findById(id);
   }
-  async findOne(email: string): Promise<User | undefined> {
+  async findByEmail(email: string): Promise<User | undefined> {
     return this.userModel.findOne({ email });
   }
-  async getAll(): Promise<User[]> {
-    return this.userModel.find();
+  async findAll(): Promise<User[]> {
+    return this.userModel.find().exec();
   }
   async createUser(data: UserCreationInput): Promise<User> {
     const user = new this.userModel({
@@ -25,10 +25,10 @@ export class UsersService {
     });
     return user.save();
   }
-  async deleteUser(id: string): Promise<User> {
+  async deleteById(id: string): Promise<User> {
     return this.userModel.findByIdAndDelete(id);
   }
-  async updateUser(data: UserUpdateInput): Promise<User> {
-    return await this.userModel.findByIdAndUpdate(data._id, data).exec();
+  async updateById(data: UserUpdateInput): Promise<User> {
+    return await this.userModel.findByIdAndUpdate(data._id, data, {new: true}).exec();
   }
 }
