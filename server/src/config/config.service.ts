@@ -29,6 +29,6 @@ export class ConfigService {
   }
 
   async updateById(content: ConfigUpdateInput): Promise<Config> {
-    return this.configModel.findByIdAndUpdate(content._id, content);
+    return this.configModel.findByIdAndUpdate(content._id, content, {new: true});
   }
 }

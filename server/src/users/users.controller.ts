@@ -9,7 +9,7 @@ export class UsersController {
 
   @Get()
   async list(): Promise<User[]> {
-    const users = await this.userService.getAll();
+    const users = await this.userService.findAll();
     return users.map(e => e);
   }
 
@@ -21,13 +21,13 @@ export class UsersController {
 
   @Delete(':userID')
   async deleteUser(@Param('userID') userId: string): Promise<User> {
-    const user = await this.userService.deleteUser(userId);
+    const user = await this.userService.deleteById(userId);
     return user;
   }
 
   @Patch(':userID')
   async updateUser(@Body() user: UserUpdateInput): Promise<User> {
-    const updated = await this.userService.updateUser(user);
+    const updated = await this.userService.updateById(user);
     return updated;
   }
 }

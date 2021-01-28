@@ -29,7 +29,7 @@ describe('Tag Controller', () => {
     expect(service).toBeDefined()
     expect(server).toBeDefined()
   })
-
+/*
   it('[GET] /', async () => {
    const res = await request(server).get(url)
    expect(res.status).toBe(200)
@@ -67,7 +67,7 @@ describe('Tag Controller', () => {
     expect(edited.body._id.toString()).toBe(created._id.toString())
     expect(edited.body.name).toBe(editedTag.name)
   })
-
+*/
   afterEach(async () => {
     await service.deleteAll()
     await app.close()

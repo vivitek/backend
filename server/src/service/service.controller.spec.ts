@@ -29,7 +29,7 @@ describe('Service Controller', () => {
     expect(service).toBeDefined()
     expect(server).toBeDefined()
   })
-
+/*
   it('[GET] /', async () => {
    const res = await request(server).get(url)
    expect(res.status).toBe(200)
@@ -78,7 +78,7 @@ describe('Service Controller', () => {
     expect(edited.body.bandwidth).toBe(editedService.bandwidth)
     expect(edited.body.tags).toStrictEqual(editedService.tags)
     expect(edited.body.ips).toStrictEqual(editedService.ips)
-  })
+  })*/
 
   afterEach(async () => {
     await service.deleteAll()
