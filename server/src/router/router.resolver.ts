@@ -61,6 +61,7 @@ export class RouterResolver {
     const router = await this.routerService.deleteById(id);
     this.logger.log(`Deleted router id ${id}`);
     this.pubSub.publish('routerDeleted', { routerDeleted: router });
+    return router;
   }
 
   @Subscription(() => Router)
