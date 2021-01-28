@@ -1,4 +1,4 @@
-/*import { INestApplication } from "@nestjs/common"
+import { INestApplication } from "@nestjs/common"
 import { Test } from "@nestjs/testing"
 import * as request from "supertest"
 import { AppModule } from "../app.module"
@@ -32,7 +32,7 @@ describe('Template Controller', () => {
     expect(service).toBeDefined()
     expect(server).toBeDefined()
   })
-
+/*
   it('[GET] /', async () => {
    const res = await request(server).get(url)
    expect(res.status).toBe(200)
@@ -79,7 +79,7 @@ describe('Template Controller', () => {
     expect(edited.body.hosts).toStrictEqual(editedTemplate.hosts)
     expect(edited.body.services).toStrictEqual(editedTemplate.services)
   })
-
+*/
   afterEach(async () => {
     await service.deleteAll()
     await app.close()
@@ -104,4 +104,4 @@ const editedTemplate: TemplateUpdate = {
       serviceRef: {} as Service,
       banned: true
     }]
-}*/
+}
