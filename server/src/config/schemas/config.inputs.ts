@@ -7,10 +7,10 @@ export class ConfigCreationInput {
   name: string;
 
   @Field(() => [String], { nullable: true })
-  services?: [string];
+  services?: Types.ObjectId[];
 
   @Field(() => [String], { nullable: true })
-  configs?: [string];
+  configs?: Types.ObjectId[];
 
   @Field(() => Boolean, { nullable: true })
   public?: boolean;
@@ -28,10 +28,10 @@ export class ConfigUpdateInput {
   name?: string;
 
   @Field(() => [String])
-  services?: [Types.ObjectId];
+  services?: Types.ObjectId[];
 
   @Field(() => [String])
-  configs?: [Types.ObjectId];
+  configs?: Types.ObjectId[];
 
   @Field(() => Boolean)
   public?: boolean;
