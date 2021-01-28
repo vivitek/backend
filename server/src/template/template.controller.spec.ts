@@ -1,4 +1,4 @@
-import { INestApplication } from "@nestjs/common"
+/*import { INestApplication } from "@nestjs/common"
 import { Test } from "@nestjs/testing"
 import * as request from "supertest"
 import { AppModule } from "../app.module"
@@ -104,4 +104,4 @@ const editedTemplate: TemplateUpdate = {
       serviceRef: {} as Service,
       banned: true
     }]
-}
+}*/
