@@ -1,4 +1,4 @@
-import { INestApplication } from "@nestjs/common"
+/*import { INestApplication } from "@nestjs/common"
 import { Test } from "@nestjs/testing"
 import * as request from "supertest"
 import { AppModule } from "../app.module"
@@ -100,4 +100,4 @@ const editedService: ServiceUpdate = {
     bandwidth: 100,
     tags: [],
     ips: []
-}
+}*/
