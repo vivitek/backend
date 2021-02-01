@@ -23,11 +23,11 @@ export class Config extends Document {
   name: string;
   @Field(() => [Service])
   @Prop({ type: Types.ObjectId, ref: Service.name, default: [] })
-  services: [Types.ObjectId];
+  services: Types.ObjectId[];
 
   @Field(() => [Config])
   @Prop({ types: Types.ObjectId, ref: Config.name, default: [] })
-  configs: [Types.ObjectId];
+  configs: Types.ObjectId[];
 }
 
 export const ConfigSchema = SchemaFactory.createForClass(Config);
