@@ -1,4 +1,3 @@
-import { AuthController } from './auth.controller';
 import { jwtConstants } from './constants';
 import { UsersModule } from './../users/users.module';
 import { Module } from '@nestjs/common';
@@ -8,10 +7,13 @@ import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   providers: [AuthService],
-  imports: [UsersModule, PassportModule, JwtModule.register({
-    secret: jwtConstants.secret
-  })],
+  imports: [
+    UsersModule,
+    PassportModule,
+    JwtModule.register({
+      secret: jwtConstants.secret,
+    }),
+  ],
   exports: [AuthService],
-  controllers:[AuthController]
 })
 export class AuthModule {}
