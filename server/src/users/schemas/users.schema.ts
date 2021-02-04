@@ -9,15 +9,15 @@ export class User extends Document {
   _id: Types.ObjectId;
 
   @Field(() => String)
-  @Prop({ unique: true, required: true })
+  @Prop({ unique: true, required: true, type: String })
   email: string;
 
   @Field(() => String)
-  @Prop({ required: true })
+  @Prop({ required: true, type: String })
   password: string;
 
   @Field(() => String)
-  @Prop({ required: true, unique: true })
+  @Prop({ required: true, unique: true, type: String })
   username: string;
 }
 
