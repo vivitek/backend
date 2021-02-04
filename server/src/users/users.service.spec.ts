@@ -1,10 +1,7 @@
 import { INestApplication } from "@nestjs/common"
 import { AppModule } from "../app.module"
-import { Test, TestingModule } from '@nestjs/testing';
+import { Test } from '@nestjs/testing';
 import { UsersService } from './users.service';
-import { getModelToken } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { User } from './schemas/users.schema';
 import { UserUpdateInput } from "./schemas/users.input";
 
 describe('UsersService', () => {
@@ -37,19 +34,8 @@ describe('UsersService', () => {
   });
 
   it('findAll work', async () => {
-    const user = {
-      email: 'test@testing.com',
-      password: 'password',
-      username: 'username',
-    }
-    const anotherUser = {
-      email: 'another-test@testing.com',
-      password: 'password',
-      username: 'anotherUsername',
-    }
     const value = await service.createUser(user);
     const anotherValue = await service.createUser(anotherUser);
-
     const result = await service.findAll();
 
     expect(value.email).toEqual(result[0].email);
@@ -59,13 +45,7 @@ describe('UsersService', () => {
   });
 
   it('findByEmail work', async () => {
-    const user = {
-      email: 'test@testing.com',
-      password: 'password',
-      username: 'username',
-    }
-    const value = await service.createUser(user);
-    
+    const value = await service.createUser(user); 
     const result = await service.findByEmail('test@testing.com');
 
     expect(value.email).toEqual(result.email);
@@ -73,13 +53,7 @@ describe('UsersService', () => {
   });
 
   it('findById work', async () => {
-    const user = {
-      email: 'test@testing.com',
-      password: 'password',
-      username: 'username',
-    }
     const value = await service.createUser(user);
-    
     const result = await service.findById(value._id.toString());
 
     expect(value._id.toString()).toEqual(result._id.toString());
@@ -88,24 +62,13 @@ describe('UsersService', () => {
   });
 
   it('deleteUser work', async () => {
-    const user = {
-      email: 'test@testing.com',
-      password: 'password',
-      username: 'username',
-    }
     const value = await service.createUser(user);
-    
     await service.deleteById(value._id.toString());
     
     expect(await service.findById(value._id.toString())).toEqual(null);
   });
   
   it('updateById work', async () => {
-    const user = {
-      email: 'test@testing.com',
-      password: 'password',
-      username: 'username',
-    }
     const value = await service.createUser(user);
     const payload: UserUpdateInput = {
       _id: value._id.toString(),
@@ -121,14 +84,20 @@ describe('UsersService', () => {
   });
   
   it('createUser work', async () => {
-    const user = {
-      email: 'test@testing.com',
-      password: 'password',
-      username: 'username',
-    }
-    const result = await service.createUser(user);
+  const result = await service.createUser(user);
   
     expect(user.email).toEqual(result.email);
     expect(user.username).toEqual(result.username);
   });
+
+  const user = {
+    email: 'test@testing.com',
+    password: 'password',
+    username: 'username',
+  }
+  const anotherUser = {
+    email: 'another-test@testing.com',
+    password: 'password',
+    username: 'anotherUsername',
+  }
 });

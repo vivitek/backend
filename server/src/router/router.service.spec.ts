@@ -1,128 +1,91 @@
-import { Test, TestingModule } from '@nestjs/testing';
+import { Test } from '@nestjs/testing';
+import { INestApplication } from "@nestjs/common";
+import { AppModule } from "../app.module";
 import { RouterService } from './router.service';
-import { getModelToken } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { Router } from './schemas/router.schema';
-import {
-  RouterUpdateInput,
-  RouterCreationInput,
-} from './schemas/router.inputs';
-
-const routerMaker = (_id = 'a uuid', name = 'a router', url = 'a url') => {
-  return {
-    _id,
-    name,
-    url,
-    save: jest.fn().mockResolvedValue(true),
-  };
-};
-
-const dropDatabase = jest.fn().mockResolvedValue(true);
+import { Types } from 'mongoose';
 
 describe('RouterService', () => {
   let service: RouterService;
-  let model: Model<Router>;
+  let app: INestApplication
 
   beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        RouterService,
-        {
-          provide: getModelToken('Router'),
-          useValue: class {
-            static find = jest.fn();
-            static findById = jest.fn();
-            static findOne = jest.fn();
-            static findByUrl = jest.fn();
-            static findByIdAndDelete = jest.fn();
-            static findOneAndUpdate = jest.fn();
-            static update = jest.fn();
-            static create = jest.fn();
-            static remove = jest.fn();
-            static exec = jest.fn();
-            static db = {
-              dropDatabase,
-            };
+    process.env.MONGO= "mongo:27017/test"
+    const module = await Test.createTestingModule({
+      imports: [AppModule]
+    }).compile()
 
-            constructor(data: RouterCreationInput) {
-              const model = routerMaker('an id', data.name, data.url);
-              return model;
-            }
-          },
-        },
-      ],
-    }).compile();
-
+    app = module.createNestApplication();    
     service = module.get<RouterService>(RouterService);
-    model = module.get<Model<Router>>(getModelToken('Router'));
+    await app.init();
   });
 
-  afterEach(() => {
-    jest.clearAllMocks();
+  afterEach(async () => {
+    await service.findAll().then((routers) => {
+      routers.forEach(async router => {
+        await service.deleteById(router._id.toString())
+      })
+    })
+    await app.close();
   });
 
   it('should be defined', () => {
+    expect(app).toBeDefined();
     expect(service).toBeDefined();
   });
 
-  it('should return all routers', async () => {
-    const arr = [routerMaker('1', 'router #1', 'url #1')];
-
-    jest.spyOn(model, 'find').mockReturnValue({
-      exec: jest.fn().mockResolvedValueOnce(arr),
-    } as any);
+  it('should return all', async () => {
+    const arr = [];
 
     const result = await service.findAll();
     expect(result).toEqual(arr);
   });
 
-  it('findById work', async () => {
-    const value = routerMaker('1', 'router #1', 'url #1');
+  it('findByUrl work', async () => {
+    const value = await service.create(router);
+    const result = await service.findByUrl(value.url);
 
-    jest.spyOn(model, 'findById').mockReturnValue({
-      exec: jest.fn().mockResolvedValueOnce(value),
-    } as any);
-
-    const result = await service.findById('1');
-    expect(result).toEqual(value);
+    expect(value.name).toEqual(result.name)
+    expect(value.url).toEqual(result.url)
+    expect(value._id.toString()).toEqual(result._id.toString())
   });
 
-  it('findByUrl work', async () => {
-    const value = routerMaker('1', 'router #1', 'url #1');
+  it('findById work', async () => {
+    const value = await service.create(router);
+    const result = await service.findById(value._id.toString());
 
-    jest.spyOn(model, 'findOne').mockReturnValue({
-      exec: jest.fn().mockResolvedValueOnce(value),
-    } as any);
-
-    const result = await service.findByUrl('a url');
-    expect(result).toEqual(value);
+    expect(value.name).toEqual(result.name)
+    expect(value.url).toEqual(result.url)
+    expect(value._id.toString()).toEqual(result._id.toString())
   });
 
   it('updateById work', async () => {
-    const value = routerMaker('1', 'router #1', 'url #1');
+    const value = await service.create(router);
+    const payload = {
+      url: 'another string',
+      name: 'router name',
+      id: value._id.toString(),
+    }
+    const result = await service.updateById(payload);
 
-    jest.spyOn(model, 'findOneAndUpdate').mockReturnValue({
-      exec: jest.fn().mockResolvedValueOnce(value),
-    } as any);
-
-    const result = await service.updateById({} as RouterUpdateInput);
-    expect(result).toEqual(value);
+    expect(payload.id).toEqual(result._id.toString());
+    expect(payload.name).toEqual(result.name);
+    expect(payload.url).toEqual(result.url);
   });
 
   it('deleteById work', async () => {
-    const value = routerMaker('1', 'router #1', 'url #1');
+    const value = await service.create(router);
 
-    jest.spyOn(model, 'findByIdAndDelete').mockResolvedValue(value as any);
+    await service.deleteById(value._id.toString())
 
-    expect(await service.deleteById('an id')).toEqual(value);
+    expect(await service.findById(value._id.toString())).toEqual(null);
   });
 
   it('create work', async () => {
-    const value = await service.create({
-      name: 'a name',
-      url: 'an url',
-    });
-
-    expect(value).toBe(true);
+    const value = await service.create(router);
+    expect(value.name).toEqual('router name');
   });
+  const router = {
+    name: 'router name',
+    url: 'url',
+  }
 });
