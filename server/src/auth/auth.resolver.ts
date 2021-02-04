@@ -2,8 +2,8 @@ import { Logger } from '@nestjs/common';
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
 import { PubSub } from 'graphql-subscriptions';
 import { AuthService } from './auth.service';
-import { LoginInput, RegisterInput } from './schema/auth.inputs';
-import { AuthDetails } from './schema/auth.schema';
+import { LoginInput, RegisterInput } from './schemas/auth.inputs';
+import { AuthDetails } from './schemas/auth.schema';
 
 @Resolver()
 export class AuthResolver {
