@@ -17,7 +17,7 @@
     "lint:fix": "eslint . --ext .ts --fix",
     "test": "DEBUG=true jest",
     "test:watch": "DEBUG=true jest --watch --runInBand",
-    "test:cov": "DEBUG=true jest --coverage --ci --runInBand --forceExit",
+    "test:cov": "DEBUG=true jest --coverage --ci --runInBand --forceExit --detectOpenHandles",
     "test:debug": "DEBUG=true node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "DEBUG=truejest --config ./test/jest-e2e.json --runInBand"
   },

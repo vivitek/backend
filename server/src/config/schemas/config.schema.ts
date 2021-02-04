@@ -11,7 +11,7 @@ export class Config extends Document {
   _id: Types.ObjectId;
 
   @Field(() => Boolean)
-  @Prop({ default: false })
+  @Prop({ default: false, type: Boolean })
   public: boolean;
 
   @Field(() => User)
@@ -26,7 +26,7 @@ export class Config extends Document {
   services: Types.ObjectId[];
 
   @Field(() => [Config])
-  @Prop({ types: Types.ObjectId, ref: Config.name, default: [] })
+  @Prop({ type: Types.ObjectId, ref: Config.name, default: [] })
   configs: Types.ObjectId[];
 }
 
