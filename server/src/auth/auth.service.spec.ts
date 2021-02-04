@@ -1,7 +1,6 @@
 import { Test } from '@nestjs/testing';
-import { BadRequestException, INestApplication } from "@nestjs/common"
+import { INestApplication } from "@nestjs/common"
 import { AuthService } from './auth.service';
-import { RegisterInput, LoginInput } from './schemas/auth.inputs';
 import { UsersService } from '../users/users.service';
 import { AppModule } from "../app.module"
 
@@ -80,7 +79,7 @@ describe('AuthService', () => {
     });
 
     it('should return null if bad credentials', async() => {
-        const value = await service.register(user);
+        await service.register(user);
         const result = await service.validateUser({email: 'test@testing.com', password: 'bad_password'});
 
         expect(result).toEqual(null);

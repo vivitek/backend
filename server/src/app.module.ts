@@ -1,8 +1,6 @@
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { BanModule } from './ban/ban.module';
 import { TagModule } from './tag/tag.module';
@@ -35,7 +33,5 @@ const MODULES = [
 
 @Module({
   imports: MODULES,
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}
