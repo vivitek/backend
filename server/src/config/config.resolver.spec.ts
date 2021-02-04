@@ -2,11 +2,13 @@ import { INestApplication } from "@nestjs/common"
 import { AppModule } from "../app.module"
 import { Test } from '@nestjs/testing';
 import { ConfigService } from './config.service';
+import { ConfigResolver } from './config.resolver';
 import { Types } from 'mongoose';
 import { ConfigCreationInput } from './schemas/config.inputs';
 
 describe('ConfigService', () => {
   let service: ConfigService;
+  let resolver: ConfigResolver;
   let app: INestApplication
 
   beforeEach(async () => {
@@ -17,6 +19,7 @@ describe('ConfigService', () => {
 
     app = module.createNestApplication();    
     service = module.get<ConfigService>(ConfigService);
+    resolver = module.get<ConfigResolver>(ConfigResolver);
     await app.init();
   });
 
@@ -28,7 +31,7 @@ describe('ConfigService', () => {
     })
     await app.close();
   });
-
+ 
   const id = new Types.ObjectId
   const config: ConfigCreationInput = {
     name: 'config name',
@@ -37,22 +40,23 @@ describe('ConfigService', () => {
     public: true,
     creator: id,
   }
-  
+
   it('should be defined', () => {
     expect(app).toBeDefined();
     expect(service).toBeDefined();
+    expect(resolver).toBeDefined();
   });
 
   it('should return all', async () => {
     const arr = [];
-    const result = await service.findAll();
 
+    const result = await resolver.getConfigs();
     expect(result).toEqual(arr);
   });
 
-  it('findById work', async () => {
-    const value = await service.create(config);
-    const result = await service.findById(value._id.toString());
+  it('getConfig work', async () => {
+    const value = await resolver.createConfig(config);
+    const result = await resolver.getConfig(value._id.toString());
 
     expect(value.name).toEqual(result.name)
     expect(value.services.toString()).toEqual(result.services.toString()) // cast array & CoreMongoArray to string
@@ -61,30 +65,37 @@ describe('ConfigService', () => {
     expect(value.creator).toEqual(result.creator)
   });
 
-  it('updateById work', async () => {
-    const value = await service.create(config);
+  it('updateConfig work', async () => {
+    const value = await resolver.createConfig(config);
     const payload = {
       _id: value._id.toString(),
       name: 'config name',
       services: [value._id],
     }
-    const result = await service.updateById(payload);
+    const result = await resolver.updateConfig(payload);
 
     expect(payload._id).toEqual(result._id.toString());
     expect(payload.name).toEqual(result.name);
     expect(payload.services).toEqual(result.services);
   });
 
-  it('deleteById work', async () => {
-    const value = await service.create(config);
-    await service.deleteById(value._id.toString())
+  it('deleteConfig work', async () => {
+    const value = await resolver.createConfig(config);
+    await resolver.deleteConfig(value._id.toString())
 
-    expect(await service.findById(value._id.toString())).toEqual(null);
+    expect(await resolver.getConfig(value._id.toString())).toEqual(null);
+  });
+
+  it('subscriptions exists', async () => {
+    const value = await resolver.createConfig(config);
+
+    expect(await resolver.configCreated(value.creator.toString())).toBeDefined();
+    expect(await resolver.configUpdated(value.creator.toString())).toBeDefined();
   });
 
   it('create work', async () => {
-    const value = await service.create(config);
-    
+    const value = await resolver.createConfig(config);
+
     expect(value.name).toEqual('config name');
   });
 });
