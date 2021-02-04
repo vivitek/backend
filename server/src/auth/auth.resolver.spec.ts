@@ -1,12 +1,12 @@
 import { Test } from '@nestjs/testing';
 import { INestApplication } from "@nestjs/common"
-import { AuthService } from './auth.service';
+import { AuthResolver } from './auth.resolver';
 import { UsersService } from '../users/users.service';
 import { AppModule } from "../app.module"
 
 
-describe('AuthService', () => {
-    let service: AuthService;
+describe('AuthResolver', () => {
+    let authResolver: AuthResolver;
     let usersService: UsersService;
     let app: INestApplication
   
@@ -17,19 +17,29 @@ describe('AuthService', () => {
       }).compile()
   
       app = module.createNestApplication();
-      service = module.get<AuthService>(AuthService);
       usersService = module.get<UsersService>(UsersService);
+      authResolver = module.get<AuthResolver>(AuthResolver);
       await app.init();
     });
   
+    const user = {
+        email: 'test@testing.com',
+        username: 'username',
+        password: 'password',
+    }
+    const login = {
+        email: 'test@testing.com',
+        password: 'password',
+    }
+
     it('should be defined', () => {
       expect(app).toBeDefined();
-      expect(service).toBeDefined()
       expect(usersService).toBeDefined()
+      expect(authResolver).toBeDefined()
     });
 
     it('should register user', async() => {
-        const value = await service.register(user);
+        const value = await authResolver.register(user);
         const result = await usersService.findAll();
 
         expect(value.access_token).toBeDefined();
@@ -37,18 +47,18 @@ describe('AuthService', () => {
     });
 
     it('register should throw error if user already exist', async() => {
-        const value = await service.register(user);
+        const value = await authResolver.register(user);
         const result = await usersService.findAll();
 
         expect(value.user.email).toEqual(result[0].email);
-        await expect(service.register(user))
+        await expect(authResolver.register(user))
         .rejects
         .toThrow('User already exists');
     });
 
     it('should login user', async() => {
-        const value = await service.register(user);
-        const result = await service.login(login);
+        const value = await authResolver.register(user);
+        const result = await authResolver.login(login);
 
         expect(result.access_token).toBeDefined();
         expect(value.user.email).toEqual(result.user.email);
@@ -59,27 +69,11 @@ describe('AuthService', () => {
             email: 'test@testing.com',
             password: 'bad_password',
         }
-        await service.register(user);
+        await authResolver.register(user);
 
-        await expect(service.login(badlogin))
+        await expect(authResolver.login(badlogin))
         .rejects
         .toThrow('Something went wrong');
-    });
-
-    it('should validate user', async() => {
-        const value = await service.register(user);
-        const result = await service.validateUser(login);
-
-        expect(value.user.email).toEqual(result.email);
-        expect(value.user.username).toEqual(result.username);
-        expect(value.user._id).toEqual(result._id);
-    });
-
-    it('should return null if bad credentials', async() => {
-        await service.register(user);
-        const result = await service.validateUser({email: 'test@testing.com', password: 'bad_password'});
-
-        expect(result).toEqual(null);
     });
   
     afterEach(async () => {
@@ -90,15 +84,5 @@ describe('AuthService', () => {
         })
         await app.close();
     });
-
-    const user = {
-        email: 'test@testing.com',
-        username: 'username',
-        password: 'password',
-    }
-    const login = {
-        email: 'test@testing.com',
-        password: 'password',
-    }
 });
   
