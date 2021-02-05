@@ -49,8 +49,8 @@ describe('ConfigService', () => {
 
   it('should return all', async () => {
     const arr = [];
-
     const result = await resolver.getConfigs();
+
     expect(result).toEqual(arr);
   });
 

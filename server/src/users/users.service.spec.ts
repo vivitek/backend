@@ -84,7 +84,7 @@ describe('UsersService', () => {
   });
   
   it('createUser work', async () => {
-  const result = await service.createUser(user);
+    const result = await service.createUser(user);
   
     expect(user.email).toEqual(result.email);
     expect(user.username).toEqual(result.username);
