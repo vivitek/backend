@@ -55,7 +55,7 @@ describe('ConfigService', () => {
     const result = await service.findById(value._id.toString());
 
     expect(value.name).toEqual(result.name)
-    expect(value.services.toString()).toEqual(result.services.toString()) // cast array & CoreMongoArray to string
+    expect(value.services.toString()).toEqual(result.services.toString())
     expect(value.configs.toString()).toEqual(result.configs.toString())
     expect(value.public).toEqual(result.public)
     expect(value.creator).toEqual(result.creator)

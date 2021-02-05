@@ -93,6 +93,7 @@ describe('BanResolver', () => {
 
     expect(await resolver.banCreated(value.routerSet.toString())).toBeDefined()
     expect(await resolver.banUpdated(value.routerSet.toString())).toBeDefined()
+    expect(await resolver.routerSet(value, false)).toBeDefined()
   })
 
   afterEach(async () => {

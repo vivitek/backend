@@ -64,6 +64,7 @@ export class ConfigResolver {
 
   @Subscription(() => Config, {
     filter: ({ configCreated }, { creator }) => {
+      /* istanbul ignore next */
       return configCreated.creator == creator || configCreated.public;
     },
   })
@@ -73,6 +74,7 @@ export class ConfigResolver {
 
   @Subscription(() => Config, {
     filter: ({ configUpdated }, { creatorId }) => {
+      /* istanbul ignore next */
       return configUpdated.creator === creatorId;
     },
   })

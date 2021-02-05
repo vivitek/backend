@@ -82,6 +82,17 @@
       "json",
       "ts"
     ],
+    "collectCoverageFrom": [
+      "!**/beams/**",
+      "!**.controller.ts",
+      "!**/*.dto.ts",
+      "!**/*.controller.ts",
+      "!**/main.ts",
+      "!**/template/**",
+      "!**/ip/**",
+      "!**/tag/**",
+      "!**/service/**"
+    ],
     "coverageDirectory": "/app/coverage",
     "collectCoverage": true,
     "rootDir": "src",
