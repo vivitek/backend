@@ -57,8 +57,9 @@ export class BanResolver {
     return ban;
   }
   @Subscription(() => Ban, {
+    /* istanbul ignore next */
     filter: (payload, variables) => {
-      /* istanbul ignore next */
+    /* istanbul ignore next */
       return payload.banCreated.routerSet === variables.routerSet;
     },
   })
@@ -66,8 +67,9 @@ export class BanResolver {
     return this.pubSub.asyncIterator('banCreated');
   }
   @Subscription(() => Ban, {
+    /* istanbul ignore next */
     filter: (payload, variables) => {
-      /* istanbul ignore next */
+    /* istanbul ignore next */
       return payload.banUpdated.routerSet === variables.routerSet;
     },
   })
