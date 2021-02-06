@@ -84,7 +84,6 @@
     ],
     "collectCoverageFrom": [
       "!**/beams/**",
-      "!**.controller.ts",
       "!**/*.dto.ts",
       "!**/*.controller.ts",
       "!**/main.ts",
