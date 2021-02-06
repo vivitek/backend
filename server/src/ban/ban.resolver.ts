@@ -58,7 +58,6 @@ export class BanResolver {
   }
   @Subscription(() => Ban, {
     filter: (payload, variables) => {
-    /* istanbul ignore next */
       return payload.banCreated.routerSet === variables.routerSet;
     },
   })
@@ -67,7 +66,6 @@ export class BanResolver {
   }
   @Subscription(() => Ban, {
     filter: (payload, variables) => {
-    /* istanbul ignore next */
       return payload.banUpdated.routerSet === variables.routerSet;
     },
   })
@@ -77,7 +75,6 @@ export class BanResolver {
 
   @ResolveField()
   async routerSet(@Parent() ban: Ban, @Args('populate') populate: boolean) {
-    /* istanbul ignore next */
     if (populate) await ban.populate('routerSet').execPopulate();
     return ban.routerSet;
   }
