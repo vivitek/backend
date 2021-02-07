@@ -11,6 +11,7 @@ import { ConfigModule } from './config/config.module';
 import { TemplateModule } from './template/tempalte.module';
 import { BeamsModule } from './beams/beams.module';
 import { GraphQLModule } from '@nestjs/graphql';
+import { AppController } from './app.controller';
 
 const MODULES = [
   MongooseModule.forRoot(`mongodb://${process.env.MONGO}/vivi`),
@@ -33,5 +34,6 @@ const MODULES = [
 
 @Module({
   imports: MODULES,
+  controllers: [AppController],
 })
 export class AppModule {}
