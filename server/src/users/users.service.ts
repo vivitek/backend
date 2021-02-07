@@ -29,7 +29,11 @@ export class UsersService {
     return this.userModel.findByIdAndDelete(id);
   }
   async updateById(data: UserUpdateInput): Promise<User> {
-    return await this.userModel.findByIdAndUpdate(data._id, data, {
+    const newData = { ...data };
+    if (newData.password) {
+      newData.password = bcrypt.hashSync(data.password, 12);
+    }
+    return await this.userModel.findByIdAndUpdate(data._id, newData, {
       new: true,
     });
   }
