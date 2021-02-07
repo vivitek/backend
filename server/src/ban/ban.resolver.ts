@@ -56,7 +56,6 @@ export class BanResolver {
     this.pubSub.publish('banDeleted', { banDeleted: ban });
     return ban;
   }
-
   @Subscription(() => Ban, {
     filter: (payload, variables) => {
       return payload.banCreated.routerSet === variables.routerSet;
@@ -65,7 +64,6 @@ export class BanResolver {
   async banCreated(@Args('routerSet') routerSet: string) {
     return this.pubSub.asyncIterator('banCreated');
   }
-
   @Subscription(() => Ban, {
     filter: (payload, variables) => {
       return payload.banUpdated.routerSet === variables.routerSet;

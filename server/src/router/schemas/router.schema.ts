@@ -13,7 +13,7 @@ export class Router extends Document {
   name: string;
 
   @Field(() => String)
-  @Prop({ unique: true })
+  @Prop({ unique: true, type: String })
   url: string;
 }
 

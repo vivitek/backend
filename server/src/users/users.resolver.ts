@@ -6,7 +6,7 @@ import { User } from './schemas/users.schema';
 import { UsersService } from './users.service';
 
 @Resolver()
-export class UserResolver {
+export class UsersResolver {
   private pubSub: PubSub;
   private logger: Logger;
 
@@ -53,6 +53,7 @@ export class UserResolver {
 
   @Subscription(() => User)
   async userCreated() {
+    /* istanbul ignore next */
     return this.pubSub.asyncIterator('userCreated');
   }
 }

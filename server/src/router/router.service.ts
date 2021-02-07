@@ -34,7 +34,7 @@ export class RouterService {
 
   async updateById(content: RouterUpdateInput): Promise<Router> {
     return this.routerModel
-      .findOneAndUpdate({ _id: content.id }, content)
+      .findByIdAndUpdate({ _id: content.id }, content, {new: true,})
       .exec();
   }
 }
