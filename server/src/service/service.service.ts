@@ -17,6 +17,10 @@ export class ServiceService {
     return await this.serviceModel.find().exec();
   }
 
+  async findByRouter(routerId: string): Promise<Service[]> {
+    return await this.serviceModel.find({ router: routerId });
+  }
+
   async findById(id: string): Promise<Service> {
     return await this.serviceModel.findById(id).exec();
   }
@@ -28,6 +32,14 @@ export class ServiceService {
 
   async deleteById(id: string): Promise<Service> {
     return await this.serviceModel.findByIdAndDelete(id);
+  }
+
+  async deleteByRouter(routerId: string): Promise<Service[]> {
+    const services = await this.findByRouter(routerId);
+    services.forEach(async e => {
+      await e.delete();
+    });
+    return services;
   }
 
   async updateById(content: ServiceUpdateInput): Promise<Service> {
