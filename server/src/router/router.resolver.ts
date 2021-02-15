@@ -2,7 +2,7 @@ import { Logger } from '@nestjs/common';
 import { Resolver, Query, Args, Mutation, Subscription } from '@nestjs/graphql';
 import { PubSub } from 'graphql-subscriptions';
 import { RouterService } from './router.service';
-import { RouterDTO } from './schemas/router.dto';
+
 import {
   RouterCreationInput,
   RouterUpdateInput,
