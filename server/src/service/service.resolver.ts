@@ -8,7 +8,7 @@ import {
 import { Service } from './schemas/service.schema';
 import { ServiceService } from './service.service';
 
-@Resolver()
+@Resolver(() => Service)
 export class ServiceResolver {
   private readonly logger: Logger;
   private pubSub: PubSub;
