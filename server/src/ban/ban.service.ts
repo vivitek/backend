@@ -31,8 +31,14 @@ export class BanService {
     return await this.banModel.findByIdAndDelete(id).exec();
   }
 
+  async deleteByRouter(routerId: string): Promise<Ban[]> {
+    return await this.banModel.deleteMany({ routerSet: routerId });
+  }
+
   async updateById(id: string, content: BanUpdate): Promise<Ban> {
-    const ban = await this.banModel.findByIdAndUpdate(id, content, {new: true});
+    const ban = await this.banModel.findByIdAndUpdate(id, content, {
+      new: true,
+    });
     return ban;
   }
 }
