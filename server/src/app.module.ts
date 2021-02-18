@@ -8,7 +8,6 @@ import { RouterModule } from './router/router.module';
 import { IpModule } from './ip/ip.module';
 import { ServiceModule } from './service/service.module';
 import { ConfigModule } from './config/config.module';
-import { TemplateModule } from './template/tempalte.module';
 import { BeamsModule } from './beams/beams.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { AppController } from './app.controller';
@@ -28,7 +27,6 @@ const MODULES = [
   IpModule,
   ServiceModule,
   ConfigModule,
-  TemplateModule,
   BeamsModule,
 ];
 
