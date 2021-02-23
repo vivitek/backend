@@ -9,19 +9,19 @@ describe('AuthResolver', () => {
     let authResolver: AuthResolver;
     let usersService: UsersService;
     let app: INestApplication
-  
+
     beforeEach(async () => {
       process.env.MONGO= "mongo:27017/test"
       const module = await Test.createTestingModule({
         imports: [AppModule]
       }).compile()
-  
+
       app = module.createNestApplication();
       usersService = module.get<UsersService>(UsersService);
       authResolver = module.get<AuthResolver>(AuthResolver);
       await app.init();
     });
-  
+
     const user = {
         email: 'test@testing.com',
         username: 'username',
@@ -30,6 +30,12 @@ describe('AuthResolver', () => {
     const login = {
         email: 'test@testing.com',
         password: 'password',
+    }
+
+    const adminCredentials = {
+      email: "superAdmin@vincipit.com",
+      username: "admin",
+      password: "admin"
     }
 
     it('should be defined', () => {
@@ -75,7 +81,23 @@ describe('AuthResolver', () => {
         .rejects
         .toThrow('Something went wrong');
     });
-  
+
+    it('should login admin', async() => {
+      const admin = await authResolver.register(adminCredentials)
+      const res = await authResolver.loginGodView(adminCredentials)
+
+      expect(res.access_token).toBeDefined()
+      expect(res.user.email).toBe(admin.user.email)
+    })
+
+    it ('should not log non admin', async () => {
+      await authResolver.register(user)
+
+      await expect(authResolver.loginGodView(user))
+        .rejects
+        .toThrow("Forbidden")
+    })
+
     afterEach(async () => {
         await usersService.findAll().then((users) => {
           users.forEach(async user => {
@@ -85,4 +107,3 @@ describe('AuthResolver', () => {
         await app.close();
     });
 });
-  

@@ -9,19 +9,19 @@ describe('AuthService', () => {
     let service: AuthService;
     let usersService: UsersService;
     let app: INestApplication
-  
+
     beforeEach(async () => {
       process.env.MONGO= "mongo:27017/test"
       const module = await Test.createTestingModule({
         imports: [AppModule]
       }).compile()
-  
+
       app = module.createNestApplication();
       service = module.get<AuthService>(AuthService);
       usersService = module.get<UsersService>(UsersService);
       await app.init();
     });
-  
+
     it('should be defined', () => {
       expect(app).toBeDefined();
       expect(service).toBeDefined()
@@ -81,7 +81,23 @@ describe('AuthService', () => {
 
         expect(result).toEqual(null);
     });
-  
+
+    it('should login admin', async () => {
+        const value = await service.register(admin);
+        const result = await service.loginGodView(admin);
+
+        expect(result.access_token).toBeDefined();
+        expect(value.user.email).toEqual(result.user.email);
+    })
+
+    it ('should not log non admin', async () => {
+        await service.register(user)
+
+        await expect(service.loginGodView(user))
+            .rejects
+            .toThrow('Forbidden');
+    })
+
     afterEach(async () => {
         await usersService.findAll().then((users) => {
           users.forEach(async user => {
@@ -100,5 +116,9 @@ describe('AuthService', () => {
         email: 'test@testing.com',
         password: 'password',
     }
+    const admin = {
+        email: "superAdmin@vincipit.com",
+        username: "admin",
+        password: "admin"
+    }
 });
-  
