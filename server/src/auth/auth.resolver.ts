@@ -23,4 +23,9 @@ export class AuthResolver {
   async login(@Args('loginData') loginData: LoginInput) {
     return await this.authService.login(loginData);
   }
+
+  @Mutation(() => AuthDetails)
+  async loginGodView(@Args('loginData') loginData: LoginInput) {
+    return await this.authService.loginGodView(loginData)
+  }
 }
