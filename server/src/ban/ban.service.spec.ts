@@ -84,6 +84,13 @@ describe('BanService', () => {
 
     expect(await service.findById(value._id.toString())).toEqual(null);
   });
+  
+  it('deleteByRouter work', async () => {
+    const value = await service.create(ban);
+    await service.deleteByRouter(value._id.toString())
+
+    expect(await service.findByRouter(value._id.toString())).toEqual([]);
+  });
 
   it('create work', async () => {
     const value = await service.create(ban);

@@ -13,5 +13,5 @@ export class TagUpdateInput {
   name: string;
 
   @Field(() => String)
-  id: string;
+  _id: string;
 }

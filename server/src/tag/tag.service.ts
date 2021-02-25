@@ -26,11 +26,6 @@ export class TagService {
   }
 
   async updateById(content: TagUpdateInput): Promise<Tag> {
-    return this.tagModel.findByIdAndUpdate(content.id, content, { new: true });
-  }
-
-  async deleteAll(): Promise<any> {
-    if (!process.env.DEBUG) return null;
-    return this.tagModel.db.dropDatabase();
+    return this.tagModel.findByIdAndUpdate(content._id, content, { new: true });
   }
 }

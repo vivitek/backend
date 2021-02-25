@@ -31,8 +31,9 @@ export class BanService {
     return await this.banModel.findByIdAndDelete(id).exec();
   }
 
-  async deleteByRouter(routerId: string): Promise<Ban[]> {
-    return await this.banModel.deleteMany({ routerSet: routerId });
+  async deleteByRouter(routerId: string): Promise<Boolean> {
+    await this.banModel.deleteMany({ routerSet: routerId });
+    return true
   }
 
   async updateById(id: string, content: BanUpdate): Promise<Ban> {

@@ -14,6 +14,11 @@ export class TagResolver {
     this.logger = new Logger('TagResolver');
   }
 
+  @Query(() => Tag)
+  async getTag(@Args('tagId') tagId: string) {
+    return this.tagService.findById(tagId);
+  }
+
   @Query(() => [Tag])
   async getTags(): Promise<Tag[]> {
     return this.tagService.findAll();

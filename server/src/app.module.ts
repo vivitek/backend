@@ -5,7 +5,6 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { BanModule } from './ban/ban.module';
 import { TagModule } from './tag/tag.module';
 import { RouterModule } from './router/router.module';
-import { IpModule } from './ip/ip.module';
 import { ServiceModule } from './service/service.module';
 import { ConfigModule } from './config/config.module';
 import { BeamsModule } from './beams/beams.module';
@@ -25,7 +24,6 @@ const MODULES = [
   AuthModule,
   UsersModule,
   RouterModule,
-  IpModule,
   ServiceModule,
   ConfigModule,
   BeamsModule,

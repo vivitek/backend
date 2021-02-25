@@ -68,7 +68,24 @@ describe('UsersService', () => {
     expect(await service.findById(value._id.toString())).toEqual(null);
   });
   
-  it('updateById work', async () => {
+  it('updateById with new password work', async () => {
+    const value = await service.createUser(user);
+    const payload: UserUpdateInput = {
+      _id: value._id.toString(),
+      username: 'anotherUsername',
+      email: 'anotherEmail',
+      password: 'anotherPassword'
+    }
+    const result = await service.updateById(payload);
+    const verify = await service.findById(value._id.toString());
+
+    expect(verify._id.toString()).toEqual(result._id.toString());
+    expect(verify.email).toEqual(result.email);
+    expect(verify.username).toEqual(result.username);
+    expect(verify.password).toEqual(result.password);
+  });
+
+  it('updateById without new password work', async () => {
     const value = await service.createUser(user);
     const payload: UserUpdateInput = {
       _id: value._id.toString(),
@@ -76,11 +93,12 @@ describe('UsersService', () => {
       email: 'anotherEmail',
     }
     const result = await service.updateById(payload);
+    const verify = await service.findById(value._id.toString());
 
-    expect(payload._id).toEqual(result._id.toString());
-    expect(payload.email).toEqual(result.email);
-    expect(payload.username).toEqual(result.username);
-    expect(value.password).toEqual(result.password);
+    expect(verify._id.toString()).toEqual(result._id.toString());
+    expect(verify.email).toEqual(result.email);
+    expect(verify.username).toEqual(result.username);
+    expect(verify.password).toEqual(result.password);
   });
   
   it('createUser work', async () => {

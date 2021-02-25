@@ -63,8 +63,8 @@ export class BanResolver {
     return ban;
   }
 
-  @Mutation(() => [Ban])
-  async deleteByRouter(@Args('routerId') routerId: string): Promise<Ban[]> {
+  @Mutation(() => Boolean)
+  async deleteByRouter(@Args('routerId') routerId: string): Promise<Boolean> {
     return await this.banService.deleteByRouter(routerId);
   }
 

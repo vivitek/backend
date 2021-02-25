@@ -87,9 +87,6 @@
       "!**/*.dto.ts",
       "!**/*.controller.ts",
       "!**/main.ts",
-      "!**/template/**",
-      "!**/ip/**",
-      "!**/tag/**",
       "!**/service/**"
     ],
     "coverageDirectory": "/app/coverage",
