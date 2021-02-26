@@ -18,6 +18,7 @@ const MODULES = [
     installSubscriptionHandlers: true,
     autoSchemaFile: true,
     playground: true,
+    context: ({ req }) => ({ headers: req.headers }),
   }),
   BanModule,
   TagModule,

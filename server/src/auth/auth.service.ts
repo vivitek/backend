@@ -25,7 +25,7 @@ export class AuthService {
     if (payload) {
       return {
         access_token: this.jwtService.sign(payload.toJSON(), {
-          secret: 'sting-sell-pioneer',
+          secret: process.env.SECRET || 'sting-sell-pioneer',
         }),
         user: payload,
       };
@@ -45,7 +45,7 @@ export class AuthService {
       });
       return {
         access_token: this.jwtService.sign(user.toJSON(), {
-          secret: 'sting-sell-pioneer',
+          secret: process.env.SECRET || 'sting-sell-pioneer',
         }),
         user,
       };
