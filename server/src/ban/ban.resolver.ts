@@ -1,4 +1,4 @@
-import { Logger } from '@nestjs/common';
+import { Logger, UseGuards } from '@nestjs/common';
 import {
   Args,
   Mutation,
@@ -9,11 +9,13 @@ import {
   Subscription,
 } from '@nestjs/graphql';
 import { PubSub } from 'graphql-subscriptions';
+import { AuthGuard } from '../auth/auth.guard';
 import { BanService } from './ban.service';
 import { BanCreation, BanUpdate } from './schemas/ban.inputs';
 import { Ban } from './schemas/ban.schema';
 
 @Resolver(() => Ban)
+@UseGuards(new AuthGuard())
 export class BanResolver {
   private pubSub: PubSub;
   private readonly logger;

@@ -1,11 +1,20 @@
-import { Logger } from '@nestjs/common';
-import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
+import { Logger, UseGuards } from '@nestjs/common';
+import {
+  Args,
+  Context,
+  Mutation,
+  Query,
+  Resolver,
+  Subscription,
+} from '@nestjs/graphql';
+import { AuthGuard } from '../auth/auth.guard';
 import { PubSub } from 'graphql-subscriptions';
 import { UserCreationInput, UserUpdateInput } from './schemas/users.input';
 import { User } from './schemas/users.schema';
 import { UsersService } from './users.service';
 
 @Resolver()
+@UseGuards(new AuthGuard())
 export class UsersResolver {
   private pubSub: PubSub;
   private logger: Logger;
@@ -55,5 +64,11 @@ export class UsersResolver {
   async userCreated() {
     /* istanbul ignore next */
     return this.pubSub.asyncIterator('userCreated');
+  }
+
+  @Query(() => User)
+  async me(@Context('user') user: User) {
+    const { password, ...other } = user;
+    return other;
   }
 }

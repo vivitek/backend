@@ -1,6 +1,7 @@
-import { Logger } from '@nestjs/common';
+import { Logger, UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
 import { PubSub } from 'graphql-subscriptions';
+import { AuthGuard } from '../auth/auth.guard';
 import {
   ServiceCreationInput,
   ServiceUpdateInput,
@@ -9,6 +10,7 @@ import { Service } from './schemas/service.schema';
 import { ServiceService } from './service.service';
 
 @Resolver(() => Service)
+@UseGuards(new AuthGuard())
 export class ServiceResolver {
   private readonly logger: Logger;
   private pubSub: PubSub;

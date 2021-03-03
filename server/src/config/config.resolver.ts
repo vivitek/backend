@@ -1,4 +1,4 @@
-import { Logger } from '@nestjs/common';
+import { Logger, UseGuards } from '@nestjs/common';
 import {
   Args,
   Mutation,
@@ -9,7 +9,7 @@ import {
   Subscription,
 } from '@nestjs/graphql';
 import { PubSub } from 'graphql-subscriptions';
-import { User } from '../users/schemas/users.schema';
+import { AuthGuard } from '../auth/auth.guard';
 import { ConfigService } from './config.service';
 import {
   ConfigCreationInput,
@@ -18,6 +18,7 @@ import {
 import { Config } from './schemas/config.schema';
 
 @Resolver()
+@UseGuards(new AuthGuard())
 export class ConfigResolver {
   private pubSub: PubSub;
   private readonly logger: Logger;

@@ -1,6 +1,7 @@
-import { Logger } from '@nestjs/common';
+import { Logger, UseGuards } from '@nestjs/common';
 import { Resolver, Query, Args, Mutation, Subscription } from '@nestjs/graphql';
 import { PubSub } from 'graphql-subscriptions';
+import { AuthGuard } from '../auth/auth.guard';
 import { RouterService } from './router.service';
 
 import {
@@ -10,6 +11,7 @@ import {
 import { Router } from './schemas/router.schema';
 
 @Resolver(() => Router)
+@UseGuards(new AuthGuard())
 export class RouterResolver {
   private pubSub: PubSub;
   private readonly logger;
