@@ -62,7 +62,6 @@ export class UsersResolver {
 
   @Subscription(() => User)
   async userCreated() {
-    /* istanbul ignore next */
     return this.pubSub.asyncIterator('userCreated');
   }
 
