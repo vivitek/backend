@@ -5,9 +5,7 @@ import { UsersService } from './users.service';
 import { UsersResolver } from './users.resolver';
 import { UserUpdateInput } from "./schemas/users.input";
 import { AuthService } from "../auth/auth.service";
-import axios from 'axios';
-import gql from 'graphql-tag';
-import { print } from 'graphql';
+
 describe('UsersService', () => {
   let service: UsersService;
   let resolver: UsersResolver;
@@ -25,7 +23,6 @@ describe('UsersService', () => {
     resolver = module.get<UsersResolver>(UsersResolver);
     authService = module.get<AuthService>(AuthService);
     await app.init();
-    await app.listen(3000);
   });
 
   afterEach(async () => {
@@ -47,15 +44,6 @@ describe('UsersService', () => {
     password: 'password',
     username: 'anotherUsername',
   }
-  const ME_QUERY = gql`
-      query {
-        me {
-          username
-          email
-          _id
-        }
-      }
-    `
 
   it('should be defined', () => {
     expect(app).toBeDefined();
@@ -103,26 +91,6 @@ describe('UsersService', () => {
     expect(payload.email).toEqual(result.email);
     expect(payload.username).toEqual(result.username);
     expect(value.password).toEqual(result.password);
-  });
-  
-  it('me function with good token work', async () => {
-    const value = await authService.register(user);
-
-    try {
-      const result = await axios({
-        url: 'http://localhost:3000/graphql',
-        method: 'post',
-        headers: {
-          authorization: 'Bearer ' + value.access_token
-        },
-        data: {query: print(ME_QUERY)}
-      })
-      expect(value.user._id.toString()).toEqual(result.data.data.me._id.toString());
-      expect(value.user.email).toEqual(result.data.data.me.email);
-      expect(value.user.username).toEqual(result.data.data.me.username);
-    } catch(error) {
-      console.log(error)
-    }
   });
 
   it('createUser work', async () => {
