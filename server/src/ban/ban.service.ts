@@ -2,8 +2,7 @@ import { Ban } from './schemas/ban.schema';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { BanUpdate } from './schemas/ban.dto';
-import { BanCreation } from './schemas/ban.inputs';
+import { BanCreation, BanUpdate } from './schemas/ban.inputs';
 
 @Injectable()
 export class BanService {

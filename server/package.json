@@ -84,10 +84,8 @@
     ],
     "collectCoverageFrom": [
       "!**/beams/**",
-      "!**/*.dto.ts",
-      "!**/*.controller.ts",
       "!**/main.ts",
-      "!**/service/**"
+      "!**/app.controller.ts"
     ],
     "coverageDirectory": "/app/coverage",
     "collectCoverage": true,

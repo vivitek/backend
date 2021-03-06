@@ -67,13 +67,13 @@ describe('BanService', () => {
   it('updateById work', async () => {
     const value = await service.create(ban);
     const payload = {
-      _id: value._id,
+      _id: value._id.toString(),
       banned: true,
       routerSet: '1',
     }
     const result = await service.updateById(value._id.toString(), payload);
 
-    expect(payload._id).toEqual(result._id);
+    expect(payload._id.toString()).toEqual(result._id.toString());
     expect(payload.banned).toEqual(result.banned);
     expect(payload.routerSet).toEqual(result.routerSet);
   });
