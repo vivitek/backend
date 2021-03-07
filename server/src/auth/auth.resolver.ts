@@ -1,9 +1,11 @@
-import { Logger } from '@nestjs/common';
-import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import { Logger, UseGuards } from '@nestjs/common';
+import { Args, Mutation, Resolver, Query, Context } from '@nestjs/graphql';
 import { PubSub } from 'graphql-subscriptions';
+import { User } from '../users/schemas/users.schema';
 import { AuthService } from './auth.service';
 import { LoginInput, RegisterInput } from './schemas/auth.inputs';
 import { AuthDetails } from './schemas/auth.schema';
+import { AuthGuard } from "../auth/auth.guard"
 
 @Resolver()
 export class AuthResolver {
@@ -28,4 +30,11 @@ export class AuthResolver {
   async loginGodView(@Args('loginData') loginData: LoginInput) {
     return await this.authService.loginGodView(loginData)
   }
+
+  @Query(() => Boolean)
+  @UseGuards(new AuthGuard())
+  async isAnAdmin(@Context('user') user: User) {
+    return await this.authService.isAnAdmin(user)
+  }
+
 }

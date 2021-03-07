@@ -38,6 +38,9 @@ export class AuthService {
       throw new ForbiddenException()
     return payload
   }
+  async isAnAdmin(user: User): Promise<boolean> {
+    return user.email.endsWith("@vincipit.com")
+  }
   async register({
     email,
     username,
