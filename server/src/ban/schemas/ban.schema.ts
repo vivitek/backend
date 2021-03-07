@@ -1,16 +1,25 @@
-import { Schema, Prop, SchemaFactory } from "@nestjs/mongoose";
-import {Document} from 'mongoose'
+import { Field, ObjectType } from '@nestjs/graphql';
+import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
+import { Document, Types } from 'mongoose';
+import { Router } from '../../router/schemas/router.schema';
 
+@ObjectType()
 @Schema()
 export class Ban extends Document {
-	@Prop()
-	address: string
+  @Field(() => String)
+  _id: Types.ObjectId;
 
-	@Prop()
-	banned: boolean
+  @Field(() => String)
+  @Prop()
+  address: string;
 
-	@Prop()
-	routerSet: string
+  @Field(() => Boolean)
+  @Prop()
+  banned: boolean;
+
+  @Field(() => Router)
+  @Prop({ type: Types.ObjectId, ref: Router.name })
+  routerSet: Types.ObjectId;
 }
 
-export const BanSchema = SchemaFactory.createForClass(Ban)
+export const BanSchema = SchemaFactory.createForClass(Ban);

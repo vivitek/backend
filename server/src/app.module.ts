@@ -1,39 +1,36 @@
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { BanModule } from './ban/ban.module';
 import { TagModule } from './tag/tag.module';
-import { DatabaseModule } from './database/database.module';
 import { RouterModule } from './router/router.module';
-import { IpModule } from './ip/ip.module';
 import { ServiceModule } from './service/service.module';
 import { ConfigModule } from './config/config.module';
-import { TemplateModule } from './template/tempalte.module';
-import { ConnectionsModule } from './connections/connections.module';
 import { BeamsModule } from './beams/beams.module';
+import { GraphQLModule } from '@nestjs/graphql';
+import { AppController } from './app.controller';
 
 const MODULES = [
-  MongooseModule.forRoot(`mongodb://${process.env.MONGO}`),
+  MongooseModule.forRoot(`mongodb://${process.env.MONGO}/vivi`),
+  GraphQLModule.forRoot({
+    installSubscriptionHandlers: true,
+    autoSchemaFile: true,
+    playground: true,
+    context: ({ req, connection }) => ({headers: req?.headers || connection.context.headers}),
+  }),
   BanModule,
   TagModule,
   AuthModule,
   UsersModule,
-  DatabaseModule,
   RouterModule,
-  IpModule,
   ServiceModule,
   ConfigModule,
-  TemplateModule,
-  ConnectionsModule,
-  BeamsModule
-]
+  BeamsModule,
+];
 
 @Module({
   imports: MODULES,
   controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}

@@ -1,57 +1,53 @@
-import { Injectable } from "@nestjs/common";
-import { InjectModel } from "@nestjs/mongoose";
-import { Service } from "./schemas/service.schema"
-import { Model } from "mongoose";
-import { ServiceCreation, ServiceDTO, ServiceUpdate } from "./schemas/service.dto";
+import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Service } from './schemas/service.schema';
+import { Model } from 'mongoose';
+import {
+  ServiceCreationInput,
+  ServiceUpdateInput,
+} from './schemas/service.inputs';
 
 @Injectable()
 export class ServiceService {
-  constructor(@InjectModel(Service.name) private serviceModel: Model<Service>) {}
+  constructor(
+    @InjectModel(Service.name) private serviceModel: Model<Service>,
+  ) {}
 
-  async findAll() : Promise<ServiceDTO[]> {
-    return (await this.serviceModel.find().exec()).map(d => toDTO(d))
+  async findAll(): Promise<Service[]> {
+    return await this.serviceModel.find().exec();
   }
 
-  async findById(id: string): Promise<ServiceDTO> {
-    return toDTO(await this.serviceModel.findById(id).exec())
+  async findByRouter(routerId: string): Promise<Service[]> {
+    return await this.serviceModel.find({ router: routerId });
   }
 
-  async create(content: ServiceCreation): Promise<ServiceDTO> {
-    return toDTO(await this.serviceModel.create(content))
+  async findById(id: string): Promise<Service> {
+    return await this.serviceModel.findById(id).exec();
   }
 
-  async deleteById(id: string): Promise<ServiceDTO> {
-    return toDTO(await this.serviceModel.findByIdAndDelete(id))
+  async create(content: ServiceCreationInput): Promise<Service> {
+    const service = new this.serviceModel(content);
+    return await service.save();
   }
 
-  async updateById(id: string, content: ServiceUpdate): Promise<ServiceDTO> {
-    const service = await this.serviceModel.findById(id)
-    if (content.displayName)
-      service.displayName = content.displayName
-    if (content.name)
-      service.name = content.name
-    if (content.bandwidth)
-      service.bandwidth = content.bandwidth
-    if (content.tags)
-      service.tags = content.tags
-    if (content.ips)
-      service.ips = content.ips
-    return toDTO(await service.save())
+  async deleteById(id: string): Promise<Service> {
+    return await this.serviceModel.findByIdAndDelete(id);
   }
 
-    async deleteAll(): Promise<any> {
-        if (!process.env.DEBUG) return null
-        return this.serviceModel.db.dropDatabase()
-    }
-}
+  async deleteByRouter(routerId: string): Promise<Service[]> {
+    const services = await this.findByRouter(routerId);
+    services.forEach(async e => {
+      await e.delete();
+    });
+    return services;
+  }
 
-function toDTO(data: Service) {
-  return !data ? null : {
-    _id: data._id,
-    displayName: data.displayName,
-    name: data.name,
-    bandwidth: data.bandwidth,
-    tags: data.tags,
-    ips: data.ips
+  async updateById(content: ServiceUpdateInput): Promise<Service> {
+    const service = await this.serviceModel.findByIdAndUpdate(
+      content._id,
+      content,
+      { new: true },
+    );
+    return await service.save();
   }
 }

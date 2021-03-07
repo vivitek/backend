@@ -1,115 +1,100 @@
 version: "3.3"
 
 services:
-    traefik:
-        image: "traefik:v2.2"
-        restart: on-failure
-        command:
-            - --entrypoints.web.address=:80
-            - --entrypoints.secureweb.address=:443
-            - --providers.docker=true
-            - --certificatesresolvers.le.acme.email=matteo.gassend@epitech.eu
-            - --certificatesresolvers.le.acme.storage=/acme.json
-            - --certificatesresolvers.le.acme.tlschallenge=true
-            - --api.insecure
-            - --metrics=true
-            - --metrics.influxdb=true
-            - --metrics.influxdb.address=influxdb:8086
-            - --metrics.influxdb.protocol=http
-            - --metrics.influxdb.database=vivi
-            - --metrics.influxdb.username=vivi
-            - --metrics.influxdb.password=vivi
-            - --metrics.influxdb.addServicesLabels=true
-            - --accesslog=true
-            - --accesslog.filepath=/logs/access.log
-            - --accesslog.format=json
-        labels:
-            - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
-            - "traefik.http.routers.redirs.rule=hostregexp(`{host:.+}`)"
-            - "traefik.http.routers.redirs.entrypoints=web"
-            - "traefik.http.routers.redirs.middlewares=redirect-to-https"
-            - "traefik.http.routers.traefik.rule=Host(`dashboard.${DOMAIN:?err}`)"
-            - "traefik.http.routers.traefik.service=api@internal"
-            - "traefik.http.routers.traefik.tls.certresolver=le"
-            - "traefik.http.routers.traefik.entrypoints=secureweb"
-        ports:
-            - "80:80"
-            - "8080:8080"
-            - "443:443"
-        volumes:
-            - "/var/run/docker.sock:/var/run/docker.sock:ro"
-            - "./data/traefik_logs:/logs"
-            - "./acme.json:/acme.json"
-    influxdb:
-        image: influxdb:latest
-        restart: on-failure
-        volumes:
-            - ./data/influx:/var/lib/influxdb
-        environment:
-            - INFLUXDB_DB=vivi
-            - INFLUXDB_USER=vivi
-            - INFLUXDB_USER_PASSWORD=vivi
+  traefik:
+    image: "traefik:v2.2"
+    restart: on-failure
+    command:
+      - --entrypoints.web.address=:80
+      - --entrypoints.secureweb.address=:443
+      - --providers.docker=true
+      - --certificatesresolvers.le.acme.email=matteo.gassend@epitech.eu
+      - --certificatesresolvers.le.acme.storage=/acme.json
+      - --certificatesresolvers.le.acme.tlschallenge=true
+      - --api.insecure
+      - --metrics=true
+      - --metrics.influxdb=true
+      - --metrics.influxdb.address=influxdb:8086
+      - --metrics.influxdb.protocol=http
+      - --metrics.influxdb.database=vivi
+      - --metrics.influxdb.username=vivi
+      - --metrics.influxdb.password=vivi
+      - --metrics.influxdb.addServicesLabels=true
+      - --accesslog=true
+      - --accesslog.filepath=/logs/access.log
+      - --accesslog.format=json
+    labels:
+      - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+      - "traefik.http.routers.redirs.rule=hostregexp(`{host:.+}`)"
+      - "traefik.http.routers.redirs.entrypoints=web"
+      - "traefik.http.routers.redirs.middlewares=redirect-to-https"
+      - "traefik.http.routers.traefik.rule=Host(`dashboard.${DOMAIN:?err}`)"
+      - "traefik.http.routers.traefik.service=api@internal"
+      - "traefik.http.routers.traefik.tls.certresolver=le"
+      - "traefik.http.routers.traefik.entrypoints=secureweb"
+    ports:
+      - "80:80"
+      - "8080:8080"
+      - "443:443"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "./data/traefik_logs:/logs"
+      - "./acme.json:/acme.json"
+  influxdb:
+    image: influxdb:latest
+    restart: on-failure
+    volumes:
+      - ./data/influx:/var/lib/influxdb
+    environment:
+      - INFLUXDB_DB=vivi
+      - INFLUXDB_USER=vivi
+      - INFLUXDB_USER_PASSWORD=vivi
 
-        labels:
-            - "traefik.http.routers.influx-r.rule=Host(`influxdb.${DOMAIN:?err}`)"
-            - "traefik.http.services.influx-svr.loadbalancer.server.port=8086"
-            - "traefik.http.routers.influx-r.tls.certresolver=le"
-            - "traefik.http.routers.influx-r.entrypoints=secureweb"
-    grafana:
-        image: grafana/grafana
-        restart: on-failure
-        depends_on:
-            - influxdb
-        volumes:
-            - ./grafana/provisioning/:/etc/grafana/provisioning/:rw
-        env_file:
-            - ./grafana/config.monitoring
-        user: "407"
-        labels:
-            - "traefik.http.routers.grafana.rule=Host(`grafana.${DOMAIN:?err}`)"
-            - "traefik.http.routers.grafana.service=grafana"
-            - "traefik.http.services.grafana.loadbalancer.server.port=3000"
-            - "traefik.http.routers.grafana.tls.certresolver=le"
-            - "traefik.http.routers.grafana.entrypoints=secureweb"
-    server:
-        build: ./server
-        depends_on:
-            - mongo
-            - rethink
-        ports:
-            - "5000:3000"
-        volumes:
-            - ./data/server_logs:/logs
-            - ./coverage:/app/coverage
-        labels:
-            - "traefik.http.routers.server-api.rule=Host(`api.${DOMAIN:?err}`)"
-            - "traefik.http.services.server-api-svc.loadbalancer.server.port=3000"
-            - "traefik.http.routers.server-api.tls.certresolver=le"
-            - "traefik.http.routers.server-api.entrypoints=secureweb"
-        environment:
-            - MONGO=mongo:27017
-            - BEAMS_SECRET=A916C41C8136459EFB3F95AE73F8168CF124786715C4D5FD09F67F3438A41FD5
-    mongo:
-        image: mongo
-        restart: always
-        ports:
-            - "27017:27017"
-        volumes:
-            - ./data/db:/data/db
-    rethink:
-        image: rethinkdb:2.4
-        restart: always
-        ports:
-            - "8081:8080"
-        volumes:
-            - ./data/rethink:/data
-        labels:
-            - "traefik.http.routers.rethink.rule=Host(`rethink-admin.${DOMAIN:?err}`)"
-            - "traefik.http.routers.rethink.tls.certresolver=le"
-            - "traefik.http.routers.rethink.entrypoints=secureweb"
-            - "traefik.http.services.rethink-admin-svc.loadbalancer.server.port=8080"
+    labels:
+      - "traefik.http.routers.influx-r.rule=Host(`influxdb.${DOMAIN:?err}`)"
+      - "traefik.http.services.influx-svr.loadbalancer.server.port=8086"
+      - "traefik.http.routers.influx-r.tls.certresolver=le"
+      - "traefik.http.routers.influx-r.entrypoints=secureweb"
+  grafana:
+    image: grafana/grafana
+    restart: on-failure
+    depends_on:
+      - influxdb
+    volumes:
+      - ./grafana/provisioning/:/etc/grafana/provisioning/:rw
+    env_file:
+      - ./grafana/config.monitoring
+    user: "407"
+    labels:
+      - "traefik.http.routers.grafana.rule=Host(`grafana.${DOMAIN:?err}`)"
+      - "traefik.http.routers.grafana.service=grafana"
+      - "traefik.http.services.grafana.loadbalancer.server.port=3000"
+      - "traefik.http.routers.grafana.tls.certresolver=le"
+      - "traefik.http.routers.grafana.entrypoints=secureweb"
+  server:
+    build: ./server
+    depends_on:
+      - mongo
+    ports:
+      - "5000:3000"
+    volumes:
+      - ./data/server_logs:/logs
+      - ./coverage:/app/coverage
+    labels:
+      - "traefik.http.routers.server-api.rule=Host(`api.${DOMAIN:?err}`)"
+      - "traefik.http.services.server-api-svc.loadbalancer.server.port=3000"
+      - "traefik.http.routers.server-api.tls.certresolver=le"
+      - "traefik.http.routers.server-api.entrypoints=secureweb"
+    environment:
+      - MONGO=mongo:27017
+      - BEAMS_SECRET=A916C41C8136459EFB3F95AE73F8168CF124786715C4D5FD09F67F3438A41FD5
+  mongo:
+    image: mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./data/db:/data/db
 volumes:
-    prometheus_data: {}
-    grafana_data: {}
-    mongoData: {}
-    rethinkData: {}
+  grafana_data: {}
+  mongoData: {}

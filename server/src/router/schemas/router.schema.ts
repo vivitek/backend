@@ -1,13 +1,20 @@
-import { Schema, Prop, SchemaFactory } from "@nestjs/mongoose";
-import { Document } from "mongoose"
+import { Field, ObjectType } from '@nestjs/graphql';
+import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
+import { Document, Types } from 'mongoose';
 
+@ObjectType()
 @Schema()
 export class Router extends Document {
-    @Prop()
-    name: string
+  @Field(() => String)
+  _id: Types.ObjectId;
 
-    @Prop()
-    url: string
+  @Field(() => String)
+  @Prop()
+  name: string;
+
+  @Field(() => String)
+  @Prop({ unique: true, type: String })
+  url: string;
 }
 
-export const RouterSchema = SchemaFactory.createForClass(Router)
+export const RouterSchema = SchemaFactory.createForClass(Router);

@@ -1,42 +1,40 @@
-import { UserDto } from './schemas/users.dto';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from './schemas/users.schema';
 import { Model } from 'mongoose';
-import * as bcrypt from "bcrypt"
+import * as bcrypt from 'bcrypt';
+import { UserCreationInput, UserUpdateInput } from './schemas/users.input';
 
 @Injectable()
 export class UsersService {
-	@InjectModel(User.name) private userModel: Model<User>
+  @InjectModel(User.name) private userModel: Model<User>;
 
-	async findById(id:string): Promise<User> {
-		return this.userModel.findById(id)
-	}
-	async findOne(email: string): Promise<User | undefined> {
-		return this.userModel.findOne({email});
-	}
-	async getAll() : Promise<User[]> {
-		return this.userModel.find()
-	}
-	async createUser(email:string, password:string, username:string): Promise<User | undefined> {
-		return this.userModel.create({email:email, password:bcrypt.hashSync(password, 12), username:username})
-	}
-	async deleteUser(id: string): Promise<User> {
-		return this.userModel.findByIdAndDelete(id)
-	}
-	async updateUser(id:string, data:UserDto): Promise<User> {
-		const user = await this.userModel.findById(id)
-		if (data.email)
-			user.email = data.email
-		if (data.username)
-			user.username = data.username
-		const d = await user.save()
-		return d
-	}
-
-	async deleteAll(): Promise<Array<User>> {
-		if (!process.env.DEBUG) return
-		return this.userModel.db.dropDatabase()
-	}
-
+  async findById(id: string): Promise<User> {
+    return this.userModel.findById(id);
+  }
+  async findByEmail(email: string): Promise<User | undefined> {
+    return this.userModel.findOne({ email });
+  }
+  async findAll(): Promise<User[]> {
+    return this.userModel.find().exec();
+  }
+  async createUser(data: UserCreationInput): Promise<User> {
+    const user = new this.userModel({
+      ...data,
+      password: bcrypt.hashSync(data.password, 12),
+    });
+    return user.save();
+  }
+  async deleteById(id: string): Promise<User> {
+    return this.userModel.findByIdAndDelete(id);
+  }
+  async updateById(data: UserUpdateInput): Promise<User> {
+    const newData = { ...data };
+    if (newData.password) {
+      newData.password = bcrypt.hashSync(data.password, 12);
+    }
+    return await this.userModel.findByIdAndUpdate(data._id, newData, {
+      new: true,
+    });
+  }
 }
