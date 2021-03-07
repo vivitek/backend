@@ -4,7 +4,6 @@ import { BanService } from './ban.service';
 import { BanResolver } from './ban.resolver';
 import { BanCreation } from './schemas/ban.inputs';
 import { AppModule } from "../app.module"
-import { graphql, subscribe, parse } from 'graphql';
 
 describe('BanResolver', () => {
   let service: BanService;
