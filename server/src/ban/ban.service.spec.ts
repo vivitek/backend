@@ -36,10 +36,8 @@ describe('BanService', () => {
   }
 
   it('should return all bans', async () => {
-    const arr = [];
-
     const result = await service.findAll();
-    expect(result).toEqual(arr);
+    expect(result.length).toBe(0);
   });
 
   it('findById work', async () => {
@@ -95,7 +93,7 @@ describe('BanService', () => {
   it('create work', async () => {
     const value = await service.create(ban);
 
-    expect(value.address).toEqual('url.com');
+    expect(value.address).toEqual(ban.address);
   });
 
   afterEach(async () => {

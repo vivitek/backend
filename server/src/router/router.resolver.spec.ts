@@ -38,10 +38,8 @@ describe('RouterResolver', () => {
   });
 
   it('should return all', async () => {
-    const arr = [];
-
     const result = await resolver.getRouters();
-    expect(result).toEqual(arr);
+    expect(result.length).toBe(0);
   });
 
   it('getRouterByUrl work', async () => {
@@ -93,6 +91,6 @@ describe('RouterResolver', () => {
   it('createRouter work', async () => {
     const value = await resolver.createRouter(router);
 
-    expect(value.name).toEqual('router name');
+    expect(value.name).toEqual(router.name);
   });
 });

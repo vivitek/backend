@@ -42,10 +42,8 @@ describe('BanResolver', () => {
 
 
   it('should return all bans', async () => {
-    const arr = [];
-
     const result = await service.findAll();
-    expect(result).toEqual(arr);
+    expect(result.length).toBe(0);
   });
 
   it('getBans work', async () => {
@@ -92,8 +90,8 @@ describe('BanResolver', () => {
 
   it('createBan work', async () => {
     const value = await resolver.createBan(ban);
-  
-    expect(value.address).toEqual('url.com');
+
+    expect(value.address).toEqual(ban.address);
   });
 
   it('Subscriptions exists', async () => {

@@ -50,10 +50,8 @@ describe('ServiceService', () => {
   });
 
   it('should return all', async () => {
-    const arr = [];
     const result = await service.findAll();
-
-    expect(result).toEqual(arr);
+    expect(result.length).toBe(0);
   });
 
   it('findByRouter work', async () => {
@@ -115,6 +113,6 @@ describe('ServiceService', () => {
   it('create work', async () => {
     const value = await service.create(sample);
 
-    expect(value.name).toEqual('service name');
+    expect(value.name).toEqual(sample.name);
   });
 });

@@ -12,7 +12,7 @@ export class RouterService {
   constructor(@InjectModel(Router.name) private routerModel: Model<Router>) {}
 
   async findAll(): Promise<Router[]> {
-    return (await this.routerModel.find().exec()).map(d => d);
+    return (await this.routerModel.find().exec());
   }
 
   async findById(id: string): Promise<Router> {

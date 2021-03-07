@@ -15,7 +15,7 @@ describe('ConfigService', () => {
       imports: [AppModule]
     }).compile()
 
-    app = module.createNestApplication();    
+    app = module.createNestApplication();
     service = module.get<ConfigService>(ConfigService);
     await app.init();
   });
@@ -37,17 +37,15 @@ describe('ConfigService', () => {
     public: true,
     creator: id,
   }
-  
+
   it('should be defined', () => {
     expect(app).toBeDefined();
     expect(service).toBeDefined();
   });
 
   it('should return all', async () => {
-    const arr = [];
     const result = await service.findAll();
-
-    expect(result).toEqual(arr);
+    expect(result.length).toBe(0);
   });
 
   it('findById work', async () => {
@@ -85,6 +83,6 @@ describe('ConfigService', () => {
   it('create work', async () => {
     const value = await service.create(config);
     
-    expect(value.name).toEqual('config name');
+    expect(value.name).toEqual(config.name);
   });
 });

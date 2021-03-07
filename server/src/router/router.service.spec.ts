@@ -34,10 +34,8 @@ describe('RouterService', () => {
   });
 
   it('should return all', async () => {
-    const arr = [];
-
     const result = await service.findAll();
-    expect(result).toEqual(arr);
+    expect(result.length).toBe(0);
   });
 
   it('findByUrl work', async () => {
@@ -82,7 +80,7 @@ describe('RouterService', () => {
 
   it('create work', async () => {
     const value = await service.create(router);
-    expect(value.name).toEqual('router name');
+    expect(value.name).toEqual(router.name);
   });
   const router = {
     name: 'router name',

@@ -9,7 +9,7 @@ export class BanService {
   constructor(@InjectModel(Ban.name) private banModel: Model<Ban>) {}
 
   async findAll(): Promise<Ban[]> {
-    return (await this.banModel.find().exec()).map(d => d);
+    return await this.banModel.find().exec();
   }
 
   async findById(id: string): Promise<Ban> {

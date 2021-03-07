@@ -100,6 +100,6 @@ describe('ServiceResolver', () => {
   it('createService work', async () => {
     const value = await resolver.createService(sample);
 
-    expect(value.name).toEqual('service name');
+    expect(value.name).toEqual(sample.name);
   });
 });

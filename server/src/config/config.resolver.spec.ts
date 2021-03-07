@@ -48,10 +48,8 @@ describe('ConfigService', () => {
   });
 
   it('should return all', async () => {
-    const arr = [];
     const result = await resolver.getConfigs();
-
-    expect(result).toEqual(arr);
+    expect(result.length).toBe(0);
   });
 
   it('getConfig work', async () => {
@@ -59,7 +57,7 @@ describe('ConfigService', () => {
     const result = await resolver.getConfig(value._id.toString());
 
     expect(value.name).toEqual(result.name)
-    expect(value.services.toString()).toEqual(result.services.toString()) // cast array & CoreMongoArray to string
+    expect(value.services.toString()).toEqual(result.services.toString())
     expect(value.configs.toString()).toEqual(result.configs.toString())
     expect(value.public).toEqual(result.public)
     expect(value.creator).toEqual(result.creator)
@@ -96,6 +94,6 @@ describe('ConfigService', () => {
   it('create work', async () => {
     const value = await resolver.createConfig(config);
 
-    expect(value.name).toEqual('config name');
+    expect(value.name).toEqual(config.name);
   });
 });
