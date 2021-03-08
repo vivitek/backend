@@ -9,8 +9,8 @@ import {
   Subscription,
 } from '@nestjs/graphql';
 import { PubSub } from 'graphql-subscriptions';
-import { Tag } from 'src/tag/schemas/tag.schema';
-import { TagService } from 'src/tag/tag.service';
+import { Tag } from '../tag/schemas/tag.schema';
+import { TagService } from '../tag/tag.service';
 import { AuthGuard } from '../auth/auth.guard';
 import {
   ServiceCreationInput,
