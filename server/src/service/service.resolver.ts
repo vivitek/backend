@@ -1,6 +1,16 @@
 import { Logger, UseGuards } from '@nestjs/common';
-import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
+import {
+  Args,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+  Subscription,
+} from '@nestjs/graphql';
 import { PubSub } from 'graphql-subscriptions';
+import { Tag } from '../tag/schemas/tag.schema';
+import { TagService } from '../tag/tag.service';
 import { AuthGuard } from '../auth/auth.guard';
 import {
   ServiceCreationInput,
@@ -15,7 +25,10 @@ export class ServiceResolver {
   private readonly logger: Logger;
   private pubSub: PubSub;
 
-  constructor(private serviceService: ServiceService) {
+  constructor(
+    private serviceService: ServiceService,
+    private tagService: TagService,
+  ) {
     this.logger = new Logger('serviceResolver');
     this.pubSub = new PubSub();
   }
@@ -82,5 +95,14 @@ export class ServiceResolver {
   })
   serviceDeleted(@Args('routerId') routerId: string): AsyncIterator<Service> {
     return this.pubSub.asyncIterator('serviceDeleted');
+  }
+
+  @ResolveField('tags', () => [Tag])
+  async resolveTags(@Parent() service: Service) {
+    const res = [];
+    service.tags.forEach(async e => {
+      res.push(await this.tagService.findById(e.toString()));
+    });
+    return res;
   }
 }
