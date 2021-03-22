@@ -1,0 +1,37 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "[![Build Status](https://travis-ci.com/vivitek/backend.svg?branch=master)](https://travis-ci.com/vivitek/backend)\r [![codecov](https://codecov.io/gh/vivitek/backend/branch/master/graph/badge.svg)](https://codecov.io/gh/vivitek/backend)\r [![Codacy Badge](https://api.codacy.com/project/badge/Grade/b49ce173f43e49e89951935ef9a868a4)](https://www.codacy.com/gh/vivitek/backend?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=vivitek/backend&amp;utm_campaign=Badge_Grade)\r [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vivitek/backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vivitek/backend/issues"
+  },
+  "homepage": "https://github.com/vivitek/backend#readme",
+  "devDependencies": {
+    "husky": "^3.0.9",
+    "lint-staged": "^10.5.4",
+    "validate-branch-name": "^1.0.6"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "validate-branch-name && lint-staged",
+      "pre-push": "sudo docker-compose run server npm run test:cov"
+    }
+  },
+  "lint-staged": {
+    "**/*.ts": [
+      "eslint --fix"
+    ]
+  },
+  "validate-branch-name": {
+    "pattern":"^(master|^(feature|fix|experiment|improvement)\/([\\w-]+?)(\/\\d+)?)$",
+    "errorMsg":"Branch name format : //"
+  }
+}
