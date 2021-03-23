@@ -1,5 +1,9 @@
 import { UsersService } from '../users/users.service';
-import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { User } from '../users/schemas/users.schema';
@@ -37,13 +41,13 @@ export class AuthService {
     throw new BadRequestException('Something went wrong');
   }
   async loginGodView(data: LoginInput): Promise<AuthDetails> {
-    const payload = await this.login(data)
+    const payload = await this.login(data);
     if (!payload.user.email.endsWith('@vincipit.com'))
-      throw new ForbiddenException()
-    return payload
+      throw new ForbiddenException();
+    return payload;
   }
   async isAnAdmin(user: User): Promise<boolean> {
-    return user.email.endsWith("@vincipit.com")
+    return user.email.endsWith('@vincipit.com');
   }
   async register({
     email,
