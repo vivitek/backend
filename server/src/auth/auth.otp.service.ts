@@ -1,19 +1,22 @@
 import { Injectable } from '@nestjs/common';
 import { authenticator } from 'otplib';
 
-@Injectable
+@Injectable()
 export class AuthOtpService {
-  constructor() {}
-
-  async generateSecret(): string {
+  async generateSecret(): Promise<string> {
     return authenticator.generateSecret();
   }
 
-  verifyOTP(secret: string, otp: string): boolean {
+  async verifyOTP(secret: string, otp: string): Promise<boolean> {
     try {
       return authenticator.check(otp, secret);
     } catch (error) {
+      console.log(error);
       return false;
     }
+  }
+
+  async generateUrl(email: string, secret: string): Promise<string> {
+    return authenticator.keyuri(email, 'ViVi', secret);
   }
 }
