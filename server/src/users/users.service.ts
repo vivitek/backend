@@ -42,7 +42,6 @@ export class UsersService {
     const user = await this.findById(userId);
     user.otp_enabled = true;
     user.otp_secret = secret;
-    await user.save();
-    return user;
+    return await user.save();
   }
 }
