@@ -4,11 +4,11 @@
 [![codecov](https://codecov.io/gh/vivitek/backend/branch/master/graph/badge.svg)](https://codecov.io/gh/vivitek/backend)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/b49ce173f43e49e89951935ef9a868a4)](https://www.codacy.com/gh/vivitek/backend?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=vivitek/backend&amp;utm_campaign=Badge_Grade)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
-![[Discord](https://discord.gg/SMYDdZfPG6)](https://img.shields.io/discord/827167614018650152)
+[![Discord](https://img.shields.io/discord/827167614018650152)](https://discord.gg/SMYDdZfPG6)
 
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
 
-
+![Join us on Discord](https://invidget.switchblade.xyz/SMYDdZfPG6)
 
 ---
 
