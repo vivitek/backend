@@ -3,7 +3,8 @@
 # Edit at https://www.gitignore.io/?templates=node
 
 amce.json
-.env
+server/run.sh
+*.env
 
 ### Node ###
 # Logs
