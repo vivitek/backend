@@ -3,7 +3,6 @@
 # Edit at https://www.gitignore.io/?templates=node
 
 amce.json
-server/run.sh
 *.env
 
 ### Node ###
