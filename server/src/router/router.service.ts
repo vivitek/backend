@@ -6,7 +6,7 @@ import {
   RouterCreationInput,
   RouterUpdateInput,
 } from './schemas/router.inputs';
-import { BalenaService } from 'src/balena/balena.service';
+import { BalenaService } from '../balena/balena.service';
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()

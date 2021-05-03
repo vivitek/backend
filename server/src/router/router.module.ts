@@ -5,7 +5,7 @@ import { RouterService } from './router.service';
 import { RouterResolver } from './router.resolver';
 import { BalenaModule } from '../balena/balena.module';
 import { JwtModule } from '@nestjs/jwt';
-import { jwtConstants } from 'src/auth/constants';
+import { jwtConstants } from '../auth/constants';
 
 @Module({
   imports: [
