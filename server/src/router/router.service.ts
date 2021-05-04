@@ -30,15 +30,17 @@ export class RouterService {
   }
 
   async create(content: RouterCreationInput): Promise<Router> {
-    const uuid = /(https?:\/\/)?([^\./]+)/.exec(content.url)[2];
-    const device = await this.balenaService.getRouterByUuid(uuid)
-    if (!device)
-      throw new NotFoundException()
-    if (!device.env.map(e => e.name).includes("VINCIPIT_BEARER_TOKEN")) {
-      const token = this.jwtService.sign({...device, type: "box"}, {
-        secret: process.env.SECRET || "sting-sell-pioneer"
-      })
-      this.balenaService.setEnvVarByUuid(uuid, "VINCIPIT_BEARER_TOKEN", `Bearer ${token}`)
+    if (!process.env.DEBUG) {
+      const uuid = /(https?:\/\/)?([^\./]+)/.exec(content.url)[2];
+      const device = await this.balenaService.getRouterByUuid(uuid)
+      if (!device)
+        throw new NotFoundException()
+      if (!device.env.map(e => e.name).includes("VINCIPIT_BEARER_TOKEN")) {
+        const token = this.jwtService.sign({...device, type: "box"}, {
+          secret: process.env.SECRET || "sting-sell-pioneer"
+        })
+        this.balenaService.setEnvVarByUuid(uuid, "VINCIPIT_BEARER_TOKEN", `Bearer ${token}`)
+      }
     }
     const router = new this.routerModel(content);
     return router.save();
