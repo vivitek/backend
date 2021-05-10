@@ -30,6 +30,7 @@ export class RouterService {
   }
 
   async create(content: RouterCreationInput): Promise<Router> {
+    const router = await new this.routerModel(content).save();
     if (!process.env.DEBUG) {
       const uuid = /(https?:\/\/)?([^\./]+)/.exec(content.url)[2];
       const device = await this.balenaService.getRouterByUuid(uuid)
@@ -39,11 +40,11 @@ export class RouterService {
         const token = this.jwtService.sign({...device, type: "box"}, {
           secret: process.env.SECRET || "sting-sell-pioneer"
         })
-        this.balenaService.setEnvVarByUuid(uuid, "VINCIPIT_BEARER_TOKEN", `Bearer ${token}`)
+        await this.balenaService.setEnvVarByUuid(uuid, "VINCIPIT_BEARER_TOKEN", `Bearer ${token}`)
+        await this.balenaService.setEnvVarByUuid(uuid, 'DEVICE_ID', router._id.toString())
       }
     }
-    const router = new this.routerModel(content);
-    return router.save();
+    return router
   }
 
   async deleteById(id: string): Promise<Router> {
