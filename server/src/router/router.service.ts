@@ -41,8 +41,9 @@ export class RouterService {
           secret: process.env.SECRET || "sting-sell-pioneer"
         })
         await this.balenaService.setEnvVarByUuid(uuid, "VINCIPIT_BEARER_TOKEN", `Bearer ${token}`)
-        await this.balenaService.setEnvVarByUuid(uuid, 'DEVICE_ID', router._id.toString())
       }
+      if (!device.env.map(e => e.name).includes("DEVICE_ID"))
+        await this.balenaService.setEnvVarByUuid(uuid, 'DEVICE_ID', router._id.toString())
     }
     return router
   }
