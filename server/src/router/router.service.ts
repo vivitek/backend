@@ -36,14 +36,15 @@ export class RouterService {
       const device = await this.balenaService.getRouterByUuid(uuid)
       if (!device)
         throw new NotFoundException()
-      if (!device.env.map(e => e.name).includes("VINCIPIT_BEARER_TOKEN")) {
+      const deviceEnvVarNames = device.env.map(e => e.name)
+      if (!deviceEnvVarNames.includes("VINCIPIT_BEARER_TOKEN")) {
         const token = this.jwtService.sign({...device, type: "box"}, {
           secret: process.env.SECRET || "sting-sell-pioneer"
         })
         await this.balenaService.setEnvVarByUuid(uuid, "VINCIPIT_BEARER_TOKEN", `Bearer ${token}`)
       }
-      if (!device.env.map(e => e.name).includes("DEVICE_ID"))
-        await this.balenaService.setEnvVarByUuid(uuid, 'DEVICE_ID', router._id.toString())
+      if (!deviceEnvVarNames.includes("VINCIPIT_DEVICE_ID"))
+        await this.balenaService.setEnvVarByUuid(uuid, 'VINCIPIT_DEVICE_ID', router._id.toString())
     }
     return router
   }
