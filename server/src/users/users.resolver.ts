@@ -67,7 +67,10 @@ export class UsersResolver {
 
   @Query(() => User)
   async me(@Context('user') user: User) {
-    const { password, ...other } = user;
+    const d = await (
+      await this.userService.findById(user._id.toString())
+    ).toJSON();
+    const { password, ...other } = d;
     return other;
   }
 }

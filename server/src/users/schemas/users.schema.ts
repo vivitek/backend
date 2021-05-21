@@ -19,6 +19,14 @@ export class User extends Document {
   @Field(() => String)
   @Prop({ required: true, unique: true, type: String })
   username: string;
+
+  @Field(() => Boolean)
+  @Prop({ required: false, default: false, type: Boolean })
+  otp_enabled: boolean;
+
+  @Field(() => String)
+  @Prop({ required: false, type: String })
+  otp_secret: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
