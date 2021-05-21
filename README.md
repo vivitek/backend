@@ -5,14 +5,15 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/b49ce173f43e49e89951935ef9a868a4)](https://www.codacy.com/gh/vivitek/backend?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=vivitek/backend&amp;utm_campaign=Badge_Grade)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
 
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
 
-## the all-knowing service for configurating your router
+
 
 ---
 
 ## What
 
-This is the brain of [Vincipit](https://vincipit.com), where all the important decisions happen. It is used as the medium to communicate with all dashboards and routers. It is built with toughts towards scalability and reduced load
+This repository contains the code for [Vincipit](https://vincipit.com)'s backend. It is build to support the federation of all of Vincipit's devices, wherever they may be
 
 ---
 
@@ -20,35 +21,22 @@ This is the brain of [Vincipit](https://vincipit.com), where all the important d
 
 The entire project is containerized using [Docker Compose](https://docs.docker.com/compose/). To run it, simply type
 
-```sh
-docker-compose build
-docker-compose up -d
-```
+The tech stack is:
 
-This will spawn a series of containers including :
-
-- A MongoDB instance with data persistency
-- A RabbitMQ instance
-- The actual API
+- MongoDB (the main database)
+- NestJS (API framework) + GraphQL
+- Traefik (Network Proxy)
+- InfluxDB (Analytics collection from Traefik)
+- Grafana (Analytics data-viz using InfluxDB)
 
 ---
 
-## Features
+## Run Your Own!
 
-- User creation
-  - [x] create a user
-  - [x] sign in a user
-  - [ ] basic user fonctionnalities (password reset etc...)
-- Router association
-  - [ ] create a router (i.e insert his id and link it to the current user's account)
-  - [x] allow or deny user connection based on user's input
-  - [x] see the router logs
-- Configurations creation
-  - [ ] determine which services are allowed to pass through
-  - [ ] determine how much bandwith to allocate to each service
-- Realtime events between server and dashboard
-  - [x] Sending connection requests from server to dashboard
-  - [ ] Accepting response for connection requests from dashboard to server
-  - [ ] Sending service connections from server to dashboard
-  - [ ] Accepting response for services requests from dashboard to server
----
+Running an instance of this repository is quite simple
+
+- Clone it `git clone git@git.github.com/vivitek/backend.git`
+- Add a `DOMAIN` key with the base domain you want your instance to use (for example vivi.local) to the `.env`
+- `docker-compose up -d`
+
+And you're all set!

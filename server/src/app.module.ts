@@ -10,6 +10,7 @@ import { ConfigModule } from './config/config.module';
 import { BeamsModule } from './beams/beams.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { AppController } from './app.controller';
+import { BalenaModule } from './balena/balena.module';
 
 const MODULES = [
   MongooseModule.forRoot(`mongodb://${process.env.MONGO}/vivi`),
@@ -29,6 +30,7 @@ const MODULES = [
   ServiceModule,
   ConfigModule,
   BeamsModule,
+  BalenaModule,
 ];
 
 @Module({
