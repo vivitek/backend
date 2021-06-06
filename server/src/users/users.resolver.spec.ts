@@ -4,12 +4,10 @@ import { Test } from '@nestjs/testing';
 import { UsersService } from './users.service';
 import { UsersResolver } from './users.resolver';
 import { UserUpdateInput } from "./schemas/users.input";
-import { AuthService } from "../auth/auth.service";
 
 describe('UsersService', () => {
   let service: UsersService;
   let resolver: UsersResolver;
-  let authService: AuthService;
   let app: INestApplication
 
   beforeEach(async () => {
@@ -18,10 +16,9 @@ describe('UsersService', () => {
       imports: [AppModule]
     }).compile()
 
-    app = module.createNestApplication();    
+    app = module.createNestApplication();
     service = module.get<UsersService>(UsersService);
     resolver = module.get<UsersResolver>(UsersResolver);
-    authService = module.get<AuthService>(AuthService);
     await app.init();
   });
 
@@ -33,7 +30,7 @@ describe('UsersService', () => {
     })
     await app.close();
   });
-  
+
   const user = {
     email: 'test@testing.com',
     password: 'password',
@@ -74,10 +71,10 @@ describe('UsersService', () => {
   it('deleteUser work', async () => {
     const value = await resolver.createUser(user);
     await resolver.deleteUser(value._id.toString());
-    
+
     expect(await resolver.getUser(value._id.toString())).toEqual(null);
   });
-  
+
   it('updateUser work', async () => {
     const value = await resolver.createUser(user);
     const payload: UserUpdateInput = {
@@ -95,7 +92,7 @@ describe('UsersService', () => {
 
   it('createUser work', async () => {
     const result = await resolver.createUser(user);
-  
+
     expect(user.email).toEqual(result.email);
     expect(user.username).toEqual(result.username);
   });

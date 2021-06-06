@@ -1,4 +1,5 @@
 import { Field, InputType } from '@nestjs/graphql';
+import { Types } from 'mongoose';
 
 @InputType()
 export class UserCreationInput {
@@ -10,6 +11,9 @@ export class UserCreationInput {
 
   @Field()
   username: string;
+
+  @Field(() => [String], {defaultValue: []})
+  boxes?: Types.ObjectId[]
 }
 
 @InputType()
@@ -24,4 +28,7 @@ export class UserUpdateInput {
 
   @Field({ nullable: true })
   password?: string;
+
+  @Field(() => [String], { nullable: true })
+  boxes?: Types.ObjectId[]
 }

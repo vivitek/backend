@@ -18,6 +18,7 @@ export class AuthGuard implements CanActivate {
     return true;
   }
 
+  //eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   async validateToken(auth: string) {
     let payload
     const split = auth.split(' ');

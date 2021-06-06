@@ -17,7 +17,7 @@ describe('ConfigService', () => {
       imports: [AppModule]
     }).compile()
 
-    app = module.createNestApplication();    
+    app = module.createNestApplication();
     service = module.get<ConfigService>(ConfigService);
     resolver = module.get<ConfigResolver>(ConfigResolver);
     await app.init();
@@ -31,7 +31,7 @@ describe('ConfigService', () => {
     })
     await app.close();
   });
- 
+
   const id = new Types.ObjectId
   const config: ConfigCreationInput = {
     name: 'config name',

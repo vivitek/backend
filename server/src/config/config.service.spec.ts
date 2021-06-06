@@ -82,7 +82,7 @@ describe('ConfigService', () => {
 
   it('create work', async () => {
     const value = await service.create(config);
-    
+
     expect(value.name).toEqual(config.name);
   });
 });

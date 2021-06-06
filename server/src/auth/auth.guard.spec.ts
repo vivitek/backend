@@ -42,7 +42,7 @@ describe('AuthResolver', () => {
 
     it('me function with good token work', async () => {
       const value = await authService.register(user);
-  
+
       try {
         const result = await axios({
           url: 'http://localhost:3000/graphql',
@@ -62,7 +62,7 @@ describe('AuthResolver', () => {
 
     it('me function with bad token work', async () => {
       await authService.register(user);
-  
+
       try {
         const result = await axios({
           url: 'http://localhost:3000/graphql',
@@ -80,7 +80,7 @@ describe('AuthResolver', () => {
 
     it('me function without Bearer work', async () => {
       await authService.register(user);
-  
+
       try {
         const result = await axios({
           url: 'http://localhost:3000/graphql',
@@ -98,7 +98,7 @@ describe('AuthResolver', () => {
 
     it('me function without header work', async () => {
       await authService.register(user);
-  
+
       try {
         const result = await axios({
           url: 'http://localhost:3000/graphql',

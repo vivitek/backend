@@ -77,6 +77,7 @@ export class ServiceResolver {
     filter: ({ serviceCreated }, { routerId }) =>
       serviceCreated.router === routerId,
   })
+  //eslint-disable-next-line @typescript-eslint/no-unused-vars
   serviceCreated(@Args('routerId') routerId: string): AsyncIterator<Service> {
     return this.pubSub.asyncIterator('serviceCreated');
   }
@@ -85,6 +86,7 @@ export class ServiceResolver {
     filter: ({ serviceUpdated }, { routerId }) =>
       serviceUpdated.router === routerId,
   })
+  //eslint-disable-next-line @typescript-eslint/no-unused-vars
   serviceUpdated(@Args('routerId') routerId: string): AsyncIterator<Service> {
     return this.pubSub.asyncIterator('serviceUpdated');
   }
@@ -93,16 +95,16 @@ export class ServiceResolver {
     filter: ({ serviceDeleted }, { routerId }) =>
       serviceDeleted.router === routerId,
   })
+  //eslint-disable-next-line @typescript-eslint/no-unused-vars
   serviceDeleted(@Args('routerId') routerId: string): AsyncIterator<Service> {
     return this.pubSub.asyncIterator('serviceDeleted');
   }
 
+  //eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   @ResolveField('tags', () => [Tag])
   async resolveTags(@Parent() service: Service) {
-    const res = [];
-    service.tags.forEach(async e => {
-      res.push(await this.tagService.findById(e.toString()));
+    return service.tags.map(async e => {
+      return await this.tagService.findById(e.toString())
     });
-    return res;
   }
 }

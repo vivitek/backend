@@ -16,5 +16,6 @@ import { jwtConstants } from '../auth/constants';
     })
   ],
   providers: [RouterService, RouterResolver],
+  exports: [RouterService]
 })
 export class RouterModule {}

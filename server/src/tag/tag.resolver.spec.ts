@@ -14,7 +14,7 @@ describe('TagResolver', () => {
       imports: [AppModule]
     }).compile()
 
-    app = module.createNestApplication();    
+    app = module.createNestApplication();
     resolver = module.get<TagResolver>(TagResolver);
     await app.init();
   });
@@ -45,7 +45,7 @@ describe('TagResolver', () => {
   it('deleteTag work', async () => {
     const value = await resolver.createTag(tag);
     await resolver.deleteTag(value._id.toString());
-    
+
     expect(await resolver.getTag(value._id.toString())).toEqual(null);
   });
 
@@ -61,10 +61,10 @@ describe('TagResolver', () => {
     expect(verify._id.toString()).toEqual(result._id.toString());
     expect(verify.name).toEqual(result.name);
   });
-  
+
   it('createUser work', async () => {
     const result = await resolver.createTag(tag);
-  
+
     expect(tag.name).toEqual(result.name);
   });
 

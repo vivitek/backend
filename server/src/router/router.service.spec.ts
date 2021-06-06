@@ -2,7 +2,6 @@ import { Test } from '@nestjs/testing';
 import { INestApplication } from "@nestjs/common";
 import { AppModule } from "../app.module";
 import { RouterService } from './router.service';
-import { Types } from 'mongoose';
 
 describe('RouterService', () => {
   let service: RouterService;
@@ -14,7 +13,7 @@ describe('RouterService', () => {
       imports: [AppModule]
     }).compile()
 
-    app = module.createNestApplication();    
+    app = module.createNestApplication();
     service = module.get<RouterService>(RouterService);
     await app.init();
   });
