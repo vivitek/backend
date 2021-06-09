@@ -24,9 +24,7 @@ export class AuthService {
     const payload = await this.validateUser(data);
     if (payload) {
       return {
-        access_token: this.jwtService.sign(payload.toJSON(), {
-          secret: process.env.SECRET || 'sting-sell-pioneer',
-        }),
+        access_token: this.generateToken(payload),
         user: payload,
       };
     }
@@ -53,13 +51,23 @@ export class AuthService {
         username,
       });
       return {
-        access_token: this.jwtService.sign(user.toJSON(), {
-          secret: process.env.SECRET || 'sting-sell-pioneer',
-        }),
+        access_token: this.generateToken(user),
         user,
       };
     } catch {
       throw new BadRequestException('User already exists');
     }
+  }
+
+  private generateToken(user: User): string {
+    const now = Date.now()
+    return this.jwtService.sign(
+      {
+        ...user.toJSON(),
+        type: "user",
+      }, {
+        secret: process.env.SECRET || 'sting-sell-pioneer',
+      }
+    )
   }
 }
