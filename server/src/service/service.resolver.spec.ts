@@ -15,7 +15,7 @@ describe('ServiceResolver', () => {
       imports: [AppModule]
     }).compile()
 
-    app = module.createNestApplication();    
+    app = module.createNestApplication();
     service = module.get<ServiceService>(ServiceService);
     resolver = module.get<ServiceResolver>(ServiceResolver);
     await app.init();
@@ -74,7 +74,7 @@ describe('ServiceResolver', () => {
       banned: true,
     }
     const result = await resolver.updateService(payload);
-    
+
     expect(payload._id).toEqual(result._id.toString());
     expect(value.name).toEqual(result.name)
     expect(value.tags[0]).toEqual(result.tags[0])

@@ -66,7 +66,7 @@ export class BanResolver {
   }
 
   @Mutation(() => Boolean)
-  async deleteByRouter(@Args('routerId') routerId: string): Promise<Boolean> {
+  async deleteByRouter(@Args('routerId') routerId: string): Promise<boolean> {
     return await this.banService.deleteByRouter(routerId);
   }
 
@@ -76,16 +76,19 @@ export class BanResolver {
     },
   })
   async banCreated(
+    //eslint-disable-next-line @typescript-eslint/no-unused-vars
     @Args('routerSet') routerSet: string,
   ): Promise<AsyncIterator<Ban>> {
     return this.pubSub.asyncIterator('banCreated');
   }
+
   @Subscription(() => Ban, {
     filter: (payload, variables) => {
       return payload.banUpdated.routerSet === variables.routerSet;
     },
   })
   async banUpdated(
+    //eslint-disable-next-line @typescript-eslint/no-unused-vars
     @Args('routerSet') routerSet: string,
   ): Promise<AsyncIterator<Ban>> {
     return this.pubSub.asyncIterator('banUpdated');

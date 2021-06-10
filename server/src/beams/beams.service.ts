@@ -1,6 +1,5 @@
 import { Inject, Injectable } from "@nestjs/common";
 import PushNotifications from "@pusher/push-notifications-server";
-import { NotificationDTO } from "./schema/Notifications.dto";
 import { WebNotificationDTO } from "./schema/WebNotification.dto";
 
 @Injectable()

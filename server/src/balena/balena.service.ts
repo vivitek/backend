@@ -20,12 +20,12 @@ export class BalenaService {
     return await this.balenaUtils.getEnvVar(id)
   }
 
-  public async setEnvVarByUuid(uuid: string, key: string, value: string) {
+  public async setEnvVarByUuid(uuid: string, key: string, value: string): Promise<BalenaDeviceEnvVar> {
     const device = await this.getRouterByUuid(uuid)
     return await this.balenaUtils.setEnvVar(device.id, key, value)
   }
 
-  public async delEnvVarByUuid(variableId: string) {
+  public async delEnvVarByUuid(variableId: string): Promise<void> {
     return await this.balenaUtils.delEnvVar(variableId)
   }
 }

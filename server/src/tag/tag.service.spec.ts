@@ -14,7 +14,7 @@ describe('TagService', () => {
       imports: [AppModule]
     }).compile()
 
-    app = module.createNestApplication();    
+    app = module.createNestApplication();
     service = module.get<TagService>(TagService);
     await app.init();
   });
@@ -53,7 +53,7 @@ describe('TagService', () => {
   it('deleteById work', async () => {
     const value = await service.create(tag);
     await service.deleteById(value._id.toString());
-    
+
     expect(await service.findById(value._id.toString())).toEqual(null);
   });
 
@@ -69,10 +69,10 @@ describe('TagService', () => {
     expect(verify._id.toString()).toEqual(result._id.toString());
     expect(verify.name).toEqual(result.name);
   });
-  
+
   it('createUser work', async () => {
     const result = await service.create(tag);
-  
+
     expect(tag.name).toEqual(result.name);
   });
 

@@ -22,16 +22,16 @@
   "husky": {
     "hooks": {
       "pre-commit": "validate-branch-name && lint-staged",
-      "pre-push": "sudo docker-compose run server npm run test:cov"
+      "pre-push": "sudo docker-compose build server && sudo docker-compose run server npm run test:cov"
     }
   },
   "lint-staged": {
-    "**/*.ts": [
-      "eslint --fix"
+    "server/**/*.ts": [
+      "eslint --fix server/"
     ]
   },
   "validate-branch-name": {
-    "pattern":"^(master|^(feature|fix|experiment|improvement)\/([\\w-]+?)(\/\\d+)?)$",
-    "errorMsg":"Branch name format : //"
+    "pattern": "^(master|^(feature|fix|experiment|improvement)/([\\w-]+?)(/\\d+)?)$",
+    "errorMsg": "Branch name format : //"
   }
 }

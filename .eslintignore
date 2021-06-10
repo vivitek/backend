@@ -5,3 +5,5 @@
 *.sh
 *.css
 adminMongo/*
+*/dist/*
+.eslintrc.js

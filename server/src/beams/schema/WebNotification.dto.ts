@@ -6,5 +6,5 @@ export class WebNotificationDTO {
         deep_link?: string,
         hide_notification_if_site_has_focus?: string
     }
-    data: {}
+    data: Record<string, unknown>
 }

@@ -13,7 +13,7 @@ describe('ServiceService', () => {
       imports: [AppModule]
     }).compile()
 
-    app = module.createNestApplication();    
+    app = module.createNestApplication();
     service = module.get<ServiceService>(ServiceService);
     await app.init();
   });
@@ -87,7 +87,7 @@ describe('ServiceService', () => {
       banned: true,
     }
     const result = await service.updateById(payload);
-    
+
     expect(payload._id).toEqual(result._id.toString());
     expect(value.name).toEqual(result.name)
     expect(value.tags[0]).toEqual(result.tags[0])

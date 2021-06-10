@@ -14,7 +14,7 @@ describe('UsersService', () => {
       imports: [AppModule]
     }).compile()
 
-    app = module.createNestApplication();    
+    app = module.createNestApplication();
     service = module.get<UsersService>(UsersService);
     await app.init();
   });
@@ -45,7 +45,7 @@ describe('UsersService', () => {
   });
 
   it('findByEmail work', async () => {
-    const value = await service.createUser(user); 
+    const value = await service.createUser(user);
     const result = await service.findByEmail('test@testing.com');
 
     expect(value.email).toEqual(result.email);
@@ -64,10 +64,10 @@ describe('UsersService', () => {
   it('deleteUser work', async () => {
     const value = await service.createUser(user);
     await service.deleteById(value._id.toString());
-    
+
     expect(await service.findById(value._id.toString())).toEqual(null);
   });
-  
+
   it('updateById with new password work', async () => {
     const value = await service.createUser(user);
     const payload: UserUpdateInput = {
@@ -100,10 +100,10 @@ describe('UsersService', () => {
     expect(verify.username).toEqual(result.username);
     expect(verify.password).toEqual(result.password);
   });
-  
+
   it('createUser work', async () => {
     const result = await service.createUser(user);
-  
+
     expect(user.email).toEqual(result.email);
     expect(user.username).toEqual(result.username);
   });

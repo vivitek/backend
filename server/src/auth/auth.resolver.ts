@@ -17,23 +17,23 @@ export class AuthResolver {
   }
 
   @Mutation(() => AuthDetails)
-  async register(@Args('registerData') registerData: RegisterInput) {
+  async register(@Args('registerData') registerData: RegisterInput): Promise<AuthDetails> {
     return await this.authService.register(registerData);
   }
 
   @Mutation(() => AuthDetails)
-  async login(@Args('loginData') loginData: LoginInput) {
+  async login(@Args('loginData') loginData: LoginInput): Promise<AuthDetails> {
     return await this.authService.login(loginData);
   }
 
   @Mutation(() => AuthDetails)
-  async loginGodView(@Args('loginData') loginData: LoginInput) {
+  async loginGodView(@Args('loginData') loginData: LoginInput): Promise<AuthDetails> {
     return await this.authService.loginGodView(loginData)
   }
 
   @Query(() => Boolean)
   @UseGuards(new AuthGuard())
-  async isAnAdmin(@Context('user') user: User) {
+  async isAnAdmin(@Context('user') user: User): Promise<boolean> {
     return await this.authService.isAnAdmin(user)
   }
 

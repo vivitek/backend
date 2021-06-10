@@ -1,4 +1,4 @@
-import { Logger, NotAcceptableException, UseGuards } from "@nestjs/common";
+import { Logger, UseGuards } from "@nestjs/common";
 import { Resolver, Query, Args, Mutation } from "@nestjs/graphql";
 import { AuthGuard } from "../auth/auth.guard";
 import { BalenaService } from "./balena.service";
@@ -15,19 +15,19 @@ export class BalenaDeviceResolver {
   }
 
   @Query(() => [BalenaDevice])
-  public async getBalenaDevices() {
+  public async getBalenaDevices(): Promise<Array<BalenaDevice>> {
     this.logger.log('Getting Balena devices')
     return await this.service.getRouters()
   }
 
   @Query(() => BalenaDevice, {nullable: true})
-  public async getBalenaDeviceByUuid(@Args('uuid') uuid: string) {
+  public async getBalenaDeviceByUuid(@Args('uuid') uuid: string): Promise<BalenaDevice> {
     this.logger.log(`Getting router ${uuid}`)
     return await this.service.getRouterByUuid(uuid)
   }
 
   @Query(() => [BalenaDeviceEnvVar])
-  public async getEnvVarByDeviceId(@Args("deviceId") deviceId: string) {
+  public async getEnvVarByDeviceId(@Args("deviceId") deviceId: string): Promise<Array<BalenaDeviceEnvVar>> {
     this.logger.log(`Getting env var for device ${deviceId}`)
     return await this.service.getEnvVarByDeviceId(deviceId)
   }
@@ -37,7 +37,7 @@ export class BalenaDeviceResolver {
     @Args('uuid') uuid: string,
     @Args('key') key: string,
     @Args('value') value: string
-  ) {
+  ): Promise<BalenaDeviceEnvVar> {
     this.logger.log(`Setting ${key}=${value} on device ${uuid}`)
     return await this.service.setEnvVarByUuid(uuid, key, value)
   }
@@ -45,7 +45,7 @@ export class BalenaDeviceResolver {
   @Mutation(() => String)
   public async delEnvVarOnBalenaDevice(
     @Args('id') id: string
-  ) {
+  ): Promise<string> {
     this.logger.log(`Removing environment variable ${id}`)
     try {
       await this.service.delEnvVarByUuid(id)

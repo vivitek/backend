@@ -2,9 +2,7 @@ import { Logger, UseGuards } from '@nestjs/common';
 import {
   Args,
   Mutation,
-  Parent,
   Query,
-  ResolveField,
   Resolver,
   Subscription,
 } from '@nestjs/graphql';
@@ -29,19 +27,19 @@ export class ConfigResolver {
   }
 
   @Query(() => [Config])
-  async getConfigs() {
+  async getConfigs(): Promise<Array<Config>> {
     return this.configService.findAll();
   }
 
   @Query(() => Config, { nullable: true })
-  async getConfig(@Args('id') id: string) {
+  async getConfig(@Args('id') id: string): Promise<Config> {
     return this.configService.findById(id);
   }
 
   @Mutation(() => Config)
   async createConfig(
     @Args('configCreateData') configCreateData: ConfigCreationInput,
-  ) {
+  ): Promise<Config> {
     const config = await this.configService.create(configCreateData);
     this.pubSub.publish('configCreated', { configCreated: config });
     this.logger.log(`Created config ${config._id}`);
@@ -51,7 +49,7 @@ export class ConfigResolver {
   @Mutation(() => Config)
   async updateConfig(
     @Args('configUpdateData') configUpdateData: ConfigUpdateInput,
-  ) {
+  ): Promise<Config> {
     const config = await this.configService.updateById(configUpdateData);
     this.pubSub.publish('configUpdated', { configUpdated: config });
     this.logger.log(`Updated config ${config._id}`);
@@ -59,24 +57,28 @@ export class ConfigResolver {
   }
 
   @Mutation(() => Config)
-  async deleteConfig(@Args('id') id: string) {
+  async deleteConfig(@Args('id') id: string): Promise<Config> {
     return await this.configService.deleteById(id);
   }
 
+  //eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   @Subscription(() => Config, {
     filter: ({ configCreated }, { creator }) => {
       return configCreated.creator == creator || configCreated.public;
     },
   })
+  //eslint-disable-next-line @typescript-eslint/no-unused-vars
   async configCreated(@Args('creatorId') creatorId: string) {
     return this.pubSub.asyncIterator('configCreated');
   }
 
+  //eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   @Subscription(() => Config, {
     filter: ({ configUpdated }, { creatorId }) => {
       return configUpdated.creator === creatorId;
     },
   })
+  //eslint-disable-next-line @typescript-eslint/no-unused-vars
   async configUpdated(@Args('creatorId') creatorId: string) {
     return this.pubSub.asyncIterator('configUpdated');
   }

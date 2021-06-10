@@ -13,7 +13,7 @@ describe('RouterResolver', () => {
       imports: [AppModule]
     }).compile()
 
-    app = module.createNestApplication();    
+    app = module.createNestApplication();
     resolver = module.get<RouterResolver>(RouterResolver);
     await app.init();
   });

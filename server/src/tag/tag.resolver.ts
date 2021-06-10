@@ -17,7 +17,7 @@ export class TagResolver {
   }
 
   @Query(() => Tag)
-  async getTag(@Args('tagId') tagId: string) {
+  async getTag(@Args('tagId') tagId: string): Promise<Tag> {
     return this.tagService.findById(tagId);
   }
 
