@@ -13,8 +13,14 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async validateUser({ email, password }: LoginInput): Promise<User | null> {
-    const user = await this.usersService.findByEmail(email);
+  async validateUser({ email, username, password }: LoginInput): Promise<User | null> {
+    const credential = email || username;
+    if (!credential)
+      throw new BadRequestException();
+    const user = await this.usersService.findOne({ $or: [
+      {email: credential},
+      {username: credential}
+    ]});
     if (user && bcrypt.compareSync(password, user.password)) {
       return user;
     }

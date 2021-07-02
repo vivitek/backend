@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from './schemas/users.schema';
-import { Model } from 'mongoose';
+import { FilterQuery, Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
 import { UserCreationInput, UserUpdateInput } from './schemas/users.input';
 
@@ -17,6 +17,9 @@ export class UsersService {
   }
   async findAll(): Promise<User[]> {
     return this.userModel.find().exec();
+  }
+  async findOne(query: FilterQuery<User>): Promise<User> {
+    return this.userModel.findOne(query).exec()
   }
   async createUser(data: UserCreationInput): Promise<User> {
     const user = new this.userModel({
