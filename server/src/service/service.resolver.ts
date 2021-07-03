@@ -69,7 +69,7 @@ export class ServiceResolver {
   }
 
   @Mutation(() => [Service])
-  async deleteByRouter(@Args('routerId') routerId: string): Promise<Service[]> {
+  async deleteServicesByRouter(@Args('routerId') routerId: string): Promise<Service[]> {
     return this.serviceService.deleteByRouter(routerId);
   }
 

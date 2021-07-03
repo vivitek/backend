@@ -31,7 +31,7 @@ export class RouterService {
 
   async create(content: RouterCreationInput): Promise<Router> {
     const router = await new this.routerModel(content).save();
-    if (!process.env.DEBUG) {
+    if (1 === 1) {
       const uuid = /(https?:\/\/)?([^\./]+)/.exec(content.url)[2];
       const device = await this.balenaService.getRouterByUuid(uuid)
       if (!device)
