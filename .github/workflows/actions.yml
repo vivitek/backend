@@ -9,7 +9,7 @@ jobs:
 
       - uses: actions/setup-node@v1
         with:
-          node-version: 'lts/*'
+          node-version: '14.17.2'
 
       - run: yarn install
 
