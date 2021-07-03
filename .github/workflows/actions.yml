@@ -18,7 +18,8 @@ jobs:
 
       - name: test backend
         uses: mattallty/jest-github-action@v1
+        working-directory: ${{env.working-directory}}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          test-command: "cd server && yarn test"
+          test-command: "yarn test"
