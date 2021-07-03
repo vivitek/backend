@@ -7,6 +7,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 'lts/*'
+
+      - run: yarn install
+
       - name: test backend
         uses: mattallty/jest-github-action@v1
         env:
