@@ -5,7 +5,8 @@ jobs:
     name: test backend build
     runs-on: ubuntu-latest
     env:
-      working-directory: ./server
+
+      working-directory: "server"
     steps:
       - uses: actions/checkout@v2
 
@@ -21,5 +22,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          working-directory: ${{env.working-directory}}
+          working-directory: "server"
           test-command: "yarn test"
