@@ -18,6 +18,7 @@ export class OpenVVRTResolver {
 		@Args('id', {type: () => String}) id: string
     ) {
         this.logger.log(`Getting CPU stats for device ${id}`)
+        return await this.service.request(id, Url.Cpu, "GET")
     }
 
     @Query(() => Ram)
@@ -25,6 +26,7 @@ export class OpenVVRTResolver {
 		@Args('id', {type: () => String}) id: string
     ) {
         this.logger.log(`Getting RAM stats for device ${id}`)
+        return await this.service.request(id, Url.Ram, "GET")
     }
 
     @Query(() => Storage)
@@ -32,6 +34,7 @@ export class OpenVVRTResolver {
 		@Args('id', {type: () => String}) id: string
     ) {
         this.logger.log(`Getting storage stats for device ${id}`)
+        return await this.service.request(id, Url.Storage, "GET")
     }
 
     @Query(() => Number)
@@ -39,59 +42,67 @@ export class OpenVVRTResolver {
 		@Args('id', {type: () => String}) id: string
     ) {
         this.logger.log(`Getting uptime for device ${id}`)
+        return await this.service.request(id, Url.Uptime, "GET")
     }
 
     @Mutation(() => null)
-    reboot(
+    async reboot(
 		@Args('id', {type: () => String}) id: string
     ) {
         this.logger.log(`Restarting device ${id}`)
+        return await this.service.request(id, Url.Reboot, "POST")
     }
 
     @Mutation(() => null)
-    poweroff(
+    async poweroff(
 		@Args('id', {type: () => String}) id: string
     ) {
         this.logger.log(`Shuting down device ${id}`)
+        return await this.service.request(id, Url.Poweroff, "POST")
     }
 
     @Mutation(() => [String])
-    logs(
+    async logs(
 		@Args('id', {type: () => String}) id: string,
         @Args('service', {type: () => String, defaultValue: null}) service: string
     ) {
         this.logger.log(`Getting logs for ${service || "all services"} on device ${id}`)
+        return await this.service.request(id, Url.Logs, "GET", {service})
     }
 
     @Mutation(() => [String])
-    build(
+    async build(
 		@Args('id', {type: () => String}) id: string,
         @Args('service', {type: () => String, defaultValue: null}) service: string
     ) {
         this.logger.log(`Building ${service || "all services"} on device ${id}`)
+        return await this.service.request(id, Url.Build, "GET", {service})
     }
 
     @Mutation(() => [String])
-    start(
+    async start(
 		@Args('id', {type: () => String}) id: string,
         @Args('service', {type: () => String, defaultValue: null}) service: string
     ) {
         this.logger.log(`Starting ${service || "all services"} on device ${id}`)
+        return await this.service.request(id, Url.Logs, "GET", {service})
     }
 
     @Mutation(() => [String])
-    stop(
+    async stop(
 		@Args('id', {type: () => String}) id: string,
         @Args('service', {type: () => String, defaultValue: null}) service: string
     ) {
         this.logger.log(`Stopping ${service || "all services"} on device ${id}`)
+        return await this.service.request(id, Url.Stop, "POST", {service})
     }
 
     @Mutation(() => [String])
-    restart(
+    async restart(
 		@Args('id', {type: () => String}) id: string,
         @Args('service', {type: () => String, defaultValue: null}) service: string
     ) {
         this.logger.log(`Restarting ${service || "all services"} on device ${id}`)
+        return await this.service.request(id, Url.Logs, "POST", {service})
     }
 }

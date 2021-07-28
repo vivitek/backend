@@ -7,18 +7,19 @@ export class OpenVVRTService {
         id: string,
         route: Url,
         method: Method,
-        content?: []
+        content?: unknown
     ) {
         let url = `https://${id}.openvivi.com/${route}`
-        if (method === "GET" && content?.length)
-            url += `?${content.join('&')}`
+        if (method === "GET" && Array(content)?.length)
+            url += `?${Array(content).join('&')}`
 
         try {
-            await axios({
+            const res = await axios({
                 url,
                 method,
-                data: method !== "GET" ? content : undefined
+                data: method !== "GET" && content ? content : undefined
             })
+            return res
         } catch (e) {
             const err = e as AxiosError
             switch (err.response.status) {
