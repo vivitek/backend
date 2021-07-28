@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { BadRequestException, ForbiddenException, Injectable, InternalServerErrorException, UnauthorizedException } from "@nestjs/common";
 import axios, { AxiosError, Method } from "axios";
 
 @Injectable()
@@ -23,10 +23,13 @@ export class OpenVVRTService {
             const err = e as AxiosError
             switch (err.response.status) {
                 case 400:
+                    throw new BadRequestException()
                 case 403:
+                    throw new UnauthorizedException("Permission denied")
                 case 404:
+                    throw new ForbiddenException("Targeted ressource does not exists")
                 case 500:
-                    break
+                    throw new InternalServerErrorException(err.message)
             }
         }
     }
