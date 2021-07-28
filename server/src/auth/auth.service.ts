@@ -66,7 +66,6 @@ export class AuthService {
   }
 
   private generateToken(user: User): string {
-    const now = Date.now()
     return this.jwtService.sign(
       {
         ...user.toJSON(),

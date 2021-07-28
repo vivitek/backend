@@ -66,7 +66,7 @@ export class BanResolver {
   }
 
   @Mutation(() => Boolean)
-  async deleteBansByRouter(@Args('routerId') routerId: string): Promise<Boolean> {
+  async deleteBansByRouter(@Args('routerId') routerId: string): Promise<boolean> {
     return await this.banService.deleteByRouter(routerId);
   }
 
