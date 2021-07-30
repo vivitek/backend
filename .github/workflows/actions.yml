@@ -15,4 +15,4 @@ jobs:
           node-version: '14.17.2'
 
       - run: docker-compose run server npm run test:cov
-        ${{env.working-directory}}
+        working-directory: ${{env.working-directory}}
