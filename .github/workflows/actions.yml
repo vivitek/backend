@@ -4,9 +4,7 @@ jobs:
   test:
     name: test backend build
     runs-on: ubuntu-latest
-    env:
 
-      working-directory: "server"
     steps:
       - uses: actions/checkout@v2
 
@@ -15,4 +13,3 @@ jobs:
           node-version: '14.17.2'
 
       - run: docker-compose run server npm run test:cov
-        working-directory: ${{env.working-directory}}
