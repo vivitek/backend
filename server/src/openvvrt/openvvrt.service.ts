@@ -28,7 +28,7 @@ export class OpenVVRTService {
                 case 403:
                     throw new UnauthorizedException("Permission denied")
                 case 404:
-                    throw new ForbiddenException("Targeted ressource does not exists")
+                    throw new ForbiddenException("Targeted resource does not exist")
                 case 500:
                     throw new InternalServerErrorException(err.message)
             }
