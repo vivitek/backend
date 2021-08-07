@@ -1,5 +1,6 @@
-import { Field } from "@nestjs/graphql";
+import { Field, ObjectType } from "@nestjs/graphql";
 
+@ObjectType()
 export class Cpu {
     @Field(() => String)
     name: string;
@@ -13,6 +14,8 @@ export class Cpu {
     idle: number;
 }
 
+
+@ObjectType()
 export class Ram {
     @Field(() => Number)
     total: number
@@ -24,6 +27,7 @@ export class Ram {
     percentage: number
 }
 
+@ObjectType()
 export class Storage {
     @Field(() => String)
     fs: string
