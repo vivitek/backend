@@ -2,7 +2,7 @@ import { Logger, UseGuards } from "@nestjs/common"
 import { Resolver, Query, Mutation, Args } from "@nestjs/graphql"
 import { AuthGuard } from "../auth/auth.guard"
 import { OpenVVRTService, Url } from "./openvvrt.service";
-import { Cpu, Ram } from "./schema/openvvrt.output"
+import { Cpu, Ram, Storage } from "./schema/openvvrt.output"
 
 @Resolver()
 @UseGuards(new AuthGuard())
@@ -45,20 +45,22 @@ export class OpenVVRTResolver {
         return await this.service.request(id, Url.Uptime, "GET")
     }
 
-    @Mutation(() => null)
+    @Mutation(() => String)
     async reboot(
 		@Args('id', {type: () => String}) id: string
     ) {
         this.logger.log(`Restarting device ${id}`)
-        return await this.service.request(id, Url.Reboot, "POST")
+        await this.service.request(id, Url.Reboot, "POST")
+        return "OK";
     }
 
-    @Mutation(() => null)
+    @Mutation(() => String)
     async poweroff(
 		@Args('id', {type: () => String}) id: string
     ) {
         this.logger.log(`Shuting down device ${id}`)
-        return await this.service.request(id, Url.Poweroff, "POST")
+        await this.service.request(id, Url.Poweroff, "POST")
+        return "OK";
     }
 
     @Mutation(() => [String])

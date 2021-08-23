@@ -17,7 +17,6 @@ const MODULES = [
   GraphQLModule.forRoot({
     installSubscriptionHandlers: true,
     autoSchemaFile: true,
-    playground: true,
     context: ({ req, connection }) => ({
       headers: req?.headers || connection.context.headers,
     }),
