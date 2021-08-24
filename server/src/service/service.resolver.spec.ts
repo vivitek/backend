@@ -92,7 +92,7 @@ describe('ServiceResolver', () => {
 
   it('deleteByRouter work', async () => {
     const value = await resolver.createService(sample);
-    await resolver.deleteByRouter(value.router.toString())
+    await resolver.deleteServicesByRouter(value.router.toString())
 
     expect(await service.findByRouter(value._id.toString())).toEqual([]);
   });

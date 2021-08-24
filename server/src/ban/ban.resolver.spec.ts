@@ -81,7 +81,7 @@ describe('BanResolver', () => {
 
   it('deleteByRouter work', async () => {
     const value = await resolver.createBan(ban);
-    await resolver.deleteByRouter(value._id.toString())
+    await resolver.deleteBansByRouter(value._id.toString())
     await resolver.getBans(value._id.toString())
 
     expect(await service.findByRouter(value._id.toString())).toEqual([]);
