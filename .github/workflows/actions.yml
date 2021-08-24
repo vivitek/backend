@@ -2,14 +2,13 @@ on: push
 
 jobs:
   test:
-    name: test backend build
+    name: Unit tests
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v2
-
       - uses: actions/setup-node@v1
         with:
           node-version: '14.17.2'
-
+      - run: npm i -g codecov
       - run: docker-compose run server npm run test:cov
+      - run: bash <(curl -s https://codecov.io/bash)

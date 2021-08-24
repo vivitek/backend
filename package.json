@@ -31,7 +31,7 @@
     ]
   },
   "validate-branch-name": {
-    "pattern": "^(master|^(feature|fix|experiment|improvement)/([\\w-]+?)(/\\d+)?)$",
+    "pattern": "^(master|^(feature|fix|experiment|improvement|refact)/([\\w-]+?)(/\\d+)?)$",
     "errorMsg": "Branch name format : //"
   }
 }
