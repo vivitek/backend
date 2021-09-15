@@ -7,19 +7,19 @@ services:
     command:
       - --entrypoints.web.address=:80
       - --entrypoints.secureweb.address=:443
+      - --entrypoints.metrics.address=:8081
       - --providers.docker=true
       - --certificatesresolvers.le.acme.email=matteo.gassend@epitech.eu
       - --certificatesresolvers.le.acme.storage=/acme.json
       - --certificatesresolvers.le.acme.tlschallenge=true
       - --api.insecure
       - --metrics=true
-      - --metrics.influxdb=true
-      - --metrics.influxdb.address=influxdb:8086
-      - --metrics.influxdb.protocol=http
-      - --metrics.influxdb.database=vivi
-      - --metrics.influxdb.username=vivi
-      - --metrics.influxdb.password=vivi
-      - --metrics.influxdb.addServicesLabels=true
+      - --metrics.prometheus=true
+      - --metrics.prometheus.buckets=0.100000, 0.300000, 1.200000, 5.000000
+      - --metrics.prometheus.addEntryPointsLabels=true
+      - --metrics.prometheus.addServicesLabels=true
+      - --metrics.prometheus.entryPoint=metrics
+
       - --accesslog=true
       - --accesslog.filepath=/logs/access.log
       - --accesslog.format=json
@@ -40,31 +40,32 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
       - "./data/traefik_logs:/logs"
       - "./acme.json:/acme.json"
-  influxdb:
-    image: influxdb:latest
-    restart: on-failure
+  prometheus:
+    image: prom/prometheus:v2.30.0
+    user: root
+    restart: unless-stopped
     volumes:
-      - ./data/influx:/var/lib/influxdb
-    environment:
-      - INFLUXDB_DB=vivi
-      - INFLUXDB_USER=vivi
-      - INFLUXDB_USER_PASSWORD=vivi
-
+      - ./prometheus:/etc/prometheus:rw
+      - ./data/prometheus:/prometheus:rw
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
     labels:
-      - "traefik.http.routers.influx-r.rule=Host(`influxdb.${DOMAIN:?err}`)"
-      - "traefik.http.services.influx-svr.loadbalancer.server.port=8086"
-      - "traefik.http.routers.influx-r.tls.certresolver=le"
-      - "traefik.http.routers.influx-r.entrypoints=secureweb"
+      - "traefik.http.routers.prometheus.rule=Host(`prometheus.${DOMAIN:?err}`)"
+      - "traefik.http.routers.prometheus.service=prometheus"
+      - "traefik.http.services.prometheus.loadbalancer.server.port=9090"
+      - "traefik.http.routers.prometheus.tls.certresolver=le"
+      - "traefik.http.routers.prometheus.entrypoints=secureweb"
   grafana:
     image: grafana/grafana
-    restart: on-failure
+    restart: unless-stopped
     depends_on:
-      - influxdb
+      - prometheus
     volumes:
-      - ./grafana/provisioning/:/etc/grafana/provisioning/:rw
+      - ./grafana/provisioning:/etc/grafana/provisioning
     env_file:
-      - ./grafana/config.monitoring
-    user: "407"
+      - grafana.env
+    user: root
     labels:
       - "traefik.http.routers.grafana.rule=Host(`grafana.${DOMAIN:?err}`)"
       - "traefik.http.routers.grafana.service=grafana"
