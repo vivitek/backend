@@ -62,7 +62,7 @@ services:
       - prometheus
     volumes:
       - ./grafana/provisioning:/etc/grafana/provisioning
-      - ./grafana/grafana.ini:/etc/grafana/grafana.ini
+      - "./grafana/grafana.ini:/etc/grafana/grafana.ini"
     env_file:
       - grafana.env
     user: root
