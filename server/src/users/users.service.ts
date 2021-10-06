@@ -40,4 +40,11 @@ export class UsersService {
       new: true,
     });
   }
+
+  async setSecret(secret: string, userId: string): Promise<User> {
+    const user = await this.findById(userId);
+    user.otp_enabled = true;
+    user.otp_secret = secret;
+    return await user.save();
+  }
 }

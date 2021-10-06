@@ -5,7 +5,7 @@ import { User } from '../users/schemas/users.schema';
 import { AuthService } from './auth.service';
 import { LoginInput, RegisterInput } from './schemas/auth.inputs';
 import { AuthDetails } from './schemas/auth.schema';
-import { AuthGuard } from "../auth/auth.guard"
+import { AuthGuard } from '../auth/auth.guard';
 
 @Resolver()
 export class AuthResolver {
@@ -17,7 +17,9 @@ export class AuthResolver {
   }
 
   @Mutation(() => AuthDetails)
-  async register(@Args('registerData') registerData: RegisterInput): Promise<AuthDetails> {
+  async register(
+    @Args('registerData') registerData: RegisterInput,
+  ): Promise<AuthDetails> {
     return await this.authService.register(registerData);
   }
 
@@ -27,14 +29,35 @@ export class AuthResolver {
   }
 
   @Mutation(() => AuthDetails)
-  async loginGodView(@Args('loginData') loginData: LoginInput): Promise<AuthDetails> {
-    return await this.authService.loginGodView(loginData)
+  async loginGodView(
+    @Args('loginData') loginData: LoginInput,
+  ): Promise<AuthDetails> {
+    return await this.authService.loginGodView(loginData);
   }
 
   @Query(() => Boolean)
   @UseGuards(new AuthGuard())
   async isAnAdmin(@Context('user') user: User): Promise<boolean> {
-    return await this.authService.isAnAdmin(user)
+    return await this.authService.isAnAdmin(user);
   }
 
+  @Mutation(() => Boolean)
+  @UseGuards(new AuthGuard())
+  async toggleOTP(@Context('user') user: User): Promise<boolean> {
+    return this.authService.toggleOTP(user._id.toString());
+  }
+
+  @Query(() => String)
+  @UseGuards(new AuthGuard())
+  async getOtpUrl(@Context('user') user: User): Promise<string> {
+    return this.authService.getOtpData(user);
+  }
+  @Mutation(() => Boolean)
+  @UseGuards(new AuthGuard())
+  async checkOtpCode(
+    @Context('user') user: User,
+    @Args('code') code: string,
+  ): Promise<boolean> {
+    return this.authService.checkOtpCode(user, code);
+  }
 }
