@@ -19,14 +19,16 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async validateUser({ email, username, password }: LoginInput): Promise<User | null> {
+  async validateUser({
+    email,
+    username,
+    password,
+  }: LoginInput): Promise<User | null> {
     const credential = email || username;
-    if (!credential)
-      throw new BadRequestException();
-    const user = await this.usersService.findOne({ $or: [
-      {email: credential},
-      {username: credential}
-    ]});
+    if (!credential) throw new BadRequestException();
+    const user = await this.usersService.findOne({
+      $or: [{ email: credential }, { username: credential }],
+    });
     if (user && bcrypt.compareSync(password, user.password)) {
       return user;
     }
@@ -75,31 +77,24 @@ export class AuthService {
     return this.jwtService.sign(
       {
         ...user.toJSON(),
-        type: "user",
-      }, {
+        type: 'user',
+      },
+      {
         secret: process.env.SECRET || 'sting-sell-pioneer',
-      }
-    )
+      },
+    );
   }
   async toggleOTP(id: string): Promise<boolean> {
     const d = await this.usersService.findById(id);
-    if (d.otp_enabled) {
+
+    await d.update({ otp_enabled: !d.otp_enabled });
+    if (!d.otp_secret) {
+      const secret = await this.otpService.generateSecret();
       await d.update({
-        otp_enabled: false,
+        otp_secret: secret,
       });
-      return false;
-    } else {
-      await d.update({
-        otp_enabled: true,
-      });
-      if (!d.otp_secret) {
-        const secret = await this.otpService.generateSecret();
-        await d.update({
-          otp_secret: secret,
-        });
-      }
-      return true;
     }
+    return d.otp_enabled;
   }
 
   async getOtpData(user: User): Promise<string> {
