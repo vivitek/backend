@@ -11,7 +11,6 @@ export class AuthOtpService {
     try {
       return authenticator.check(otp, secret);
     } catch (error) {
-      console.log(error);
       return false;
     }
   }
