@@ -21,4 +21,14 @@ export class Router extends Document {
   certificat: string;
 }
 
+@ObjectType()
+export class RouterCreated {
+
+  @Field()
+  router: Router
+
+  @Field(() => String)
+  access_token: string
+}
+
 export const RouterSchema = SchemaFactory.createForClass(Router);

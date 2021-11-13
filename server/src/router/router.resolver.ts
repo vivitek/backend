@@ -8,7 +8,7 @@ import {
   RouterCreationInput,
   RouterUpdateInput,
 } from './schemas/router.inputs';
-import { Router } from './schemas/router.schema';
+import { Router, RouterCreated } from './schemas/router.schema';
 
 @Resolver(() => Router)
 export class RouterResolver {
@@ -40,14 +40,14 @@ export class RouterResolver {
     return router;
   }
 
-  @Mutation(() => Router)
+  @Mutation(() => RouterCreated)
   async createRouter(
     @Args('createRouterData') createRouterData: RouterCreationInput,
-  ): Promise<Router> {
-    const router = await this.routerService.create(createRouterData);
-    this.logger.log(`Created router id ${router._id}`);
-    this.pubSub.publish('routerCreated', { routerCreated: router });
-    return router;
+  ): Promise<RouterCreated> {
+    const res = await this.routerService.create(createRouterData);
+    this.logger.log(`Created router id ${res.router._id}`);
+    this.pubSub.publish('routerCreated', { routerCreated: res.router });
+    return res
   }
 
   @Mutation(() => Router)
