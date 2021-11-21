@@ -7,14 +7,22 @@ export class RouterCreationInput {
 
     @Field()
     name: string
+
+    @Field()
+    certificat: string
 }
 
 @InputType()
 export class RouterUpdateInput {
-    @Field({nullable:true})
-    url ?: string
-    @Field({nullable:true})
-    name ?: string
     @Field()
     id: string
+
+    @Field({nullable:true})
+    url?: string
+
+    @Field({nullable:true})
+    name?: string
+
+    @Field({nullable: true})
+    certificat?: string
 }

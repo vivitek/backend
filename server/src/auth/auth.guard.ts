@@ -43,6 +43,10 @@ export class AuthGuard implements CanActivate {
       if (now > expire_at)
         throw new UnauthorizedException("Token expired")
       return payload
+    } else {
+      const certificat = payload._doc.certificat
+      if (!certificat || certificat.length !== 1024)
+        throw new UnauthorizedException('Invalid Token')
     }
   }
 }

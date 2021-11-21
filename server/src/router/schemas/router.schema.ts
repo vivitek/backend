@@ -15,6 +15,20 @@ export class Router extends Document {
   @Field(() => String)
   @Prop({ unique: true, type: String })
   url: string;
+
+  @Field(() => String)
+  @Prop({ unique: true, type: String})
+  certificat: string;
+}
+
+@ObjectType()
+export class RouterCreated {
+
+  @Field()
+  router: Router
+
+  @Field(() => String)
+  access_token: string
 }
 
 export const RouterSchema = SchemaFactory.createForClass(Router);
