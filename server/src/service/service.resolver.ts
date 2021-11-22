@@ -40,6 +40,11 @@ export class ServiceResolver {
     return await this.serviceService.findByRouter(routerId);
   }
 
+  @Query(() => [Service])
+  async getServices(): Promise<Service[]> {
+    return await this.serviceService.findAll();
+  }
+
   @Mutation(() => Service)
   async createService(
     @Args('serviceCreationData') serviceCreationData: ServiceCreationInput,
