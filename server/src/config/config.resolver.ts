@@ -2,11 +2,14 @@ import { Logger, UseGuards } from '@nestjs/common';
 import {
   Args,
   Mutation,
+  Parent,
   Query,
+  ResolveField,
   Resolver,
   Subscription,
 } from '@nestjs/graphql';
 import { PubSub } from 'graphql-subscriptions';
+import { User } from '../users/schemas/users.schema';
 import { AuthGuard } from '../auth/auth.guard';
 import { ConfigService } from './config.service';
 import {
@@ -14,14 +17,18 @@ import {
   ConfigUpdateInput,
 } from './schemas/config.inputs';
 import { Config } from './schemas/config.schema';
+import { UsersService } from '../users/users.service';
 
-@Resolver()
+@Resolver(() => Config)
 @UseGuards(new AuthGuard())
 export class ConfigResolver {
   private pubSub: PubSub;
   private readonly logger: Logger;
 
-  constructor(private configService: ConfigService) {
+  constructor(
+    private configService: ConfigService,
+    private userService: UsersService,
+  ) {
     this.pubSub = new PubSub();
     this.logger = new Logger('ConfigResolver');
   }
@@ -81,5 +88,10 @@ export class ConfigResolver {
   //eslint-disable-next-line @typescript-eslint/no-unused-vars
   async configUpdated(@Args('creatorId') creatorId: string) {
     return this.pubSub.asyncIterator('configUpdated');
+  }
+
+  @ResolveField('creator', () => User)
+  async resolveTags(@Parent() config: Config) {
+    return await this.userService.findById(config.creator.toString());
   }
 }
