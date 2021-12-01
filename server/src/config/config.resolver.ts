@@ -18,6 +18,8 @@ import {
 } from './schemas/config.inputs';
 import { Config } from './schemas/config.schema';
 import { UsersService } from '../users/users.service';
+import { ServiceService } from '../service/service.service';
+import { Service } from 'src/service/schemas/service.schema';
 
 @Resolver(() => Config)
 @UseGuards(new AuthGuard())
@@ -28,6 +30,7 @@ export class ConfigResolver {
   constructor(
     private configService: ConfigService,
     private userService: UsersService,
+    private serviceService: ServiceService,
   ) {
     this.pubSub = new PubSub();
     this.logger = new Logger('ConfigResolver');
@@ -91,7 +94,14 @@ export class ConfigResolver {
   }
 
   @ResolveField('creator', () => User)
-  async resolveTags(@Parent() config: Config) {
+  async resolveUser(@Parent() config: Config) {
     return await this.userService.findById(config.creator.toString());
+  }
+
+  @ResolveField('services', () => [Service])
+  async resolveServices(@Parent() config: Config) {
+    return config.services.map(
+      async e => await this.serviceService.findById(e.toString()),
+    );
   }
 }

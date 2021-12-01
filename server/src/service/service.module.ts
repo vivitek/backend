@@ -9,6 +9,7 @@ import { TagModule } from '../tag/tag.module';
     MongooseModule.forFeature([{ name: Service.name, schema: ServiceSchema }]),
     TagModule,
   ],
+  exports: [ServiceService],
   providers: [ServiceService, ServiceResolver],
 })
 export class ServiceModule {}
