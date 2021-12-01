@@ -104,4 +104,11 @@ export class ConfigResolver {
       async e => await this.serviceService.findById(e.toString()),
     );
   }
+
+  @ResolveField('configs', () => [Config])
+  async resolveConfigs(@Parent() config: Config) {
+    return config.configs.map(
+      async e => await this.configService.findById(e.toString()),
+    );
+  }
 }
